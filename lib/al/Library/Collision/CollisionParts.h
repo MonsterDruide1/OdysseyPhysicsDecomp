@@ -2,6 +2,7 @@
 
 #include <container/seadTList.h>
 #include <math/seadMatrix.h>
+#include <math/seadQuat.h>
 #include <math/seadVector.h>
 
 namespace al {
@@ -71,9 +72,7 @@ public:
     void setSyncCollisionMtx(const sead::Matrix34f* mtx) { mSyncCollisionMtx = mtx; }
 
     const sead::Matrix34f& getBaseMtx() const { return mBaseMtx; }
-
     const sead::Matrix34f& getBaseInvMtx() const { return mBaseInvMtx; }
-
     const sead::Matrix34f& getPrevBaseMtx() const { return mPrevBaseMtx; }
 
     const sead::Matrix34f& getPrevBaseInvMtx() const { return mPrevBaseInvMtx; }
@@ -90,9 +89,11 @@ public:
 
     void setOptionalPurpose(const char* optionalPurpose) { mOptionalPurpose = optionalPurpose; }
 
-    s32 get_15c() const { return _15c; }
+    s32 get_15c() const { return getSomeCounter(); }
 
-    bool isValidCollision() const { return mIsValidatedByUser && mIsValidatedBySystem; }
+    bool isValidCollision() const { return isValidatedByUser && isValidatedBySystem; }
+
+    int getSomeCounter() const { return someCounter; }
 
     bool isMoving() const { return mIsMoving; }
 
@@ -119,20 +120,25 @@ private:
     f32 mInvMtxScale;
     s32 mPriority;
     KCollisionServer* mKCollisionServer;
-    HitSensor* mConnectedSensor;
+    al::HitSensor* mConnectedSensor;
     const char* mSpecialPurpose;
     const char* mOptionalPurpose;
-    sead::Vector3f _150;  // same as mMtxScaleVec?
-    s32 _15c;
-    f32 mBoundingSphereRange;
-    f32 mBaseMtxScale;
-    bool mIsValidatedByUser;
-    bool mIsValidatedBySystem;
-    bool _16a;
-    bool _16b;
-    bool _16c;
+    sead::Vector3f mMtxScaleVecAgain;
+    int someCounter;
+    float mBoundingSphereRange;
+    float mBaseMtxScale;
+    bool isValidatedByUser;
+    bool isValidatedBySystem;
+    bool bVar3;
+    bool bVar4;
+    bool bVar5;
     bool mIsMoving;
-    ForceCollisionFlag mForceCollisionFlag;
+    union {
+        ForceCollisionFlag mForceCollisionFlag;
+        bool bVar6;
+    };
+    bool pad2;
 };
+static_assert(sizeof(CollisionParts) == 0x170);
 
 }  // namespace al
