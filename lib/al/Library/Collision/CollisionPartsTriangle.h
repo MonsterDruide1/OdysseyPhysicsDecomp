@@ -90,6 +90,15 @@ struct HitInfo {
     sead::Vector3f _80 = {0.0f, 0.0f, 0.0f};
     sead::Vector3f collisionMovingReaction = {0.0f, 0.0f, 0.0f};
     CollisionLocation collisionLocation = CollisionLocation::None;
+
+    /*
+    al::Triangle mTriangle;
+    f32 unk = 0.0f;
+    sead::Vector3f mCollisionHitPos = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f unk3 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f mCollisionMovingReaction = {0.0f, 0.0f, 0.0f};
+    u8 mCollisionLocation = 0;
+    */
 };
 
 struct ArrowHitInfo {
