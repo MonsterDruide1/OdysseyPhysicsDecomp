@@ -3,6 +3,7 @@
 #include <prim/seadStorageFor.h>
 
 #include "Library/Collision/CollisionPartsTriangle.h"
+#include "Library/Collision/KCollisionFunc.h"
 
 class CollisionShapeInfoBase;
 class CollisionShapeInfoArrow;
