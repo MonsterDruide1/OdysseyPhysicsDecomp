@@ -54,7 +54,7 @@ public:
 
     void set54(f32 value) { _54 = value; }
 
-private:
+public:
     sead::Vector3f mBoundingCenter = {0.0f, 0.0f, 0.0f};
     f32 mBoundingRadius = 0.0f;
     sead::PtrArray<CollisionShapeInfoBase> mCollisionShape;
