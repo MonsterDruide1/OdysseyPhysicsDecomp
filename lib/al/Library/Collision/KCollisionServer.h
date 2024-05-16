@@ -6,6 +6,7 @@
 #include <math/seadVector.h>
 #include <container/seadPtrArray.h>
 #include <container/seadRingBuffer.h>
+#include <math/seadQuat.h>
 #include <math/seadVector.h>
 #include <prim/seadDelegate.h>
 
@@ -171,7 +172,6 @@ private:
 class SpherePoseInterpolator {
 public:
     SpherePoseInterpolator() {}
-
     void startInterp(const sead::Vector3f& posStart, const sead::Vector3f& posEnd, f32 sizeStart,
                      f32 sizeEnd, const sead::Quatf& quatStart, const sead::Quatf& quatEnd,
                      f32 steps);
