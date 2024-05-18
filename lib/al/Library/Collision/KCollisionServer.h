@@ -137,13 +137,13 @@ public:
 
 private:
     sead::PtrArray<KCPrismHeader> mModelsData;
-    void* mData;
-    ByamlIter* mAttributeIter;
-    void* mModelListData;
-    void* mOctreeData;
-    s32 mAreaWidthShift[3];
-    s32 mAreaWidthMask[3];
-    f32 mFarthestVertexDistance;
+    void* mData = nullptr;
+    ByamlIter* mIter = nullptr;
+    void* mModelListData = nullptr;
+    void* mOctreeData = nullptr;
+    sead::Vector3u mCoordShift = {0,0,0};
+    sead::Vector3u unkShiftedByCoordShift = {0,0,0};
+    f32 mFarthestVertexDistance = 1.0f;
 };
 
 class SphereInterpolator {

@@ -99,40 +99,45 @@ public:
 
     void setIsMoving(bool isMoving) { mIsMoving = isMoving; }
 
+    void set_16e(bool val) { bVar6 = val; }
+
     void setForceCollisionScaleNone() { mForceCollisionFlag = ForceCollisionFlag::ScaleNone; }
 
     void setForceCollisionScaleAverage() { mForceCollisionFlag = ForceCollisionFlag::ScaleAverage; }
 
     void setForceCollisionScaleOne() { mForceCollisionFlag = ForceCollisionFlag::ScaleOne; }
 
-private:
-    void* unk[2];
-    CollisionParts* _10;  // self-reference
-    sead::TList<CollisionParts*>* mPartsList;
-    const sead::Matrix34f* mSyncCollisionMtx;
+public:
+    void* unk[2] = {nullptr, nullptr};
+    CollisionParts* selfReference = this;
+    sead::TList<CollisionParts*>* mPartsList = nullptr;
+    union {
+        const sead::Matrix34f* mJointMtx = nullptr;
+        const sead::Matrix34f* mSyncCollisionMtx;
+    };
     sead::Matrix34f mSyncMtx;
     sead::Matrix34f mBaseMtx;
     sead::Matrix34f mBaseInvMtx;
     sead::Matrix34f mPrevBaseMtx;
     sead::Matrix34f mPrevBaseInvMtx;
-    sead::Vector3f mMtxScaleVec;
-    f32 mMtxScale;
-    f32 mInvMtxScale;
-    s32 mPriority;
-    KCollisionServer* mKCollisionServer;
-    al::HitSensor* mConnectedSensor;
-    const char* mSpecialPurpose;
-    const char* mOptionalPurpose;
-    sead::Vector3f mMtxScaleVecAgain;
-    int someCounter;
-    float mBoundingSphereRange;
-    float mBaseMtxScale;
-    bool isValidatedByUser;
-    bool isValidatedBySystem;
-    bool bVar3;
-    bool bVar4;
-    bool bVar5;
-    bool mIsMoving;
+    sead::Vector3f mMtxScaleVec = {1.0f, 1.0f, 1.0f};
+    f32 mMtxScale = 1.0f;
+    f32 mInvMtxScale = 1.0f;
+    s32 mPriority = -1;
+    KCollisionServer* mKCollisionServer = nullptr;
+    al::HitSensor* mConnectedSensor = nullptr;
+    const char* mSpecialPurpose = nullptr;
+    const char* mOptionalPurpose = nullptr;
+    sead::Vector3f mMtxScaleVecAgain = {1.0f, 1.0f, 1.0f};
+    int someCounter = 0;
+    float mBoundingSphereRange = -1.0f;
+    float mBaseMtxScale = 1.0f;
+    bool isValidatedByUser = true;
+    bool isValidatedBySystem = true;
+    bool bVar3 = true;
+    bool bVar4 = false;
+    bool bVar5 = true;
+    bool mIsMoving = false;
     union {
         ForceCollisionFlag mForceCollisionFlag;
         bool bVar6;
