@@ -5,6 +5,7 @@
 #include <math/seadMatrix.h>
 #include <math/seadQuat.h>
 #include <math/seadVector.h>
+#include "math/seadBoundBox.h"
 
 #include "Library/Math/Axis.h"
 
