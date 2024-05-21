@@ -3,6 +3,8 @@
 #include <container/seadPtrArray.h>
 #include <math/seadMatrix.h>
 #include <math/seadVector.h>
+#include "Player/CollidedShapeResult.h"
+#include "Player/CollisionShapeInfo.h"
 
 class CollisionShapeInfoBase;
 class CollisionShapeInfoArrow;

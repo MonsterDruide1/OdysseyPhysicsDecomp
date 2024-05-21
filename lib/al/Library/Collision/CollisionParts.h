@@ -4,6 +4,7 @@
 #include <math/seadMatrix.h>
 #include <math/seadQuat.h>
 #include <math/seadVector.h>
+#include "Library/Collision/KCollisionServer.h"
 
 namespace al {
 class ArrowHitResultBuffer;
@@ -106,6 +107,10 @@ public:
     void setForceCollisionScaleAverage() { mForceCollisionFlag = ForceCollisionFlag::ScaleAverage; }
 
     void setForceCollisionScaleOne() { mForceCollisionFlag = ForceCollisionFlag::ScaleOne; }
+
+    ~CollisionParts() {
+        delete mKCollisionServer;
+    }
 
 public:
     void* unk[2] = {nullptr, nullptr};

@@ -9,6 +9,7 @@
 #include <math/seadQuat.h>
 #include <math/seadVector.h>
 #include <prim/seadDelegate.h>
+#include "Library/Yaml/ByamlIter.h"
 
 
 namespace al {

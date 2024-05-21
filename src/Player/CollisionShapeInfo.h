@@ -57,7 +57,7 @@ public:
     void calcWorldShapeInfo(const sead::Matrix34f&, f32) override;
     void calcRelativeShapeInfo(const sead::Matrix34f&) override;
 
-private:
+public:
     s32 a6;
     sead::Vector3f mBoundingCenter = {0.0f, 0.0f, 0.0f};
     f32 mBoundingRadius;
@@ -93,24 +93,28 @@ public:
 
     // TODO: rename parameter
     void setSupportGround(const sead::Vector3f& up, f32 unk1) {
-        mIsSupportGround = true;
+        isSupportGround = true;
         mUp = up;
-        _48 = unk1;
+        this->unk1 = unk1;
     }
 
-    void setIgnoreGround() { mIsIgnoreGround = true; }
+    void setIgnoreGround() { isSupportGround = true; }
 
     void set48(f32 value) { _48 = value; }
 
 private:
-    void* _18[5];
-    s32 _40;
-    bool mIsSupportGround;
-    f32 _48;
-    f32 _4c;
-    sead::Vector3f mUp;
-    sead::Vector3f _5c;
-    bool mIsIgnoreGround;
+    float mBoundingRadius;
+    sead::Vector3f mBoundingCenter;
+    sead::Vector3f mBoundingCenterWorld;
+    float mBoundingRadiusWorld;
+    sead::Vector3f mRelativeShapeInfo = {0.0f, 0.0f, 0.0f};
+    bool isSupportGround = false;
+    float unk1 = 0.0f;
+    float unk2;
+    sead::Vector3f mUp = sead::Vector3f::ey;
+    sead::Vector3f mWorldShapeInfo;
+    bool isIgnoreGround = false;
+    bool unkFlag = false;
 };
 
 static_assert(sizeof(CollisionShapeInfoSphere) == 0x70);
