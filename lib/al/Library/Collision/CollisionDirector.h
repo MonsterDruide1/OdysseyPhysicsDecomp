@@ -51,7 +51,7 @@ public:
 
     ICollisionPartsKeeper* getActivePartsKeeper() const { return mActivePartsKeeper; }
 
-private:
+public:
     ICollisionPartsKeeper* mActivePartsKeeper;
     CollisionPartsKeeperOctree* mRootOctree;
     CollisionPartsKeeperPtrArray* mCollisionPartsKeeperPtrArray;
