@@ -78,6 +78,7 @@ void CollisionShapeKeeper::updateShape() {
     mBoundingRadius = 0.0f;
 
     s32 numShapes = mCollisionShape.size();
+    printf("numShapes = %d\n", numShapes);
     for (s32 i = 0; i < numShapes; i++) {
         const sead::Vector3f& center = mCollisionShape[i]->getBoundingCenter();
 
@@ -128,7 +129,7 @@ void CollisionShapeKeeper::calcRelativeShapeInfo(const sead::Matrix34f& a2) {
 }
 
 void CollisionShapeKeeper::registerCollideResult(const CollidedShapeResult& result) {
-    printf("CollisionShapeKeeper::registerCollideResult(type=%d)\n", *(((int*)&result)+4));
+    printf("CollisionShapeKeeper::registerCollideResult(type=%s)\n", result.isSphere() ? "sphere" : result.isArrow() ? "arrow" : "disk");
     *mCollideShapeResult[mNumCollideResult] = result;
     mNumCollideResult++;
 }

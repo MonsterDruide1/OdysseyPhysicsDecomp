@@ -57,7 +57,7 @@ public:
     friend bool ::operator!=(const Triangle& lhs, const Triangle& rhs);
     // clang-format on
 
-private:
+public:
     const CollisionParts* mCollisionParts;
     const KCPrismData* mKCPrismData;
     const KCPrismHeader* mKCPrismHeader;
@@ -79,17 +79,45 @@ enum class CollisionLocation : u8 {
 struct HitInfo {
     HitInfo();
 
+    HitInfo& operator=(const HitInfo& o) {
+        triangle = o.triangle;
+        _70 = o._70;
+        collisionHitPos = o.collisionHitPos;
+        _80 = o._80;
+        collisionMovingReaction = o.collisionMovingReaction;
+        collisionLocation = o.collisionLocation;
+        return *this;
+    }
+
     bool isCollisionAtFace() const;
     bool isCollisionAtEdge() const;
     bool isCollisionAtCorner() const;
     const sead::Vector3f& tryGetHitEdgeNormal() const;
 
-    Triangle triangle;
-    f32 _70 = 0.0f;
-    sead::Vector3f collisionHitPos = {0.0f, 0.0f, 0.0f};
-    sead::Vector3f _80 = {0.0f, 0.0f, 0.0f};
-    sead::Vector3f collisionMovingReaction = {0.0f, 0.0f, 0.0f};
-    CollisionLocation collisionLocation = CollisionLocation::None;
+    union {
+        Triangle triangle;
+        Triangle mTriangle;
+    };
+    union {
+        f32 _70 = 0.0f;
+        f32 unk;
+    };
+    union {
+        sead::Vector3f collisionHitPos = {0.0f, 0.0f, 0.0f};
+        sead::Vector3f mCollisionHitPos;
+    };
+    union {
+        sead::Vector3f _80 = {0.0f, 0.0f, 0.0f};
+        sead::Vector3f unk3;
+    };
+    union {
+        sead::Vector3f collisionMovingReaction = {0.0f, 0.0f, 0.0f};
+        sead::Vector3f mCollisionMovingReaction;
+    };
+    union {
+        CollisionLocation collisionLocation = CollisionLocation::None;
+        CollisionLocation mCollisionLocation;
+    };
 
     /*
     al::Triangle mTriangle;
