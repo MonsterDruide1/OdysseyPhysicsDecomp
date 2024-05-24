@@ -52,8 +52,8 @@ public:
     ICollisionPartsKeeper* getActivePartsKeeper() const { return mActivePartsKeeper; }
 
 public:
-    ICollisionPartsKeeper* mActivePartsKeeper;
-    CollisionPartsKeeperOctree* mRootOctree;
+    ICollisionPartsKeeper* mActivePartsKeeper = nullptr;
+    ICollisionPartsKeeper* mPartsKeeper = nullptr;
     CollisionPartsKeeperPtrArray* mCollisionPartsKeeperPtrArray;
     const CollisionPartsFilterBase* mCollisionPartsFilterBase = nullptr;
     const TriangleFilterBase* mTriangleFilterBase = nullptr;

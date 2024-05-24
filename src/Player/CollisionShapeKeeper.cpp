@@ -6,6 +6,8 @@
 #include "Player/CollisionShapeInfo.h"
 #include "Util/CollisionShapeFunction.h"
 
+#include <cstdio>
+
 CollisionShapeKeeper::CollisionShapeKeeper(s32 maxShapes, s32 maxCollideResults,
                                            s32 maxCollideSupportResults) {
     mCollisionShape.allocBuffer(maxShapes, nullptr);
@@ -126,6 +128,7 @@ void CollisionShapeKeeper::calcRelativeShapeInfo(const sead::Matrix34f& a2) {
 }
 
 void CollisionShapeKeeper::registerCollideResult(const CollidedShapeResult& result) {
+    printf("CollisionShapeKeeper::registerCollideResult(type=%d)\n", *(((int*)&result)+4));
     *mCollideShapeResult[mNumCollideResult] = result;
     mNumCollideResult++;
 }

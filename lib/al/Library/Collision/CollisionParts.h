@@ -5,6 +5,7 @@
 #include <math/seadQuat.h>
 #include <math/seadVector.h>
 #include "Library/Collision/KCollisionServer.h"
+#include "Library/Collision/CollisionResultBuffer.h"
 
 namespace al {
 class ArrowHitResultBuffer;
@@ -71,6 +72,8 @@ public:
     const sead::Matrix34f* getSyncCollisonMtx() const { return mSyncCollisionMtx; }
 
     void setSyncCollisionMtx(const sead::Matrix34f* mtx) { mSyncCollisionMtx = mtx; }
+
+    s32 checkStrikeArrow(al::ArrowHitResultBuffer *,sead::Vector3f const&,sead::Vector3f const&,al::TriangleFilterBase const*);
 
     const sead::Matrix34f& getBaseMtx() const { return mBaseMtx; }
     const sead::Matrix34f& getBaseInvMtx() const { return mBaseInvMtx; }
