@@ -51,6 +51,8 @@ public:
 
     ICollisionPartsKeeper* getActivePartsKeeper() const { return mActivePartsKeeper; }
 
+    ~CollisionDirector();
+
 public:
     ICollisionPartsKeeper* mActivePartsKeeper = nullptr;
     ICollisionPartsKeeper* mPartsKeeper = nullptr;
