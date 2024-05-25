@@ -169,11 +169,13 @@ public:
     void setActorParamHolder(ActorParamHolder* paramHolder) { mParamHolder = paramHolder; }
 
     void setCollisionParts(CollisionParts* collisionParts) { mCollisionParts = collisionParts; }
+    
+    ~LiveActor();
 
 protected:
     friend class alActorFunction;
 
-private:
+public:
     const char* mName = nullptr;
     ActorPoseKeeperBase* mPoseKeeper = nullptr;
     ActorExecuteInfo* mExecuteInfo = nullptr;

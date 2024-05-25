@@ -39,6 +39,8 @@
 #include "Project/Item/ActorScoreKeeper.h"
 #include "Project/Light/ActorPrepassLightKeeper.h"
 
+#include <cstdio>
+
 namespace al {
 
 LiveActor::LiveActor(const char* actorName) : mName(actorName) {
