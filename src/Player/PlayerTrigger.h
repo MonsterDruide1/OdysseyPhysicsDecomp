@@ -31,6 +31,7 @@ public:
         // used in PlayerStateSquat::appear
         EActionTrigger_val12 = 12,
         EActionTrigger_val14 = 14,
+        EActionTrigger_val24 = 24,
         // used in PlayerJudgeWallCatch, PlayerJudgeWallKeep
         EActionTrigger_val30 = 30,
         EActionTrigger_val32 = 32,
