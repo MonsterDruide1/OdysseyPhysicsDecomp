@@ -1,6 +1,7 @@
 #pragma once
 
 #include <math/seadMatrix.h>
+#include <math/seadVector.h>
 #include <prim/seadSafeString.h>
 
 namespace al {
@@ -45,4 +46,5 @@ public:
                             const al::ActorInitInfo& initInfo, const char* bodyName,
                             const char* capName, const PlayerConst* pConst,
                             sead::Vector3f* noseScale, sead::Vector3f* earScale, bool isCloset);
+    static sead::Matrix34f* getPlayerViewMtx(al::LiveActor const*);
 };

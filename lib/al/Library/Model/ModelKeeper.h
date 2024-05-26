@@ -68,7 +68,7 @@ public:
 
     bool isNeedSetBaseMtxAndCalcAnim() const { return mIsNeedSetBaseMtxAndCalcAnim; }
 
-private:
+public:
     const char* mName;
     ModelCtrl* mModelCtrl;
     ActorResource* mActorRes;
@@ -79,10 +79,12 @@ private:
     AnimPlayerMat* mAnimMat;
     AnimPlayerVis* mAnimVisForAction;
     AnimPlayerVis* mAnimVis;
-    char gap_58[9];
-    bool mIsFixedModel;
-    bool mIsIgnoreUpdateDrawClipping;
-    bool mIsNeedSetBaseMtxAndCalcAnim;
+    void* size1;
+    bool mIsFixedModel;  // flag1
+    bool mIsIgnoreUpdateDrawClipping;  // flag2
+    bool mIsNeedSetBaseMtxAndCalcAnim;  // flag3
+    bool flag4;
+    bool pad[4];
 };
 
 }  // namespace al

@@ -2,12 +2,24 @@
 
 #include "Library/Controller/InputFunction.h"
 #include "Library/Controller/JoyPadAccelPoseAnalyzer.h"
+#include "Library/Controller/SpinInputAnalyzer.h"
 #include "Library/LiveActor/LiveActor.h"
 #include "Library/Math/MathUtil.h"
 
 #include "Player/PlayerFunction.h"
 #include "Player/PlayerInputFunction.h"
 #include "Util/ActorDimensionUtil.h"
+
+PlayerInput::PlayerInput(const al::LiveActor* actor, const IUsePlayerCollision* collision, const IUseDimension* dimension) : mLiveActor(actor), mPlayerCollision(collision), mDimension(dimension) {
+    mSpinInputAnalyzer = new al::SpinInputAnalyzer();
+    mJoyPadAccelPoseAnalyzer1 = new al::JoyPadAccelPoseAnalyzer();
+    mJoyPadAccelPoseAnalyzer2 = new al::JoyPadAccelPoseAnalyzer();
+    mJoyPadAccelPoseAnalyzer1->setSwingBorder(1.3f, 0.2f);
+    mJoyPadAccelPoseAnalyzer2->setSwingBorder(1.3f, 0.2f);
+    somethingAboutArray = 0;
+    arrayOfSizeF0 = new float[60];
+    constant60maybe = 60;
+}
 
 bool PlayerInput::isEnableCarry() const {
     if (mIsDisableInput)
@@ -215,7 +227,7 @@ bool PlayerInput::isHoldJump() const {
     if (mIsDisableInput)
         return false;
     auto* dimension = mDimension;
-    if (dimension && rs::is2D(dimension) && rs::isIn2DArea(dimension) && _88 > 0)
+    if (dimension && rs::is2D(dimension) && rs::isIn2DArea(dimension) && someIntConverged15 > 0) {
         return true;
     return PlayerInputFunction::isHoldJump(mLiveActor,
                                            PlayerFunction::getPlayerInputPort(mLiveActor));

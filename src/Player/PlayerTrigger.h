@@ -10,12 +10,12 @@ public:
         ECollisionTrigger_val1 = 1,
         // used in PlayerStateDamageLife::exeDead
         ECollisionTrigger_val6 = 6,
-        // used in PlayerJudgeWallHitDown::judge
+        ECollisionTrigger_val7 = 7,
+        // used in PlayerJudgeWallHitDown
         ECollisionTrigger_val9 = 9,
         // used in PlayerTrigger::isOnYoshiHackEnd
         ECollisionTrigger_val1024 = 1024,
     };
-
     enum EAttackSensorTrigger : u32 {
         // used in PlayerCounterAfterCapCatch::isCapCatch
         EAttackSensorTrigger_val0 = 0,
@@ -30,9 +30,10 @@ public:
         EActionTrigger_val11 = 11,
         // used in PlayerStateSquat::appear
         EActionTrigger_val12 = 12,
-        // used in PlayerJudgeWallCatch::update, PlayerJudgeWallKeep::update
+        EActionTrigger_val14 = 14,
+        // used in PlayerJudgeWallCatch, PlayerJudgeWallKeep
         EActionTrigger_val30 = 30,
-        // used in PlayerCounterQuickTurnJump::isEnableTurnJump
+        EActionTrigger_val32 = 32,
         EActionTrigger_QuickTurn = 34,
     };
 
