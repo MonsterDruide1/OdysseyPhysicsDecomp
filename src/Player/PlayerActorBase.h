@@ -27,7 +27,7 @@ public:
                             const PlayerInitInfo& playerInitInfo) {}
 
     virtual u32 getPortNo() const;
-    virtual sead::Matrix34f* getViewMtx() const;
+    virtual const sead::Matrix34f* getViewMtx() const;
 
     virtual IUsePlayerCollision* getPlayerCollision() const { return nullptr; }
 
@@ -81,6 +81,6 @@ public:
                                 f32 maxPush);
 
 private:
-    sead::Matrix34f* mViewMtx = nullptr;
+    const sead::Matrix34f* mViewMtx = nullptr;
     u32 mPortNo = 0;
 };

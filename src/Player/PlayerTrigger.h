@@ -26,7 +26,10 @@ public:
         EActionTrigger_val3 = 3,
         // used in PlayerStateDamageLife::appear
         EActionTrigger_val6 = 6,
-        // used in PlayerJudgeForceLand::judge
+        EActionTrigger_val8 = 8,
+        EActionTrigger_val9 = 9,
+        EActionTrigger_val10 = 10,
+        // used in PlayerJudgeForceLand
         EActionTrigger_val11 = 11,
         // used in PlayerStateSquat::appear
         EActionTrigger_val12 = 12,

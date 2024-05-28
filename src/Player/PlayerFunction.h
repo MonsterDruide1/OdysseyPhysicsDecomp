@@ -4,11 +4,17 @@
 #include <math/seadVector.h>
 #include <prim/seadSafeString.h>
 
+#include "Library/Audio/AudioKeeper.h"
+#include "Library/LiveActor/ActorInitInfo.h"
+#include "Player/PlayerConst.h"
+#include "Player/PlayerCostumeInfo.h"
+
 namespace al {
 class LiveActor;
 struct ActorInitInfo;
 class Resource;
 class AudioKeeper;
+class ActorDitherAnimator;
 }  // namespace al
 
 class PlayerConst;
@@ -28,8 +34,11 @@ public:
     static bool isNeedHairControl(const PlayerBodyCostumeInfo*, const char*);
     static bool isInvisibleCap(const PlayerCostumeInfo*);
     static void hideHairVisibility(al::LiveActor*);
+    static sead::Matrix34f* getPlayerViewMtx(al::LiveActor const*);
+    static PlayerConst* createMarioConst(char const*);
+    static al::ActorDitherAnimator* createPlayerDitherAnimator(al::LiveActor *,float);
 
-    static PlayerConst* createMarioConst(const char*);
+
     static void createCapModelName(sead::BufferedSafeStringBase<char>*, const char*);
 
     static void initMarioModelActor2D(al::LiveActor* actor, const al::ActorInitInfo& initInfo,
@@ -46,5 +55,4 @@ public:
                             const al::ActorInitInfo& initInfo, const char* bodyName,
                             const char* capName, const PlayerConst* pConst,
                             sead::Vector3f* noseScale, sead::Vector3f* earScale, bool isCloset);
-    static sead::Matrix34f* getPlayerViewMtx(al::LiveActor const*);
 };

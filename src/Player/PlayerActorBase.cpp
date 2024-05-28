@@ -16,7 +16,7 @@ u32 PlayerActorBase::getPortNo() const {
     return mPortNo;
 }
 
-sead::Matrix34f* PlayerActorBase::getViewMtx() const {
+const sead::Matrix34f* PlayerActorBase::getViewMtx() const {
     return mViewMtx;
 }
 
