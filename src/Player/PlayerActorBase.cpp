@@ -1,4 +1,5 @@
 #include "Player/PlayerActorBase.h"
+#include "Library/LiveActor/LiveActor.h"
 
 #include "Library/LiveActor/ActorAreaFunction.h"
 #include "Library/LiveActor/ActorCollisionFunction.h"

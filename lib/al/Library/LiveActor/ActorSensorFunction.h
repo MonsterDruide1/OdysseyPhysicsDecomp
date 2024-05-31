@@ -1,5 +1,10 @@
 #pragma once
 
+#include <math/seadBoundBox.h>
+#include <math/seadMatrix.h>
+#include <math/seadVector.h>
+#include "Library/HitSensor/HitSensorKeeper.h"
+
 namespace al {
 class HitSensorKeeper;
 class HitSensor;

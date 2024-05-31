@@ -4,7 +4,10 @@
 #include <math/seadMatrix.h>
 
 #include "Library/Collision/IUseCollision.h"
+#include "Library/Collision/KCollisionServer.h"
+#include "Player/CollidedShapeResult.h"
 #include "Library/HostIO/HioNode.h"
+#include "prim/seadBitFlag.h"
 
 namespace al {
 class CollisionPartsFilterBase;
@@ -53,11 +56,11 @@ public:
     void validateCorrectMovePartsCheck();
     al::CollisionDirector* getCollisionDirector() const override;
 
-    f32 get_70() const { return _70; }
+    f32 get_70() const { return val1; }
 
-    const sead::Vector3f& getCollidedGroundNormal() const { return mCollidedGroundNormal; }
+    const sead::Vector3f& getCollidedGroundNormal() const { return mCollisionHitNormal; }
 
-    void set1b0(f32 value) { _1b0 = value; }
+    void set1b0(f32 value) { unk11 = value; }
 
 public:
   al::CollisionDirector *mCollisionDirector;

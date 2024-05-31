@@ -80,7 +80,7 @@ public:
     virtual bool receivePushMsg(const al::SensorMsg* msg, al::HitSensor* other, al::HitSensor* self,
                                 f32 maxPush);
 
-private:
+public:
     const sead::Matrix34f* mViewMtx = nullptr;
     u32 mPortNo = 0;
 };

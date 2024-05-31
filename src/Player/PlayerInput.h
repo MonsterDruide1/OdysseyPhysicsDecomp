@@ -152,7 +152,7 @@ public:
     const al::LiveActor* mLiveActor;
     const IUsePlayerCollision* mPlayerCollision;
     const IUseDimension* mDimension;
-    bool isMove = 0;
+    bool mIsMove = 0;
     int convergeInUpdateWallAlong = 0;
     float readInWalls = 0.0f;
     sead::Vector2f anotherVector2ForWalls = {0.0f, 0.0f};

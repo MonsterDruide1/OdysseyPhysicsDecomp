@@ -16,6 +16,7 @@ void PlayerJudgePreInputJump::reset() {
 }
 
 void PlayerJudgePreInputJump::update() {
+    printf("UpdateJump\n");
     mRemainJumpFrame = sead::Mathi::clampMin(mRemainJumpFrame - 1, 0);
 
     if (mInput->isTriggerJump())
