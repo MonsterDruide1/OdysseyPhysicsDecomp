@@ -58,6 +58,9 @@ bool isCollidedCeiling(const IUsePlayerCollision*);
 bool isActionCodeNoWallGrab(const IUsePlayerCollision*);
 bool isActionCodeNoActionWall(const IUsePlayerCollision*);
 bool isActionCodeNoWallKeepWall(const IUsePlayerCollision*);
+bool isAutoRunOnGroundSkateCode(const al::LiveActor*, const IUsePlayerCollision*, float);
+void calcGroundNormalOrGravityDir(sead::Vector3f*, const al::LiveActor*,
+                                  const IUsePlayerCollision*);
 
 bool isCollisionCodeGrabCeilAny(const IUsePlayerCollision*);
 bool isCollisionCodeGrabCeilWall(const IUsePlayerCollision*);
