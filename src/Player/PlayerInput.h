@@ -148,6 +148,8 @@ public:
     void snapWallAlongInput(sead::Vector3<float> *,sead::Vector3<float> const&);
     void snapAreaInput(sead::Vector3<float> *,sead::Vector3<float> const&);
 
+    void update();
+
 public:
     const al::LiveActor* mLiveActor;
     const IUsePlayerCollision* mPlayerCollision;

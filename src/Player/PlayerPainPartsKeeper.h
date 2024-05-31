@@ -22,7 +22,7 @@ public:
                           const al::ActorInitInfo& actorInitInfo);
     void appearNeedle();
 
-private:
+public:
     const al::LiveActor* mLiveActor;
     const PlayerCostumeInfo* mPlayerCostumeInfo;
     f32 mModelAlphaMask = 1;
