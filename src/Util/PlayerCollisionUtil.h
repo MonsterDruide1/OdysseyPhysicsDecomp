@@ -11,11 +11,13 @@ class HitSensor;
 }  // namespace al
 
 class IUsePlayerCollision;
+class PlayerConst;
 class IUsePlayerHeightCheck;
 class PlayerConst;
 
 namespace rs {
 
+bool isCollidedGroundRunAngle(const al::LiveActor*, const IUsePlayerCollision*, const PlayerConst*);
 f32 getGroundHeight(const IUsePlayerHeightCheck*);
 bool isAboveGround(const IUsePlayerHeightCheck*);
 
