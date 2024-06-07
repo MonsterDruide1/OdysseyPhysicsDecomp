@@ -23,7 +23,9 @@ public:
     };
 
     enum EActionTrigger : u32 {
-        // used in PlayerStateHipDrop::exeStart
+        EActionTrigger_val1 = 1,
+        EActionTrigger_val2 = 2,
+        // used in PlayerStateHipDrop
         EActionTrigger_val3 = 3,
         // used in PlayerStateDamageLife::appear
         EActionTrigger_val6 = 6,
