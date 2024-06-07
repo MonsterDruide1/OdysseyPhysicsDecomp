@@ -79,19 +79,26 @@ public:
     void setPartsAnimFrame(f32, const char*);
     void copyAnimLocal();
 
-    bool isSubAnimPlaying() const { return mIsSubAnimPlaying; }
-
-private:
+public:
     PlayerModelHolder* mModelHolder;
     al::LiveActor* mPlayerDeco;
     void* _10;
     PlayerAnimFrameCtrl* mAnimFrameCtrl;
     sead::FixedSafeString<64> mCurAnim;
+    int gap;
     sead::FixedSafeString<64> mCurSubAnim;
-    sead::FixedSafeString<64> mCurUpperBodyAnim;
+    int gap2;
+    sead::FixedSafeString<64> _D0;
+    int gap3;
     sead::FixedSafeString<64> _128;
-    char padding_180[0x1A2 - 0x180];
-    bool mIsSubAnimPlaying;
+    al::ActorDitherAnimator *mActorDitherAnimator;
+    void *to_1a8[3];
+    bool mIsNeedFullFaceAnim;
+    bool unk1;
+    bool unk2;
+    u16 pad1[1];
+    bool pad;
+    bool unk3;
 };
 
 static_assert(sizeof(PlayerAnimator) == 0x1a8);

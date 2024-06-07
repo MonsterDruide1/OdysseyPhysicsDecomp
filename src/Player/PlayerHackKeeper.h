@@ -2,6 +2,8 @@
 
 #include <container/seadPtrArray.h>
 #include <math/seadMatrix.h>
+#include "Library/LiveActor/LiveActor.h"
+#include "Player/IUsePlayerHack.h"
 
 namespace al {
 class LiveActor;
@@ -27,9 +29,9 @@ class PlayerHackKeeper {
 public:
     PlayerHackKeeper(al::LiveActor* player, HackCap* cap, PlayerRecoverySafetyPoint* safetyPoint,
                      const PlayerInput* input, const sead::Matrix34f* mtx,
-                     PlayerDamageKeeper* damageKeeper, const IPlayerModelChanger* modelChanger,
+                     const PlayerDamageKeeper* damageKeeper, const IPlayerModelChanger* modelChanger,
                      const IUsePlayerHeightCheck* heightCheck);
-
+                     
     void createHackModel(const al::ActorInitInfo&);
     void startHack(al::HitSensor*, al::HitSensor*, al::LiveActor*);
     void setupHack(al::HitSensor*, al::HitSensor*, al::LiveActor*);

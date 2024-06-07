@@ -2,6 +2,7 @@
 
 #include <math/seadMatrix.h>
 #include <prim/seadSafeString.h>
+#include "ActorInitInfo.h"
 
 namespace sead {
 class Color4f;
