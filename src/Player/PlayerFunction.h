@@ -37,8 +37,6 @@ public:
     static sead::Matrix34f* getPlayerViewMtx(al::LiveActor const*);
     static PlayerConst* createMarioConst(char const*);
     static al::ActorDitherAnimator* createPlayerDitherAnimator(al::LiveActor *,float);
-    static bool isPlayerDeadStatus(al::LiveActor const*);
-
 
     static void createCapModelName(sead::BufferedSafeStringBase<char>*, const char*);
 
