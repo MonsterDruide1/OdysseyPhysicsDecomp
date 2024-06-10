@@ -145,17 +145,6 @@ public:
     void resetHoldInfo3D();
     void resetHoldInfo2D();
 
-    void snapWallAlongInput(sead::Vector3<float> *,sead::Vector3<float> const&);
-    void snapAreaInput(sead::Vector3<float> *,sead::Vector3<float> const&);
-
-    void update();
-    void updateWallAlong();
-    void updateSnapMoveArea();
-    void updateInput3D();
-    void updateInput2D();
-
-    bool isHoldCapSeparateJump() const;
-
 public:
     const al::LiveActor* mLiveActor;
     const IUsePlayerCollision* mPlayerCollision;
