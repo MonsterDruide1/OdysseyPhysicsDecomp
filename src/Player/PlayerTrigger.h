@@ -59,7 +59,10 @@ public:
         EPreMovementTrigger_val2 = 2,
     };
 
-    enum EDemoEndTrigger : u32 {};
+    enum EDemoEndTrigger : u32 {
+        EDemoEndTrigger_val0 = 0,
+    };
+    
     enum EMaterialChangeTrigger : u32 {
         EMaterialChangeTrigger_val0 = 0,
     };
