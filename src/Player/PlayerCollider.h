@@ -18,7 +18,7 @@ class CollidedShapeResult;
 class CollisionShapeKeeper;
 class CollisionMultiShape;
 
-class PlayerCollider : public al::HioNode, al::IUseCollision
+class PlayerCollider : public al::HioNode, public al::IUseCollision
 {
 public:
     PlayerCollider(al::CollisionDirector*, const sead::Matrix34f*, const sead::Vector3f*,
@@ -55,6 +55,9 @@ public:
     void calcBoundingCenter(sead::Vector3f*) const;
     void validateCorrectMovePartsCheck();
     al::CollisionDirector* getCollisionDirector() const override;
+
+    void setIsValidGroundSupport(bool isValidGroundSupport) { mIsValidGroundSupport = isValidGroundSupport; }
+    
 
     f32 get_70() const { return val1; }
 
