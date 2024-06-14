@@ -1,3 +1,5 @@
+#include "CUSTOM/PlayerAnimator.h"
+/*
 #pragma once
 
 #include <math/seadMatrix.h>
@@ -102,3 +104,4 @@ public:
 };
 
 static_assert(sizeof(PlayerAnimator) == 0x1a8);
+*/
