@@ -20,6 +20,7 @@ public:
     enum EAttackSensorTrigger : u32 {
         // used in PlayerCounterAfterCapCatch::isCapCatch
         EAttackSensorTrigger_val0 = 0,
+        EAttackSensorTrigger_val4 = 4,
     };
 
     enum EActionTrigger : u32 {
