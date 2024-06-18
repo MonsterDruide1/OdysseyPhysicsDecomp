@@ -37,6 +37,7 @@ public:
         // used in PlayerStateSquat::appear
         EActionTrigger_val12 = 12,
         EActionTrigger_val14 = 14,
+        EActionTrigger_val15 = 15,
         EActionTrigger_val16 = 16,
         EActionTrigger_val17 = 17,
         EActionTrigger_val18 = 18,
