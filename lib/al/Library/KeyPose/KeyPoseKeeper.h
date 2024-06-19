@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Library/Movement/MoveType.h"
+#include "math/seadQuat.h"
+#include "math/seadVector.h"
 
 namespace al {
 struct ActorInitInfo;
