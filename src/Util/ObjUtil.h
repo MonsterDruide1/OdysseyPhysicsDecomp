@@ -14,6 +14,7 @@ class PlayerConst;
 class PlayerModelHolder;
 class PlayerInput;
 class PlayerTrigger;
+class PlayerWallActionHistory;
 
 namespace rs {
 
