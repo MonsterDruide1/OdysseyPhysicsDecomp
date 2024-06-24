@@ -146,6 +146,7 @@ public:
     void resetHoldInfo2D();
 
     void calcCapSeparateMoveInput(sead::Vector3<float> *,sead::Vector3<float> const&);
+    void calcCapThrowInput(sead::Vector3<float> *,sead::Vector3<float> const&) const;
 
 public:
     const al::LiveActor* mLiveActor;

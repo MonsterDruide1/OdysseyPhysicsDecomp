@@ -39,7 +39,6 @@ void resetCollisionExpandCheck(IUsePlayerCollision*);
 
 bool isCollided(const IUsePlayerCollision*);
 bool isCollidedGround(const IUsePlayerCollision*);
-bool isCollidedGroundRunAngle(const al::LiveActor*, const IUsePlayerCollision*, const PlayerConst*);
 bool isOnGroundSlopeSlideStart(const al::LiveActor*, const IUsePlayerCollision*,
                                const PlayerConst*);
 bool isOnGroundForceSlideCode(const al::LiveActor*, const IUsePlayerCollision*, const PlayerConst*);
