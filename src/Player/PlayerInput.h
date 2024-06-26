@@ -145,6 +145,8 @@ public:
     void resetHoldInfo3D();
     void resetHoldInfo2D();
 
+    void resetAlongWall();
+
 public:
     const al::LiveActor* mLiveActor;
     const IUsePlayerCollision* mPlayerCollision;
