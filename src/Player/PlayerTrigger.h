@@ -29,7 +29,7 @@ public:
         EActionTrigger_val2 = 2,
         // used in PlayerStateHipDrop
         EActionTrigger_val3 = 3,
-        // used in PlayerStateDamageLife::appear
+        EActionTrigger_val5 = 5,
         EActionTrigger_val6 = 6,
         EActionTrigger_val8 = 8,
         EActionTrigger_val9 = 9,
@@ -63,6 +63,7 @@ public:
     enum EPreMovementTrigger : u32 {
         // used in PlayerStateDamageLife::appear
         EPreMovementTrigger_val2 = 2,
+        EPreMovementTrigger_val5 = 5,
     };
 
     enum EDemoEndTrigger : u32 {
