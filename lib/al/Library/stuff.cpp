@@ -1303,6 +1303,17 @@ bool isFloorPolygon(const sead::Vector3f & a1, const sead::Vector3f &a2) {
   return v7 && (v5 >= 0.34202);
 }
 
+bool isCeilingPolygon(const sead::Vector3f& a1, const sead::Vector3f& a2)
+{
+  if ( al::isNearZero(a1, 0.001) )
+    return false;
+
+  f32 v6 = a1.dot(a2);
+  f32 v7 = sead::Mathf::abs(v6);
+
+  return v7 >= 0.34202 && v6 >= 0.0;
+}
+
 void turnVecToVecRate(sead::Vector3<float>* a1, sead::Vector3<float> const&a2, sead::Vector3<float> const&a3, float a4) {
   float v7; // s9
   float v8; // s8

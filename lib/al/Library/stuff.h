@@ -31,6 +31,7 @@ void makeQuatUpFront(sead::Quatf*, const sead::Vector3f&, const sead::Vector3f&)
 
 bool isFloorPolygonCos(const sead::Vector3f&, const sead::Vector3f&, f32);
 bool isFloorPolygon(const sead::Vector3f&, const sead::Vector3f&);
+bool isCeilingPolygon(const sead::Vector3f&, const sead::Vector3f&);
 
 bool isInAreaObj(al::IUseAreaObj const*,char const*);
 bool isInAreaObj(al::IUseAreaObj const*,char const*,sead::Vector3<float> const&);
