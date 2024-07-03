@@ -79,6 +79,7 @@ f32 CollisionParts::makeEqualScale(sead::Matrix34f* mtx) {
     }
 
     mtx->scaleBases(vec.x, vec.y, vec.z);
+    return factor;
 }
 
 sead::FixedRingBuffer<KCHitInfo, 512> buffer;

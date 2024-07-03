@@ -252,9 +252,9 @@ class HackCapJudgePreInputSeparateThrow : public IJudge {
 public:
     HackCapJudgePreInputSeparateThrow(PlayerInput const*,PlayerSeparateCapFlag const*);
     
-    void reset() override { WARN_UNIMPL; }
-    void update() override { WARN_UNIMPL; }
-    bool judge() const override { WARN_UNIMPL;return false; }
+    void reset() override;
+    void update() override;
+    bool judge() const override;
 private:
     void* size[0x20/8];
 };
@@ -343,9 +343,9 @@ class PlayerCounterAfterCapCatch;
 class PlayerJudgeCapCatchPop : public IJudge {
 public:
     PlayerJudgeCapCatchPop(al::LiveActor const*,PlayerInput const*,IUsePlayerCollision const*,IPlayerModelChanger const*,PlayerCapActionHistory const*,PlayerCounterAfterCapCatch const*);
-    void reset() override { WARN_UNIMPL; }
-    void update() override { WARN_UNIMPL; }
-    bool judge() const override { WARN_UNIMPL;return false; }
+    void reset() override;
+    void update() override;
+    bool judge() const override;
 private:
     void* size[0x38/8];
 };
@@ -428,9 +428,9 @@ class HackCapJudgePreInputHoveringJump : public IJudge {
 public:
     HackCapJudgePreInputHoveringJump(al::LiveActor const*,IUsePlayerCollision const*,HackCap const*,PlayerInput const*);
 
-    void reset() override { WARN_UNIMPL; }
-    void update() override { WARN_UNIMPL; }
-    bool judge() const override { WARN_UNIMPL;return false; }
+    void reset() override;
+    void update() override;
+    bool judge() const override;
 private:
     void* size[0x30/8];
 };
@@ -601,9 +601,9 @@ class PlayerJudgeCapCatch : public IJudge {
 public:
     PlayerJudgeCapCatch(al::LiveActor const*,PlayerCounterAfterCapCatch const*);
 
-    void reset() override { WARN_UNIMPL; }
-    void update() override { WARN_UNIMPL; }
-    bool judge() const override { WARN_UNIMPL;return false; }
+    void reset() override;
+    void update() override;
+    bool judge() const override;
 private:
     void* size[0x18/8];
 };
@@ -611,9 +611,9 @@ class HackCapJudgeHoldHoveringJump : public IJudge {
 public:
     HackCapJudgeHoldHoveringJump(al::LiveActor const*,PlayerColliderHakoniwa const*,HackCap const*,PlayerInput const*,PlayerConst const*);
 
-    void reset() override { WARN_UNIMPL; }
-    void update() override { WARN_UNIMPL; }
-    bool judge() const override { WARN_UNIMPL;return false; }
+    void reset() override;
+    void update() override;
+    bool judge() const override;
 private:
     void* size[0x30/8];
 };
@@ -881,9 +881,9 @@ private:
 class PlayerJudgePlaySwitchOnAreaWaitAnim : public IJudge {
 public:
     PlayerJudgePlaySwitchOnAreaWaitAnim(PlayerStateWait const*);
-    void reset() override { WARN_UNIMPL; }
-    void update() override { WARN_UNIMPL; }
-    bool judge() const override { WARN_UNIMPL;return false; }
+    void reset() override;
+    void update() override;
+    bool judge() const override;
 private:
     void* size[0x8/8];
 };
@@ -891,9 +891,9 @@ private:
 class PlayerJudgeSleep : public IJudge {
 public:
     PlayerJudgeSleep(PlayerStateWait const*);
-    void reset() override { WARN_UNIMPL; }
-    void update() override { WARN_UNIMPL; }
-    bool judge() const override { WARN_UNIMPL;return false; }
+    void reset() override;
+    void update() override;
+    bool judge() const override;
 private:
     void* size[0x8/8];
 };

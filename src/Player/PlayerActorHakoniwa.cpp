@@ -141,7 +141,7 @@ void PlayerActorHakoniwa::initAfterPlacement() {
         return;
     }
 
-    if(rs::isCollidedGround(mPlayerColliderHakoniwa)) {
+    if(rs::isCollidedGround(mPlayerColliderHakoniwa) || (mPlayerColliderHakoniwa->isAboveGround() && mPlayerColliderHakoniwa->getGroundHeight() < 10.0f)) {
         mPlayerTrigger->set(PlayerTrigger::ECollisionTrigger_val8);
         mPlayerStateWait->initSceneStartAnim();
         mPlayerModelChangerHakoniwa->resetPosition();
@@ -149,8 +149,10 @@ void PlayerActorHakoniwa::initAfterPlacement() {
         return;
     }
 
-    // more code, no idea what the first virtual call resolves to
-    CRASH
+    mPlayerTrigger->set(PlayerTrigger::ECollisionTrigger_val7);
+    mPlayerInput->convergedInUpdateToDisableInput = 1;
+    mPlayerInput->mIsDisableInput = 1;
+    mPlayerInput->usedInUpdate = 0;
 }
 void PlayerActorHakoniwa::movement() {
     printf("Currently in %s\n", mNerveKeeper->getStateCtrl()->findStateInfo(mNerveKeeper->getCurrentNerve())->name);
