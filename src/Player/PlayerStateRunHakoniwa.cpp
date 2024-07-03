@@ -323,5 +323,34 @@ void PlayerStateRunHakoniwa::exeTurn() {
     }
 }
 void PlayerStateRunHakoniwa::exeWallPush() {
-    CRASH;
+    if(!rs::isCollidedWall(mCollision) || !mInput->isMove()) {
+      kill();
+      return;
+    }
+
+    if(al::isFirstStep(this)) {
+      mAnimator->startAnim("Push");
+      _A4 = 0;
+      val1 = 0;
+      mEffect->clearRunEffect();
+      mTurnTiltRate = 0;
+    }
+
+    const sead::Vector3f& collidedWallNormal = rs::getCollidedWallNormal(mCollision);
+
+    sead::Vector3f up = {0.0f, 0.0f, 0.0f};
+    rs::calcGroundNormalOrUpDir(&up, mActor, mCollision);
+
+    sead::Vector3f front = {0.0f, 0.0f, 0.0f};
+    al::calcFrontDir(&front, mActor);
+    al::lerpVec(&front, front, -collidedWallNormal, 0.1f);
+
+    rs::slerpUpFront(mActor, up, front, mConst->getSlerpQuatRateWait(), mConst->getWaitPoseDegreeMax());
+    rs::reboundVelocityFromCollision(mActor, mCollision, 0.0f, 0.0f, 0.0f);
+
+    al::tryAddVelocityLimit(mActor, -(up * mConst->getGravity()), mConst->getFallSpeedMax());
+    al::addVelocityToDirection(mActor, collidedWallNormal, -mConst->getNormalMinSpeed());
+
+    if(!rs::updateJudgeAndResult(mJudgeWallPush))
+      al::setNerve(this, &Run);
 }

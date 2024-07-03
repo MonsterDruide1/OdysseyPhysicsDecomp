@@ -274,7 +274,7 @@ bool findWallEnablePush(const al::LiveActor *actor, const IUsePlayerCollision *c
     v28.x = v20 - (float)(v9 * a1.x);
     v28.y = v21 - (float)(v9 * a1.y);
     v28.z = v19 - (float)(v9 * a1.z);
-    return (unsigned int)alCollisionUtil::checkStrikeArrow(v25, v28, v27, 0LL, 0LL) != 0;
+    return (unsigned int)alCollisionUtil::checkStrikeArrow(actor, v28, v27, 0LL, 0LL) != 0;
   }
 
   return result;
