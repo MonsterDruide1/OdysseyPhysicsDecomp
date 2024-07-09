@@ -21,12 +21,15 @@ PlayerActionGroundMoveControl::PlayerActionGroundMoveControl(al::LiveActor* play
                                                              IUsePlayerCollision const* collision)
     : mActor(player), mConst(pConst), mInput(input), mCollision(collision),
       mTurnControl(new PlayerActionTurnControl(player)) {}
+
 void PlayerActionGroundMoveControl::initDash(IJudge*, float, int) {
     CRASH
 }
+
 void PlayerActionGroundMoveControl::setupDash(float, int) {
     CRASH
 }
+
 void PlayerActionGroundMoveControl::setup(float a2, float a3, int a4, int a5, int a6, float a7,
                                           float a8, int a9) {
     someFlag = 1;
@@ -40,32 +43,35 @@ void PlayerActionGroundMoveControl::setup(float a2, float a3, int a4, int a5, in
     mBrakeOnSpeed = a8;
     mBrakeOnCounterCorner = a9;
 }
+
 void PlayerActionGroundMoveControl::appear() {
     sead::Vector3f a3 = {0.0f, 0.0f, 0.0f};
     rs::calcGroundNormalExceptJustLandOrGravityDir(&a3, mActor, mCollision);
-    rs::calcGroundNormalOrGravityDir(&mGravityDir, mActor, mCollision);
-    someVec = mGravityDir;
+    rs::calcGroundNormalOrGravityDir(&mGroundNormal, mActor, mCollision);
+    someVec = mGroundNormal;
     sead::Vector3f a1 = {0.0f, 0.0f, 0.0f};
-    al::alongVectorNormalH(&a1, al::getVelocity(mActor), a3, mGravityDir);
+    al::alongVectorNormalH(&a1, al::getVelocity(mActor), a3, mGroundNormal);
     sead::Vector3f v12 = {0.0f, 0.0f, 0.0f};
     al::calcFrontDir(&v12, mActor);
-    al::verticalizeVec(&v12, mGravityDir, v12);
+    al::verticalizeVec(&v12, mGroundNormal, v12);
     al::tryNormalizeOrZero(&v12);
-    al::setVelocity(mActor, a1 - (mGravity * mGravityDir));
-    someVec = mGravityDir;
+    al::setVelocity(mActor, a1 - (mGravity * mGroundNormal));
+    someVec = mGroundNormal;
     _7C = 0.0;
     calcInitBrakeOnCounter();
     mTurnControl->reset();
     _C0 = 0;
 }
+
 void PlayerActionGroundMoveControl::reset(sead::Vector3f const& a2) {
-    mGravityDir = a2;
+    mGroundNormal = a2;
     someVec = a2;
     _7C = 0.0;
     calcInitBrakeOnCounter();
     mTurnControl->reset();
     _C0 = 0;
 }
+
 void PlayerActionGroundMoveControl::calcInitBrakeOnCounter() {
     float v2;           // s8
     sead::Vector3f v3;  // [xsp+0h] [xbp-40h] BYREF
@@ -76,18 +82,19 @@ void PlayerActionGroundMoveControl::calcInitBrakeOnCounter() {
     v2 = a1.length();
     if ((rs::isOnGroundSkateCode(this->mActor, this->mCollision) && !al::isNearZero(v2, 0.001)) ||
         (v2 >= this->mBrakeOnSpeed && al::tryNormalizeOrZero(&a1) &&
-         (al::calcFrontDir(&v3, this->mActor), al::verticalizeVec(&v3, this->mGravityDir, v3),
+         (al::calcFrontDir(&v3, this->mActor), al::verticalizeVec(&v3, this->mGroundNormal, v3),
           al::tryNormalizeOrZero(&v3)) &&
-         !PlayerActionFunction::isOppositeDir(v3, a1))) {
+         !PlayerActionFunction::isOppositeDir(v3, a1)))
         this->_60 = this->mBrakeOnCounterCorner;
-    }
 }
+
 f32 PlayerActionGroundMoveControl::update() {
     if (rs::isOnGroundSkateCode(mActor, mCollision))
         return updateSkateMove();
     else
         return updateNormalMove();
 }
+
 f32 PlayerActionGroundMoveControl::updateSkateMove() {
     CRASH
 }
@@ -104,26 +111,18 @@ void sub_7100418AEC(sead::Vector3f* x0_0, const sead::Vector3f& a2, const IUsePl
     f32 v11 = a4.dot(a1);
     al::verticalizeVec(&v15, CollidedWallNormal, a2);
     f32 v12 = v11 + (a4.dot(a2) * 0.9f);
-    if (al::isNearZeroOrGreater(v12, 0.001f)) {
+    if (al::isNearZeroOrGreater(v12, 0.001f))
         *x0_0 -= a4 * v12;
-    }
 }
 
 f32 PlayerActionGroundMoveControl::updateNormalMove() {
     float v3;
-    float v5;
-    float v7;
-    float v8;
     float v9;
-    float v11;
-    float v12;
     float v13;
     float v14;
     int v15;
     int v16;
     float v18;
-    float v20;
-    int v21;
     bool v24;
     bool v25;
     PlayerActionTurnControl* v29;
@@ -131,17 +130,14 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
     const sead::Vector3f* v37;
     bool v43;
     bool v44;
-    bool _68;
+    bool va68;
     bool v48;
     float A0;
     float v50;
-    float mMaxSpeed;
+    float maxSpeed;
     bool v52;
     bool v53;
     float v54;
-    float v57;
-    bool v58;
-    bool isJudge;
     float v60;
     bool v66;
     bool v67;
@@ -149,11 +145,11 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
     float C0;
     float v71;
     float v83;
-    float mMinSpeed;
+    float minSpeed;
     float v85;
     float v118;
     sead::Vector3f a2;
-    sead::Vector3f _50;
+    sead::Vector3f va50;
     sead::Vector3f v124;
     sead::Vector3f a1;
     sead::Vector3f v126;
@@ -169,20 +165,18 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
     v128 = {0.0f, 0.0f, 0.0f};
     updateNormalAndSnap(&v128);
     v3 = v128.length();
-    if (v3 < 0.1f) {
+    if (v3 < 0.1f)
         v128 = {0.0f, 0.0f, 0.0f};
-    }
 
     a3 = {0.0f, 0.0f, 0.0f};
     al::tryNormalizeOrZero(&a3, v128);
-    v5 = this->mConst->getDashBorderSpeed() - this->mConst->getDashBlendRange();
-    v7 = this->mConst->getDashBorderSpeed();
-    v8 = this->mConst->getDashBlendRange();
-    v9 = sead::Mathf::clamp(1.0f - al::calcRate01(v3, v5, v7 + v8), 0.0f, 1.0f);
-
-    v11 = this->mConst->getRoundLimitDegreeMin();
-    v12 = this->mConst->getRoundLimitDegree();
-    v13 = al::lerpValue(v11, v12, v9);
+    v9 = sead::Mathf::clamp(
+        1.0f - al::calcRate01(
+                   v3, this->mConst->getDashBorderSpeed() - this->mConst->getDashBlendRange(),
+                   this->mConst->getDashBorderSpeed() + this->mConst->getDashBlendRange()),
+        0.0f, 1.0f);
+    v13 = al::lerpValue(this->mConst->getRoundLimitDegreeMin(), this->mConst->getRoundLimitDegree(),
+                        v9);
     v14 = this->mConst->getRoundFastDegree();
     v15 = this->mConst->getRoundAccelFrameFast();
     v16 = this->mConst->getRoundBrakeFrame();
@@ -202,34 +196,33 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
     if (this->someFlags[2])
         v18 = 0.0;
 
-    v20 = this->mConst->getRoundMinDegree();
-    v21 = this->mConst->getRoundAccelFrame();
-    mTurnControl->setup(v20, v14, v18, v13, v21, v15, v16);
+    mTurnControl->setup(this->mConst->getRoundMinDegree(), v14, v18, v13,
+                        this->mConst->getRoundAccelFrame(), v15, v16);
     this->mTurnControl->_88 = this->someFlags[1] || this->_9C;
     v126 = {0.0f, 0.0f, 0.0f};
     if (_20)
-        rs::calcHackerMoveVec(&v126, *_20, this->mGravityDir);
+        rs::calcHackerMoveVec(&v126, *_20, this->mGroundNormal);
     else
-        mInput->calcMoveInput(&v126, this->mGravityDir);
+        mInput->calcMoveInput(&v126, this->mGroundNormal);
 
     this->_84 = v126;
     a1 = {0.0f, 0.0f, 0.0f};
     v124 = {0.0f, 0.0f, 0.0f};
     v24 = al::tryNormalizeOrZero(&a1, v126);
-    _50 = {0.0f, 0.0f, 0.0f};
+    va50 = {0.0f, 0.0f, 0.0f};
     v25 = this->someFlags[0];
-    mTurnControl->update(v126, this->mGravityDir);
+    mTurnControl->update(v126, this->mGroundNormal);
 
     sead::Vector3f xyz;
     if (v25 || !v24) {
         v29 = this->mTurnControl;
         xyz = v29->_5c;
         v124 = xyz;
-        _50 = xyz;
+        va50 = xyz;
     } else {
         xyz = a1;
         v124 = a1;
-        _50 = this->mTurnControl->_50;
+        va50 = this->mTurnControl->_50;
     }
 
     if (this->_9C) {
@@ -245,63 +238,46 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
 
     v118 = v3;
     sead::Vector3f v33v;
-    if (rs::isCollidedWall(this->mCollision)) {
+    if (rs::isCollidedWall(this->mCollision))
         v33v = rs::getCollidedWallNormal(this->mCollision);
-    } else {
+    else
         v33v = sead::Vector3f::zero;
-    }
 
-    v36 = al::isNearZero(_50, 0.001f);
+    v36 = al::isNearZero(va50, 0.001f);
     v43 = 0;
     v44 = !v24;
     if (!v36 && !v44)
-        v43 = PlayerActionFunction::isOppositeDir(a1, _50) && !this->_9C;
+        v43 = PlayerActionFunction::isOppositeDir(a1, va50) && !this->_9C;
 
-    _68 = this->mTurnControl->_68;
+    va68 = this->mTurnControl->_68;
     v48 = this->_D5 && !this->_20 && mInput->isHoldSquat();
     A0 = v118;
-    v50 = _50.dot(a3);
-    mMaxSpeed = 0.0;
+    v50 = va50.dot(a3);
+    maxSpeed = 0.0;
     v52 = v33v.dot(a3) < -0.17365f && !v48;
     updateHillAffect(*v37, v124, v24);
-    v53 = _68 | v44;
-    if (v50 >= 0.0 && !(_68 | v44)) {
+    v53 = va68 | v44;
+    if (v50 >= 0.0 && !(va68 | v44)) {
         v54 = v126.length();
-        if (this->_78) {
-            if (_7C <= 0.0)
-                v57 = -_7C * mConst->getHillSubSpeed();
-            else
-                v57 = _7C * mConst->getHillAddSpeed();
-        } else {
-            v57 = 0.0;
-        }
 
-        if (this->mJudgeStartDash &&
-            (v58 = al::isNearZeroOrLess((float)(this->mMaxSpeed * 0.99f) - v118, 0.001f),
-             isJudge = rs::isJudge(this->mJudgeStartDash), v58) &&
-            (isJudge & 1) != 0) {
-            v60 = v57 + this->mDashMaxSpeed2D;
-        } else {
-            v60 = PlayerActionFunction::accel(v57 + this->mMaxSpeed, this->somethingAboutSpeed2,
-                                              this->somethingAboutSpeed);
-        }
+        v60 = calcMaxSpeed(v118);
 
-        mMaxSpeed = (float)(v54 * v60) + (float)((float)(1.0f - v54) * this->mMinSpeed);
-        if (v52 && mMaxSpeed > this->mMaxSpeed)
-            mMaxSpeed = this->mMaxSpeed;
+        maxSpeed = (float)(v54 * v60) + (float)((float)(1.0f - v54) * this->mMinSpeed);
+        if (v52 && maxSpeed > this->mMaxSpeed)
+            maxSpeed = this->mMaxSpeed;
 
-        A0 = PlayerActionFunction::accel(v118, mMaxSpeed,
+        A0 = PlayerActionFunction::accel(v118, maxSpeed,
                                          PlayerActionGroundMoveControl::calcAccelRate(v118));
     }
 
     if (A0 <= this->mBrakeOnSpeed) {
-        if (_60 < mBrakeOnCounterCorner) {
+        if (_60 < mBrakeOnCounterCorner)
             this->_60 = 0;
-        }
     } else {
         this->_60 = sead::Mathf::clampMax(this->_60 + 1, this->mBrakeOnCounterCorner);
     }
 
+    f32 mNormalBrakeFrame = this->mNormalBrakeFrame;
     if (v52)
         goto LABEL_76;
 
@@ -311,39 +287,36 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
     if (!(v44 || (v50 >= 0.0)))
         goto LABEL_76;
 
-    if (v43 || v44) {
-        if (!(_60 >= mBrakeOnCounterCorner || v48)) {
+    if (v43 || v44)
+        if (!(_60 >= mBrakeOnCounterCorner || v48))
         LABEL_76:
             mNormalBrakeFrame = 1;
-        }
-        else {
-        LABEL_75:;
-        }
-    } else {
-        mNormalBrakeFrame = this->mStickOnBrakeFrame;
-    }
 
-    if (A0 > mMaxSpeed) {
-        A0 = sead::Mathf::max(PlayerActionFunction::brake(A0, mNormalBrakeFrame, this->mMaxSpeed), mMaxSpeed);
+        else
+        LABEL_75:;
+            else mNormalBrakeFrame = this->mStickOnBrakeFrame;
+
+    if (A0 > maxSpeed) {
+        A0 = sead::Mathf::max(PlayerActionFunction::brake(A0, mNormalBrakeFrame, this->mMaxSpeed),
+                              maxSpeed);
     }
 
     if (this->_9C && A0 < this->_A0)
         A0 = this->_A0;
 
     if (v53 && !v36 && !v48 && this->_60 >= this->mBrakeOnCounterCorner) {
-        updatePoseUpFront(this->mGravityDir, _50, A0);
-        a2 = (A0 * _50) - (this->mGravity * this->mGravityDir);
-        al::setVelocity(mActor, a2);
+        updatePoseUpFront(this->mGroundNormal, va50, A0);
+        al::setVelocity(mActor, (A0 * va50) - (this->mGravity * this->mGroundNormal));
         this->_64 = 1;
-        _90 = _50;
+        _90 = va50;
         return A0;
     }
 
     if (this->someFlags[0] && v43 && !v36 && (v50 < 0.0 || A0 <= this->mMinSpeed)) {
-        updatePoseUpFront(this->mGravityDir, _50, A0);
-        al::setVelocity(this->mActor, (A0 * a3) - (this->mGravity * this->mGravityDir));
+        updatePoseUpFront(this->mGroundNormal, va50, A0);
+        al::setVelocity(this->mActor, (A0 * a3) - (this->mGravity * this->mGroundNormal));
         this->_BC = 1;
-        _90 = _50;
+        _90 = va50;
         return A0;
     }
 
@@ -355,7 +328,7 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
     this->_80 = v67;
     if (this->_BD) {
         if (al::isNormalize(a3, 0.001f)) {
-            v69 = sead::Mathf::abs(mTurnControl->calcTurnPowerRate(this->mGravityDir));
+            v69 = sead::Mathf::abs(mTurnControl->calcTurnPowerRate(this->mGroundNormal));
 
             C0 = this->_C0;
             v71 = sead::Mathf::clamp(v69 - C0, 0.0f, 1.0f);
@@ -365,20 +338,21 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
             al::verticalizeVec(&a2, v124, a3);
             if (al::tryNormalizeOrZero(&a2)) {
                 v83 = al::lerpValue(0.3f, 0.9f, v71);
-                mMinSpeed = A0 * v124.dot(a3);
-                if (mMinSpeed < this->mMinSpeed)
-                    mMinSpeed = this->mMinSpeed;
+                minSpeed = A0 * v124.dot(a3);
+                if (minSpeed < this->mMinSpeed)
+                    minSpeed = this->mMinSpeed;
 
                 v85 = a3.dot(a2);
-                sead::Vector3f v121 = (v124 * mMinSpeed) + (v83 * (A0 * (a2 * v85)));
+                sead::Vector3f v121 = (v124 * minSpeed) + (v83 * (A0 * (a2 * v85)));
                 f32 v121_len = v121.length();
                 if (v121_len > 0.0f) {
                     f32 factor = A0 / v121_len;
                     v121 *= factor;
                 }
 
-                sub_7100418AEC(&v121, this->mGravityDir * -this->mGravity, mCollision, -al::getGravity(this->mActor));
-                al::setVelocity(this->mActor, v121 - (this->mGravity * this->mGravityDir));
+                sub_7100418AEC(&v121, this->mGroundNormal * -this->mGravity, mCollision,
+                               -al::getGravity(this->mActor));
+                al::setVelocity(this->mActor, v121 - (this->mGravity * this->mGroundNormal));
                 goto LABEL_110;
             }
         } else {
@@ -387,213 +361,149 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
     }
 
     a2 = A0 * v124;
-    sub_7100418AEC(&a2, this->mGravityDir * -this->mGravity, this->mCollision,
+    sub_7100418AEC(&a2, this->mGroundNormal * -this->mGravity, this->mCollision,
                    -al::getGravity(this->mActor));
-    al::setVelocity(this->mActor, a2 - (this->mGravity * this->mGravityDir));
+    al::setVelocity(this->mActor, a2 - (this->mGravity * this->mGroundNormal));
 
 LABEL_110:
-    a2 = this->mGravityDir;
+    a2 = this->mGroundNormal;
     if (this->_BB)
-        this->mTurnControl->calcTilt(&a2, this->mGravityDir, this->mConst->getTiltPoseDegreeMax());
+        this->mTurnControl->calcTilt(&a2, this->mGroundNormal, this->mConst->getTiltPoseDegreeMax());
 
     updatePoseUpFront(a2, v124, A0);
     this->_90 = v124;
 
     return A0;
 }
+
 void PlayerActionGroundMoveControl::updateNormalAndSnap(sead::Vector3f* a2) {
     sead::Vector3f* p_mGravityDir;
-    float y;
-    float v8;
-    float v9;
-    sead::Vector3f* VelocityPtr;
-    float v17;
     sead::Vector3f v19;
     sead::Vector3f a2a;
     sead::Vector3f a3;
 
-    p_mGravityDir = &this->mGravityDir;
-    a3 = this->mGravityDir;
+    p_mGravityDir = &this->mGroundNormal;
+    a3 = this->mGroundNormal;
     if (!this->_C4 || rs::isCollidedGround(this->mCollision)) {
         rs::calcGroundNormalOrGravityDir(p_mGravityDir, this->mActor, this->mCollision);
-
-    LABEL_4:
-        y = this->mGravityDir.y;
-        this->someVec.x = this->mGravityDir.x;
-        this->someVec.y = y;
-        this->someVec.z = this->mGravityDir.z;
+        this->someVec = this->mGroundNormal;
         goto LABEL_5;
     }
 
-    this->mGravityDir = -al::getGravity(mActor);
+    this->mGroundNormal = -al::getGravity(mActor);
     a2a = {0.0f, 0.0f, 0.0f};
     v19 = {0.0f, 0.0f, 0.0f};
 
     if (alCollisionUtil::getHitPosAndNormalOnArrow(mActor, &a2a, &v19, al::getTrans(this->mActor),
                                                    al::getGravity(this->mActor) * 100.0f, 0LL,
                                                    0LL)) {
-        if ((al::isFloorPolygon(v19, al::getGravity(this->mActor)) & 1) != 0) {
+        if (al::isFloorPolygon(v19, al::getGravity(this->mActor))) {
             if (someVec.dot(v19) <= 0.087156) {
-                VelocityPtr = al::getVelocityPtr(this->mActor);
-                v17 = al::calcSpeedH(this->mActor);
-                al::limitLength(VelocityPtr, *VelocityPtr, v17);
-                goto LABEL_5;
+                sead::Vector3f* VelocityPtr = al::getVelocityPtr(this->mActor);
+                al::limitLength(VelocityPtr, *VelocityPtr, al::calcSpeedH(this->mActor));
+            } else {
+                al::turnVecToVecRate(p_mGravityDir, a3, v19, 0.5);
+                this->someVec = this->mGroundNormal;
             }
-
-            al::turnVecToVecRate(p_mGravityDir, a3, v19, 0.5);
-            goto LABEL_4;
         }
     }
 
 LABEL_5:
     al::alongVectorNormalH(a2, al::getVelocity(this->mActor), a3, *p_mGravityDir);
 }
+
 f32 PlayerActionGroundMoveControl::calcTurnTiltRate() const {
     if (rs::isOnGroundSkateCode(this->mActor, this->mCollision))
         return 0.0;
-    return mTurnControl->calcTurnPowerRate(this->mGravityDir);
+    return mTurnControl->calcTurnPowerRate(this->mGroundNormal);
 }
+
 void PlayerActionGroundMoveControl::calcMoveInput(sead::Vector3f*, sead::Vector3f const&) {
     CRASH
 }
+
 bool PlayerActionGroundMoveControl::isActiveSquatBrake() const {
     CRASH
 }
+
 void PlayerActionGroundMoveControl::updateHillAffect(sead::Vector3f const& a2,
                                                      sead::Vector3f const& a3, bool a4) {
-    const sead::Vector3f* Gravity;
-    float v8;
     float v9;
     float v10;
-    const sead::Vector3f* v11;
-    const PlayerConst** p_mConst;
     float v13;
-    float v14;
     float v15;
     float v16;
     float v17;
     bool v18;
-    float* p__7C;
     float v20;
-    float _7C;
-    float v22;
     int v23;
-    long double v24;
     float v25;
     float v26;
     bool v27;
-    float v28;
-    float v29;
     float v30;
-    float v31;
-    float v32;
-    float v33;
     sead::Vector3f v34;
 
     auto* a1 = this;
 
-    if (a1->_78) {
-        Gravity = &al::getGravity(a1->mActor);
-        v8 = (float)((float)-(float)(Gravity->y * a1->mGravityDir.y) -
-                     (float)(Gravity->x * a1->mGravityDir.x)) -
-             (float)(Gravity->z * a1->mGravityDir.z);
-        v9 = -1.0;
-        if (v8 >= -1.0) {
-            v9 = (float)((float)-(float)(Gravity->y * a1->mGravityDir.y) -
-                         (float)(Gravity->x * a1->mGravityDir.x)) -
-                 (float)(Gravity->z * a1->mGravityDir.z);
-            if (v8 > 1.0)
-                v9 = 1.0;
-        }
-
-        v34.x = 0.0;
-        v34.y = 0.0;
-        v34.z = 0.0;
-        v10 = sead::Mathf::acos(v9);
-        v11 = &al::getGravity(a1->mActor);
-        al::verticalizeVec(&v34, a1->mGravityDir, *v11);
-        if (al::tryNormalizeOrZero(&v34)) {
-            p_mConst = &a1->mConst;
-            v13 = v10 * 57.296;
-            v14 = (float)(v10 * 57.296) / a1->mConst->getStandAngleMin();
-            v15 = 0.0;
-            if (v14 >= 0.0) {
-                v15 = v14;
-                if (v14 > 1.0)
-                    v15 = 1.0;
-            }
-
-            v16 = 0.0;
-            if (a4 && (v16 = v34.dot(a3), v16 > 0.0))
-                v17 = (float)(v16 * al::easeOut(v15)) + 0.0;
-            else
-                v17 = 0.0 - al::easeIn(v15);
-
-            v20 = fmaxf(v13 * v16, 0.0);
-            _7C = a1->_7C;
-            p__7C = &a1->_7C;
-            v22 = _7C;
-            v18 = v17 > 0.0;
-            if (v17 > 0.0 && v22 < 0.0) {
-                v18 = 1;
-                *p__7C = 0.0;
-            }
-        } else {
-            v17 = 0.0;
-            v18 = 0;
-            p_mConst = &a1->mConst;
-            p__7C = &a1->_7C;
-            v20 = 0.0;
-        }
-
-        v23 = (*p_mConst)->getHillAccelAddFrame();
-        if (*p__7C > v17) {
-            v24 = 1.0;
-            if ((float)(v17 + 1.0) <= 1.0)
-                *(float*)&v24 = v17 + 1.0;
-
-            if ((float)(v17 + 1.0) >= 0.0)
-                v25 = *(float*)&v24;
-            else
-                v25 = 0.0;
-
-            v26 = v25 * ((*p_mConst)->getHillAccelSubFrame() - 1);
-            v27 = v26 >= 0.0;
-            if ((float)(int)v26 == v26)
-                v27 = 0;
-
-            v23 = (int)v26 + v27 + 1;
-            if (v18) {
-                v28 = (*p_mConst)->getHillAccelSubAngleMin();
-                v29 = (*p_mConst)->getHillAccelSubAngleMax();
-                v30 = al::calcRate01(v20, v28, v29);
-                v31 = *p__7C;
-                v32 = al::easeOut(v30);
-                v33 = al::easeOut(v32);
-                v17 = al::lerpValue(v17, v31, v33);
-            }
-        }
-
-        *p__7C = al::converge(*p__7C, v17, 1.0 / (float)v23);
+    if (!a1->_78) {
+        return;
     }
+
+    v9 = sead::Mathf::clamp((al::getGravity(a1->mActor)).dot(-a1->mGroundNormal), -1.0, 1.0);
+
+    v10 = sead::Mathf::acos(v9);
+    v34 = {0.0f, 0.0f, 0.0f};
+    al::verticalizeVec(&v34, a1->mGroundNormal, al::getGravity(a1->mActor));
+    if (al::tryNormalizeOrZero(&v34)) {
+        v13 = sead::Mathf::rad2deg(v10);
+        v15 = sead::Mathf::clamp(v13 / a1->mConst->getStandAngleMin(), 0.0, 1.0);
+
+        v16 = 0.0;
+        if (a4 && (v16 = v34.dot(a3), v16 > 0.0))
+            v17 = (v16 * al::easeOut(v15)) + 0.0;
+        else
+            v17 = 0.0 - al::easeIn(v15);
+
+        v20 = sead::Mathf::clampMin(v13 * v16, 0.0);
+        v18 = v17 > 0.0;
+        if (v17 > 0.0 && _7C < 0.0) {
+            _7C = 0.0;
+        }
+    } else {
+        v17 = 0.0;
+        v18 = 0;
+        v20 = 0.0;
+    }
+
+    v23 = mConst->getHillAccelAddFrame();
+    if (_7C > v17) {
+        v25 = sead::Mathf::clamp(v17 + 1.0, 0.0, 1.0);
+
+        v26 = v25 * (mConst->getHillAccelSubFrame() - 1);
+        if ((int)v26 == v26)
+            v27 = 0;
+        else
+            v27 = v26 >= 0.0;
+
+        v23 = (int)v26 + v27 + 1;
+        if (v18) {
+            v30 = al::calcRate01(v20, mConst->getHillAccelSubAngleMin(), mConst->getHillAccelSubAngleMax());
+            v17 = al::lerpValue(v17, _7C, al::easeOut(al::easeOut(v30)));
+        }
+    }
+
+    _7C = al::converge(_7C, v17, 1.0 / (float)v23);
 }
+
 f32 PlayerActionGroundMoveControl::calcMaxSpeed(float a2) const {
-    float _7C;
-    const PlayerConst* v5;
     float v6;
     bool v7;
     char isJudge;
 
-    if (this->_78) {
-        _7C = this->_7C;
-        v5 = this->mConst;
-        if (_7C <= 0.0)
-            v6 = -(float)(_7C * v5->getHillSubSpeed());
-        else
-            v6 = _7C * v5->getHillAddSpeed();
-    } else {
+    if (this->_78)
+        v6 = sead::Mathf::abs(this->_7C) * this->mConst->getHillAddSpeed();
+    else
         v6 = 0.0;
-    }
 
     if (this->mJudgeStartDash &&
         (v7 = al::isNearZeroOrLess((float)(this->mMaxSpeed * 0.99) - a2, 0.001),
@@ -605,55 +515,38 @@ f32 PlayerActionGroundMoveControl::calcMaxSpeed(float a2) const {
                                            this->somethingAboutSpeed);
     }
 }
+
 f32 PlayerActionGroundMoveControl::calcAccelRate(float a2) const {
-    IJudge* mJudgeStartDash;  // x0
-    float v5;                 // s0
-    bool v6;                  // w20
-    int isJudge;              // w0
-    float mMaxSpeed;          // s0
-    float mDashAccelFrame2D;  // s1
-    int mAccelFrame;          // w8
-    float v11;                // s10
-    float v12;                // s9
-    float v13;                // s10
+    IJudge* l_mJudgeStartDash;
+    bool v6;
+    bool isJudge;
+    float v11;
+    float v12;
+    float v13;
 
-    mJudgeStartDash = this->mJudgeStartDash;
-    if (!mJudgeStartDash ||
-        ((v5 = this->mMaxSpeed - a2, v5 <= 0.0) ?
-             (IJudge*)(v6 = 0) :
-             (v6 = !al::isNearZero(v5, 0.001), mJudgeStartDash = this->mJudgeStartDash),
-         (isJudge = rs::isJudge(mJudgeStartDash), v6) || ((isJudge ^ 1) & 1) != 0)) {
-        mMaxSpeed = this->mMaxSpeed;
-        mAccelFrame = this->mAccelFrame;
-        if (this->_D4 && mMaxSpeed > a2) {
-            v11 = (float)(mAccelFrame * mAccelFrame);
-            v12 = (float)(mMaxSpeed / (float)mAccelFrame) * this->mConst->getRunAccelAverageScale();
-            v13 = (float)((float)(this->mMaxSpeed - (float)(v12 * (float)this->mAccelFrame)) +
-                          (float)(this->mMaxSpeed - (float)(v12 * (float)this->mAccelFrame))) /
-                  v11;
-            return v12 +
-                   (float)(v13 * (float)((float)((float)(sqrtf((float)(v12 * v12) +
-                                                               (float)((float)(v13 + v13) * a2)) -
-                                                         v12) /
-                                                 v13) +
-                                         1.0));
-        }
-
-        mDashAccelFrame2D = (float)mAccelFrame;
-    } else {
-        mMaxSpeed = this->mDashMaxSpeed2D - this->mMaxSpeed;
-        mDashAccelFrame2D = (float)this->mDashAccelFrame2D;
+    l_mJudgeStartDash = mJudgeStartDash;
+    if ((l_mJudgeStartDash &&
+         !((mMaxSpeed - a2 <= 0.0) ? (IJudge*)(v6 = 0) :
+                                           (v6 = !al::isNearZero(mMaxSpeed - a2, 0.001f),
+                                            l_mJudgeStartDash = mJudgeStartDash),
+           (isJudge = rs::isJudge(l_mJudgeStartDash), v6) || !isJudge))) {
+        return (mDashMaxSpeed2D - mMaxSpeed) / mDashAccelFrame2D;
     }
 
-    return mMaxSpeed / mDashAccelFrame2D;
+    if (!_D4 || !(mMaxSpeed > a2)) {
+        return mMaxSpeed / mAccelFrame;
+    }
+
+    v11 = (mAccelFrame * mAccelFrame);
+    v12 = (mMaxSpeed / mAccelFrame) * mConst->getRunAccelAverageScale();
+    v13 = ((mMaxSpeed - (v12 * mAccelFrame)) * 2) / v11;
+    return v12 + (v13 * (((sqrtf((v12 * v12) + ((v13 + v13) * a2)) - v12) / v13) + 1.0f));
 }
+
 void PlayerActionGroundMoveControl::updatePoseUpFront(sead::Vector3f const& a2,
                                                       sead::Vector3f const& a3, float a4) {
-    float v7;               // s8
-    al::LiveActor* mActor;  // x21
-    float v9;               // s9
-    float v10;              // s0
-    sead::Vector3f v11;     // [xsp+0h] [xbp-40h] BYREF
+    float v7;
+    sead::Vector3f v11;
 
     v11 = a3;
     if (al::isParallelDirection(a2, v11, 0.01)) {
@@ -667,8 +560,6 @@ void PlayerActionGroundMoveControl::updatePoseUpFront(sead::Vector3f const& a2,
     else
         v7 = 1.0;
 
-    mActor = this->mActor;
-    v9 = this->mConst->getSlerpQuatRate();
-    v10 = this->mConst->getHillPoseDegreeMax();
-    rs::slerpUpFront(mActor, a2, v11, v9, v7 * v10);
+    rs::slerpUpFront(this->mActor, a2, v11, this->mConst->getSlerpQuatRate(),
+                     v7 * this->mConst->getHillPoseDegreeMax());
 }

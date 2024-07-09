@@ -288,7 +288,7 @@ void PlayerStateSpinCap::updateSpinGroundNerve() {
     LABEL_30:
         mActionGroundMoveControl->setup(mConst->getNormalMaxSpeed(), mConst->getNormalMinSpeed(), mConst->getNormalAccelFrame(), mConst->getStickOnBrakeFrame(), mConst->getNormalBrakeFrame(), mConst->getGravityMove(), mConst->getNormalMaxSpeed(), 0);
         mActionGroundMoveControl->updateNormalAndSnap(al::getVelocityPtr(mActor));
-        mActionGroundMoveControl->reset(mActionGroundMoveControl->mGravityDir);
+        mActionGroundMoveControl->reset(mActionGroundMoveControl->mGroundNormal);
         mActionGroundMoveControl->update();
     }
 

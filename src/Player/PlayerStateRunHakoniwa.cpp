@@ -159,7 +159,7 @@ void PlayerStateRunHakoniwa::exePivot() {
 void PlayerStateRunHakoniwa::exeRun() {
   if ( al::isFirstStep(this) )
   {
-    mActionGroundMoveControl->reset(mActionGroundMoveControl->mGravityDir);
+    mActionGroundMoveControl->reset(mActionGroundMoveControl->mGroundNormal);
     this->_A0 = 0;
     this->_90 = 0;
   }
@@ -220,7 +220,7 @@ void PlayerStateRunHakoniwa::exeRun() {
     }
 
     sead::Vector3f* velocityPtr = al::getVelocityPtr(this->mActor);
-    al::parallelizeVec(velocityPtr, this->mActionGroundMoveControl->mGravityDir, *velocityPtr);
+    al::parallelizeVec(velocityPtr, this->mActionGroundMoveControl->mGroundNormal, *velocityPtr);
     if ( this->_90 >= runDeepDownFrame )
       mTrigger->set(PlayerTrigger::EActionTrigger_QuickTurn);
 
@@ -283,7 +283,7 @@ void PlayerStateRunHakoniwa::exeBrake() {
     }
 
     sead::Vector3f moveDirection = {0.0f, 0.0f, 0.0f};
-    mInput->calcMoveDirection(&moveDirection, mActionGroundMoveControl->mGravityDir);
+    mInput->calcMoveDirection(&moveDirection, mActionGroundMoveControl->mGroundNormal);
 
     bool isMoveDeepDown = mInput->isMoveDeepDown();
     f32 dot = _74.dot(moveDirection);
@@ -318,7 +318,7 @@ void PlayerStateRunHakoniwa::exeTurn() {
     if(mAnimator->isAnimEnd()) {
       sead::Vector3f front = {0.0f, 0.0f, 0.0f};
       al::calcFrontDir(&front, mActor);
-      al::setVelocity(mActor, ((_8C * front) * mConst->getRunAfterTurnScale()) - (mActionGroundMoveControl->mGravityDir * mConst->getGravityMove()));
+      al::setVelocity(mActor, ((_8C * front) * mConst->getRunAfterTurnScale()) - (mActionGroundMoveControl->mGroundNormal * mConst->getGravityMove()));
       al::setNerve(this, &RunAfterTurn);
     }
 }

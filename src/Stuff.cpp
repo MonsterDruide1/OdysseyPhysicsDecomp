@@ -1072,17 +1072,17 @@ f32 moveBrakeRun(float * a1,sead::Vector3<float> *a2,al::LiveActor *x2_0,PlayerA
   sead::Vector3f v28; // [xsp+20h] [xbp-70h] BYREF
   sead::Vector3f a3; // [xsp+30h] [xbp-60h] BYREF
 
-  p_mGravityDir = &x3_0->mGravityDir;
-  x = x3_0->mGravityDir.x;
-  y = x3_0->mGravityDir.y;
-  a3.z = x3_0->mGravityDir.z;
+  p_mGravityDir = &x3_0->mGroundNormal;
+  x = x3_0->mGroundNormal.x;
+  y = x3_0->mGroundNormal.y;
+  a3.z = x3_0->mGroundNormal.z;
   a3.x = x;
   a3.y = y;
   v28.x = 0.0;
   v28.y = 0.0;
   v28.z = 0.0;
   x3_0->updateNormalAndSnap(&v28);
-  v20 = sqrtf((float)((float)(v28.x * v28.x) + (float)(v28.y * v28.y)) + (float)(v28.z * v28.z));
+  v20 = v28.length();
   if ( a1 )
     *a1 = v20;
 

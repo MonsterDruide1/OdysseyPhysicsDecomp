@@ -47,7 +47,7 @@ public:
     const IUsePlayerCollision *mCollision;
     const IUsePlayerHack **_20 = 0;
     bool someFlag = 0;
-    sead::Vector3f mGravityDir = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f mGroundNormal = {0.0f, 0.0f, 0.0f};
     float mMaxSpeed = 0;
     float mMinSpeed = 0;
     float somethingAboutSpeed = 0;
