@@ -2056,7 +2056,7 @@ void faceToCamera(al::LiveActor* actor) {
   sead::Vector3f up = {0.0f, 0.0f, 0.0f};
   al::calcUpDir(&up, actor);
 
-  sead::Vector3f a3 = *al::getCameraPos(actor, 0) - al::getTrans(actor);
+  sead::Vector3f a3 = al::getCameraPos(actor, 0) - al::getTrans(actor);
   al::verticalizeVec(&a3, up, a3);
   al::tryNormalizeOrZero(&a3);
   if(al::isNearZero(a3, 0.001f)) return;
