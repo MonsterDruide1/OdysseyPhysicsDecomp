@@ -155,7 +155,7 @@ public:
     void getMoveVector(sead::Vector3f* moveVec);
     void calcStepMoveVector(sead::Vector3f* moveVec) const;
 
-private:
+public:
     sead::Vector3f mPos;
     sead::Vector3f mMove;
     f32 mSizeStart;

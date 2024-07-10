@@ -2,7 +2,9 @@
 
 #include <math/seadVector.h>
 #include "Library/Collision/KTriangle.h"
+#include "container/seadPtrArray.h"
 #include "math/seadBoundBox.h"
+#include "prim/seadDelegate.h"
 
 namespace al {
 class CollisionPartsFilterBase;
@@ -22,9 +24,25 @@ bool isFloorCode(const al::HitInfo*, const char*);
 bool isFloorCode(const al::Triangle&, const char*);
 bool isWallCode(const al::HitInfo*, const char*);
 
+const char* getFloorCodeName(const al::Triangle&);
+const char* getWallCodeName(const al::Triangle&);
+const char* getMaterialCodeName(const al::Triangle&);
+
 }  // namespace al
 
 namespace alCollisionUtil {
+
+struct SphereMoveHitInfo {
+    float _0;
+    float _4;
+    sead::Vector3f _8;
+    float pad;
+    al::Triangle mTriangle;
+
+    static bool compare(const SphereMoveHitInfo& a1, const SphereMoveHitInfo& a2) {
+        return a1._0 < a2._0;
+    }
+};
 
 bool isFarAway(const al::CollisionParts&, const sead::Vector3f&, f32);
 bool checkStrikeArrow(al::IUseCollision const*, sead::Vector3<float> const&,
@@ -54,5 +72,17 @@ al::ArrowHitInfo* getStrikeArrowInfo(al::IUseCollision const*, u32);
 bool getLastPolyOnArrow(const al::IUseCollision*, const al::ArrowHitInfo**, const sead::Vector3f&,
                         const sead::Vector3f&, const al::CollisionPartsFilterBase*,
                         const al::TriangleFilterBase*);
+
+void searchCollisionParts(const al::IUseCollision*, const sead::Vector3f&, float,
+                          sead::IDelegate1<al::CollisionParts*>&,
+                          const al::CollisionPartsFilterBase*);
+
+sead::PtrArray<al::CollisionParts>* getCollisionPartsPtrArray(const al::IUseCollision*);
+void validateCollisionPartsPtrArray(const al::IUseCollision*, sead::PtrArray<al::CollisionParts>*);
+void invalidateCollisionPartsPtrArray(const al::IUseCollision*);
+
+s32 checkStrikeSphereMove(const al::IUseCollision*, SphereMoveHitInfo*, s32, const sead::Vector3f&,
+                          f32, const sead::Vector3f&, const al::CollisionPartsFilterBase*,
+                          const al::TriangleFilterBase*);
 
 }  // namespace alCollisionUtil

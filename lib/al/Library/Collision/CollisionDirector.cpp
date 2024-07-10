@@ -174,11 +174,11 @@ void CollisionDirector::searchCollisionPartsWithSphere(
 
 void CollisionDirector::validateCollisionPartsPtrArray(sead::PtrArray<CollisionParts>* arr) {
     mCollisionPartsKeeperPtrArray->setPtrArray(arr);
-    mActivePartsKeeper = mCollisionPartsKeeperPtrArray;
+    //mActivePartsKeeper = mCollisionPartsKeeperPtrArray;
 }
 
 void CollisionDirector::invalidateCollisionPartsPtrArray() {
-    mActivePartsKeeper = mPartsKeeper;
+    //mActivePartsKeeper = mPartsKeeper;
 }
 
 sead::PtrArray<CollisionParts>* CollisionDirector::getCollisionPartsPtrArray() const {

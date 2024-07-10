@@ -340,6 +340,18 @@ bool isWallCode(const al::HitInfo* a1, const char* a2) {
     return al::isEqualString(a2, getCollisionCodeName(a1->mTriangle, "WallCode"));
 }
 
+const char* getFloorCodeName(const al::Triangle& a1) {
+    return getCollisionCodeName(a1, "FloorCode");
+}
+
+const char* getWallCodeName(const al::Triangle& a1) {
+    return getCollisionCodeName(a1, "WallCode");
+}
+
+const char* getMaterialCodeName(const al::Triangle& a1) {
+    return getCollisionCodeName(a1, "MaterialCode");
+}
+
 void calcArrowAabb(sead::BoundBox3<float>* box, sead::Vector3<float> const& val1,
                    sead::Vector3<float> const& val2) {
     box->setUndef();
@@ -1510,6 +1522,26 @@ bool alCollisionUtil::getLastPolyOnArrow(const al::IUseCollision* collider,
     return true;
 }
 
+void alCollisionUtil::searchCollisionParts(const al::IUseCollision* a1, const sead::Vector3f& a2,
+                                           float a5, sead::IDelegate1<al::CollisionParts*>& a3,
+                                           const al::CollisionPartsFilterBase* a4) {
+    a1->getCollisionDirector()->searchCollisionPartsWithSphere(a2, a5, a3, a4);
+}
+
+sead::PtrArray<al::CollisionParts>*
+alCollisionUtil::getCollisionPartsPtrArray(const al::IUseCollision* collision) {
+    return collision->getCollisionDirector()->getCollisionPartsPtrArray();
+}
+
+void alCollisionUtil::validateCollisionPartsPtrArray(const al::IUseCollision* collision,
+                                                     sead::PtrArray<al::CollisionParts>* parts) {
+    return collision->getCollisionDirector()->validateCollisionPartsPtrArray(parts);
+}
+
+void alCollisionUtil::invalidateCollisionPartsPtrArray(const al::IUseCollision* collision) {
+    return collision->getCollisionDirector()->invalidateCollisionPartsPtrArray();
+}
+
 bool al::isNearDirection(const sead::Vector3f& a1, const sead::Vector3f& a2, float a3) {
     float x;    // s1
     float y;    // s2
@@ -2310,6 +2342,389 @@ bool al::addVectorLimit(sead::Vector3<float>* a1, sead::Vector3<float> const& a2
     a1->y = (float)(v10 * v16) + v13;
     a1->z = (float)(v11 * v16) + v14;
     return 1;
+}
+
+static const al::TriangleFilterBase* qword_7101DDCEB8;
+static sead::PtrArray<const al::KCPrismData> sphereHitBuffer;  // not quite, but functionally close enough
+
+s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
+                                           alCollisionUtil::SphereMoveHitInfo* x1_0, s32 w2_0,
+                                           const sead::Vector3f& a4, f32 s0_0,
+                                           const sead::Vector3f& a5,
+                                           const al::CollisionPartsFilterBase* a6,
+                                           const al::TriangleFilterBase* a7) {
+    float z;                                  
+    float v12;                                
+    float v13;                                
+    int v14;                                  
+    float v15;                                
+    float v16;                                
+    al::CollisionDirector* v17;               
+    unsigned int v18;                         
+    unsigned int v20;                         
+    float v21;                                
+    float v22;                                
+    float v23;                                
+    const sead::Vector3f* v24;                      
+    const sead::Vector3f* v25;                      
+    float v26;                                
+    float v27;                                
+    int v28;                                  
+    int v29;                                  
+    const sead::Vector3f* v30;                      
+    float v31;                                
+    float v32;                                
+    float v33;                                
+    int v34;                                  
+    int v35;                                  
+    const sead::Vector3f* v36;                      
+    float v37;                                
+    float v38;                                
+    float v39;                                
+    float v40;                                
+    float v41;                                
+    float v42;                                
+    float v43;                                
+    float v44;                                
+    float v45;                                
+    float v46;                                
+    float v47;                                
+    float v48;                                
+    float v49;                                
+    float v50;                                
+    float v51;                                
+    float v52;                                
+    float v53;                                
+    float v54;                                
+    float v55;                                
+    float v56;                                
+    alCollisionUtil::SphereMoveHitInfo* v57;  
+    al::CollisionDirector* v58;               
+    al::SphereHitInfo* StrikeSphereInfo;      
+    float unk;                                
+    const sead::Vector3f* FaceNormal;               
+    float y;                                  
+    float v63;                                
+    float v64;                                
+    float v65;                                
+    float v66;                                
+    float v67;                                
+    const sead::Vector3f* Pos;                      
+    float v69;                                
+    float v70;                                
+    float v71;                                
+    const sead::Vector3f* v72;                      
+    float x;                                  
+    const sead::Vector3f* v74;                      
+    const sead::Vector3f* EdgeNormal;               
+    float v76;                                
+    const sead::Vector3f* v77;                      
+    float v78;                                
+    float v79;                                
+    float v80;                                
+    const sead::Vector3f* v81;                      
+    float v82;                                
+    float v83;                                
+    float v84;                                
+    float v85;                                
+    float v86;                                
+    float v87;                                
+    float v88;                                
+    float v89;                                
+    float v90;                                
+    float v91;                                
+    float v92;                                
+    float v93;                                
+    float v94;                                
+    alCollisionUtil::SphereMoveHitInfo* v95;  
+    float v96;                                
+    int v97;                                  
+    int v98;                                  
+    al::KCPrismData* mKCPrismData;            
+    float v102;                               
+    float v103;                               
+    float v105;                               
+    float v106;                               
+    float v107;                               
+    float v108;                               
+    float v109;                               
+    sead::Vector3f a1;                        
+    sead::Vector3f a3;                        
+    float v112;                               
+    sead::Vector3f a2;                        
+    al::SphereInterpolator v114;              
+
+    qword_7101DDCEB8 = a7;
+    memset(&v114, 0, 44);
+    sphereHitBuffer.clear();
+    z = a4.z;
+    v12 = a5.z;
+    v13 = a4.y + a5.y;
+    a2.x = a4.x + a5.x;
+    a2.y = v13;
+    a2.z = z + v12;
+    v114.startInterp(a4, a2, s0_0, s0_0, fminf(s0_0, 35.0));
+    v114.nextStep();
+    if (v114.mPrevStep != 1.0 || (v14 = 0, v114.mCurrentStep != 1.0)) {
+        v14 = 0;
+        while (1) {
+            a2 = {0.0f, 0.0f, 0.0f};
+            v112 = 1.0;
+            v114.calcInterp(&a2, &v112, 0LL);
+            v16 = v112;
+            v17 = x0_0->getCollisionDirector();
+            v17->setPartsFilter(a6);
+            v17->setTriFilter(qword_7101DDCEB8);//((const al::TriangleFilterBase*)&off_7101DDC698);
+            v18 = v17->checkStrikeSphere(a2, v16, 1, a5);
+            if (v18 && v14 < w2_0)
+                break;
+
+        LABEL_48:
+            if (v14 < w2_0) {
+                v114.nextStep();
+                if (v114.mPrevStep != 1.0 || v114.mCurrentStep != 1.0)
+                    continue;
+            }
+
+            goto LABEL_51;
+        }
+
+        v20 = 1;
+        while (1) {
+            v58 = (al::CollisionDirector*)x0_0->getCollisionDirector();
+            StrikeSphereInfo = v58->getStrikeSphereInfo(v20 - 1);
+            unk = StrikeSphereInfo->unk;
+            FaceNormal = &StrikeSphereInfo->mTriangle.getFaceNormal();
+            if ((float)((float)((float)(FaceNormal->x * a5.x) + (float)(FaceNormal->y * a5.y)) +
+                        (float)(FaceNormal->z * a5.z)) < 0.0) {
+                if (StrikeSphereInfo->isCollisionAtFace()) {
+                    y = a5.y;
+                    v63 = a5.z;
+                    v64 = (float)((float)(FaceNormal->x * a5.x) + (float)(FaceNormal->y * y)) +
+                          (float)(FaceNormal->z * v63);
+                    if (v64 <= 0.0)
+                        v64 = -v64;
+
+                    v102 = unk / v64;
+                    v103 = unk;
+                    v65 = -(float)(unk / v64);
+                    a3.x = a5.x * v65;
+                    a3.y = y * v65;
+                    a3.z = v63 * v65;
+                    al::verticalizeVec(&a1, *FaceNormal, a3);
+                    v66 = StrikeSphereInfo->mCollisionHitPos.x + a1.x;
+                    v67 = StrikeSphereInfo->mCollisionHitPos.y + a1.y;
+                    v44 = StrikeSphereInfo->mCollisionHitPos.z + a1.z;
+                    Pos = &StrikeSphereInfo->mTriangle.getPos(0);
+                    v69 = v67 - Pos->y;
+                    v70 = v66 - Pos->x;
+                    v71 = v44 - Pos->z;
+                    v72 = &StrikeSphereInfo->mTriangle.getPos(1);
+                    x = v72->x;
+                    v109 = v72->y;
+                    v108 = v72->z;
+                    v74 = &StrikeSphereInfo->mTriangle.getPos(2);
+                    v107 = v74->x;
+                    v106 = v74->y;
+                    v105 = v74->z;
+                    EdgeNormal = &StrikeSphereInfo->mTriangle.getEdgeNormal(0);
+                    v76 = (float)((float)(v70 * EdgeNormal->x) + (float)(v69 * EdgeNormal->y)) +
+                          (float)(v71 * EdgeNormal->z);
+                    v77 = &StrikeSphereInfo->mTriangle.getEdgeNormal(1);
+                    v79 = v77->x;
+                    v78 = v77->y;
+                    v80 = v77->z;
+                    v81 = &StrikeSphereInfo->mTriangle.getEdgeNormal(2);
+                    if (v76 > 0.0 ||
+                        (float)((float)((float)((float)(v66 - x) * v79) +
+                                        (float)((float)(v67 - v109) * v78)) +
+                                (float)((float)(v44 - v108) * v80)) > 0.0 ||
+                        (float)((float)((float)((float)(v66 - v107) * v81->x) +
+                                        (float)((float)(v67 - v106) * v81->y)) +
+                                (float)((float)(v44 - v105) * v81->z)) > 0.0) {
+                        if (al::isNearZero(a1, 0.001))
+                            goto LABEL_46;
+
+                        v21 = v67 - StrikeSphereInfo->mCollisionHitPos.y;
+                        v22 = v66 - StrikeSphereInfo->mCollisionHitPos.x;
+                        v23 = v44 - StrikeSphereInfo->mCollisionHitPos.z;
+                        v24 = &StrikeSphereInfo->mTriangle.getEdgeNormal(0);
+                        if ((float)((float)((float)(v22 * v24->x) + (float)(v21 * v24->y)) +
+                                    (float)(v23 * v24->z)) <= 0.0) {
+                            v28 = 4;
+                        } else {
+                            v25 = &StrikeSphereInfo->mTriangle.getEdgeNormal(1);
+                            v26 = (float)(v22 * v25->x) + (float)(v21 * v25->y);
+                            v27 = v25->z;
+                            v28 = 5;
+                            if ((float)(v26 + (float)(v23 * v27)) > 0.0)
+                                v28 = 6;
+                        }
+
+                        v29 = al::modi(v28, 3);
+                        v30 = &StrikeSphereInfo->mTriangle.getPos(v29);
+                        v31 = v30->y - StrikeSphereInfo->mCollisionHitPos.y;
+                        v32 = v30->x - StrikeSphereInfo->mCollisionHitPos.x;
+                        v33 = v30->z - StrikeSphereInfo->mCollisionHitPos.z;
+                        v34 = (float)((float)((float)((float)(v21 * v32) - (float)(v22 * v31)) *
+                                              FaceNormal->z) +
+                                      (float)((float)(FaceNormal->x * (float)((float)(v23 * v31) -
+                                                                              (float)(v21 * v33))) +
+                                              (float)(FaceNormal->y *
+                                                      (float)((float)(v22 * v33) -
+                                                              (float)(v23 * v32))))) <= 0.0 ?
+                                  v29 + 3 :
+                                  v29 + 4;
+                        v35 = al::modi(v34, 3);
+                        v36 = &StrikeSphereInfo->mTriangle.getEdgeNormal(v35);
+                        v37 = (float)((float)(v22 * v36->x) + (float)(v21 * v36->y)) +
+                              (float)(v23 * v36->z);
+                        if (al::isNearZero(v37, 0.001))
+                            goto LABEL_46;
+
+                        v38 = (float)((float)((float)(v32 * v36->x) + (float)(v31 * v36->y)) +
+                                      (float)(v33 * v36->z)) /
+                              v37;
+                        v39 = v22 * v38;
+                        v40 = v21 * v38;
+                        v41 = v23 * v38;
+                        v42 = StrikeSphereInfo->mCollisionHitPos.x + v39;
+                        v43 = StrikeSphereInfo->mCollisionHitPos.y + v40;
+                        v44 = StrikeSphereInfo->mCollisionHitPos.z + v41;
+                        v45 = a5.y;
+                        v46 = a5.z;
+                        v47 = (float)((float)(a5.x * a5.x) + (float)(v45 * v45)) +
+                              (float)(v46 * v46);
+                        v48 = (float)((float)(a5.x * (float)(v42 - a2.x)) +
+                                      (float)(v45 * (float)(v43 - a2.y))) +
+                              (float)(v46 * (float)(v44 - a2.z));
+                        v49 = v48 + v48;
+                        v50 = (float)((float)((float)((float)(v42 - a2.x) * (float)(v42 - a2.x)) +
+                                              (float)((float)(v43 - a2.y) * (float)(v43 - a2.y))) +
+                                      (float)((float)(v44 - a2.z) * (float)(v44 - a2.z))) -
+                              (float)(v112 * v112);
+                        v51 = (float)(v49 * v49) + (float)((float)(v47 * -4.0) * v50);
+                        v52 = 0.0;
+                        if (v51 >= 0.0) {
+                            v53 = sqrtf(v51);
+                            v54 = (float)-v49 - v53;
+                            v55 = v53 - v49;
+                            if (v49 > 0.0)
+                                v55 = v54;
+
+                            v52 = (float)(1.0 / v47) * (float)(v55 * 0.5);
+                            if (v52 < 0.0)
+                                v52 = v50 / (float)(v47 * v52);
+                        }
+
+                        v56 = v114.mCurrentStep - v52;
+                        v57 = &x1_0[v14];
+                        v57->_8.x = v42;
+                        v57->_8.y = v43;
+                    } else {
+                        v56 = v114.mCurrentStep - v102;
+                        v57 = &x1_0[v14];
+                        v57->_8.x = v66;
+                        v57->_8.y = v67;
+                    }
+
+                    v57->_0 = v56;
+                    v57->_8.z = v44;
+                    v57->mTriangle.mKCPrismHeader = StrikeSphereInfo->mTriangle.mKCPrismHeader;
+                    v57->mTriangle.mKCPrismData = StrikeSphereInfo->mTriangle.mKCPrismData;
+                    v57->mTriangle.mCollisionParts = StrikeSphereInfo->mTriangle.mCollisionParts;
+                    v57->mTriangle.mFaceNormal = StrikeSphereInfo->mTriangle.mFaceNormal;
+                    v57->mTriangle.mEdgeNormals[0].x =
+                        StrikeSphereInfo->mTriangle.mEdgeNormals[0].x;
+                    v57->mTriangle.mEdgeNormals[0].y =
+                        StrikeSphereInfo->mTriangle.mEdgeNormals[0].y;
+                    v57->mTriangle.mEdgeNormals[0].z =
+                        StrikeSphereInfo->mTriangle.mEdgeNormals[0].z;
+                    v57->mTriangle.mEdgeNormals[1] = StrikeSphereInfo->mTriangle.mEdgeNormals[1];
+                    v57->mTriangle.mEdgeNormals[2] = StrikeSphereInfo->mTriangle.mEdgeNormals[2];
+                    v57->mTriangle.mVerts[0].x = StrikeSphereInfo->mTriangle.mVerts[0].x;
+                    v57->mTriangle.mVerts[0].y = StrikeSphereInfo->mTriangle.mVerts[0].y;
+                    v57->mTriangle.mVerts[0].z = StrikeSphereInfo->mTriangle.mVerts[0].z;
+                    v57->mTriangle.mVerts[1] = StrikeSphereInfo->mTriangle.mVerts[1];
+                    v57->mTriangle.mVerts[2] = StrikeSphereInfo->mTriangle.mVerts[2];
+                    v57->_4 = v103;
+                } else {
+                    v82 = StrikeSphereInfo->mCollisionHitPos.y - a2.y;
+                    v83 = StrikeSphereInfo->mCollisionHitPos.x - a2.x;
+                    v84 = a5.y;
+                    v85 = StrikeSphereInfo->mCollisionHitPos.z - a2.z;
+                    v86 = a5.z;
+                    v87 = (float)((float)(a5.x * a5.x) + (float)(v84 * v84)) + (float)(v86 * v86);
+                    v88 = (float)((float)((float)(v83 * v83) + (float)(v82 * v82)) +
+                                  (float)(v85 * v85)) -
+                          (float)(v112 * v112);
+                    v89 = (float)((float)((float)(a5.x * v83) + (float)(v84 * v82)) +
+                                  (float)(v86 * v85)) +
+                          (float)((float)((float)(a5.x * v83) + (float)(v84 * v82)) +
+                                  (float)(v86 * v85));
+                    v90 = (float)(v89 * v89) + (float)((float)(v87 * -4.0) * v88);
+                    v91 = 0.0;
+                    if (v90 >= 0.0) {
+                        v92 = sqrtf(v90);
+                        v93 = (float)-v89 - v92;
+                        v94 = v92 - v89;
+                        if (v89 > 0.0)
+                            v94 = v93;
+
+                        v91 = (float)(1.0 / v87) * (float)(v94 * 0.5);
+                        if (v91 < 0.0)
+                            v91 = v88 / (float)(v87 * v91);
+                    }
+
+                    v95 = &x1_0[v14];
+                    v95->_0 = v114.mCurrentStep - v91;
+                    v95->_8.z = StrikeSphereInfo->mCollisionHitPos.z;
+                    v96 = StrikeSphereInfo->mCollisionHitPos.y;
+                    v95->_8.x = StrikeSphereInfo->mCollisionHitPos.x;
+                    v95->_8.y = v96;
+                    v95->mTriangle.mKCPrismHeader = StrikeSphereInfo->mTriangle.mKCPrismHeader;
+                    v95->mTriangle.mKCPrismData = StrikeSphereInfo->mTriangle.mKCPrismData;
+                    v95->mTriangle.mCollisionParts = StrikeSphereInfo->mTriangle.mCollisionParts;
+                    v95->mTriangle.mFaceNormal = StrikeSphereInfo->mTriangle.mFaceNormal;
+                    v95->mTriangle.mEdgeNormals[0].x =
+                        StrikeSphereInfo->mTriangle.mEdgeNormals[0].x;
+                    v95->mTriangle.mEdgeNormals[0].y =
+                        StrikeSphereInfo->mTriangle.mEdgeNormals[0].y;
+                    v95->mTriangle.mEdgeNormals[0].z =
+                        StrikeSphereInfo->mTriangle.mEdgeNormals[0].z;
+                    v95->mTriangle.mEdgeNormals[1] = StrikeSphereInfo->mTriangle.mEdgeNormals[1];
+                    v95->mTriangle.mEdgeNormals[2] = StrikeSphereInfo->mTriangle.mEdgeNormals[2];
+                    v95->mTriangle.mVerts[0].x = StrikeSphereInfo->mTriangle.mVerts[0].x;
+                    v95->mTriangle.mVerts[0].y = StrikeSphereInfo->mTriangle.mVerts[0].y;
+                    v95->mTriangle.mVerts[0].z = StrikeSphereInfo->mTriangle.mVerts[0].z;
+                    v95->mTriangle.mVerts[1] = StrikeSphereInfo->mTriangle.mVerts[1];
+                    v95->mTriangle.mVerts[2] = StrikeSphereInfo->mTriangle.mVerts[2];
+                    v95->_4 = unk;
+                }
+
+                ++v14;
+            }
+
+            sphereHitBuffer.pushBack(StrikeSphereInfo->mTriangle.mKCPrismData);
+
+        LABEL_46:
+            if (v20 < v18) {
+                ++v20;
+                if (v14 < w2_0)
+                    continue;
+            }
+
+            goto LABEL_48;
+        }
+    }
+
+LABEL_51:
+    std::sort(x1_0, &x1_0[v14], alCollisionUtil::SphereMoveHitInfo::compare);
+    return (unsigned int)v14;
+}
+
+s32 al::modi(s32 a, s32 b) {
+    return a % b;
 }
 
 sead::Vector3f* al::getGravityPtr(LiveActor* actor) {
