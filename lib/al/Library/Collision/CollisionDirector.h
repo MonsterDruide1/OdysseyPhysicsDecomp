@@ -22,7 +22,7 @@ class ExecuteDirector;
 class CollisionDirector : public HioNode, public IUseExecutor {
 public:
     CollisionDirector(ExecuteDirector* executeDirector);
-    
+
     void execute() override;
 
     void setPartsKeeper(ICollisionPartsKeeper* partsKeeper);
@@ -65,6 +65,7 @@ public:
     SphereHitInfo* mSphereHitArray = nullptr;
     DiskHitInfo* mDiskHitArray = nullptr;
 };
+
 static_assert(sizeof(CollisionDirector) == 0x58);
 
 }  // namespace al

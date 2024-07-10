@@ -39,7 +39,9 @@ public:
     void setSwingBorder(f32, f32);
     void update();
     const sead::Vector2f& getSwingDirDoubleHandSameDir() const;
+
     const sead::Vector2f& getSwingDirLeftHand() const { return mAccelLeftAccel; }
+
     const sead::Vector2f& getSwingDirRightHand() const { return mAccelRightAccel; }
 
 private:

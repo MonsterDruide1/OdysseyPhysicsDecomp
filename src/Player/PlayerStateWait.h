@@ -9,9 +9,13 @@ class MtxConnector;
 
 class PlayerStateWait : public al::ActorStateBase {
 public:
-    PlayerStateWait(al::LiveActor *,PlayerConst const*,IUsePlayerCollision const*,PlayerModelChangerHakoniwa const*,PlayerJointControlKeeper const*,al::WaterSurfaceFinder const*,IUsePlayerHeightCheck const*,IJudge const*,PlayerAnimator *,PlayerTrigger *,PlayerCapManHeroEyesControl *,PlayerJointParamCenterDynamics *,PlayerJointParamGroundPose *);
+    PlayerStateWait(al::LiveActor*, PlayerConst const*, IUsePlayerCollision const*,
+                    PlayerModelChangerHakoniwa const*, PlayerJointControlKeeper const*,
+                    al::WaterSurfaceFinder const*, IUsePlayerHeightCheck const*, IJudge const*,
+                    PlayerAnimator*, PlayerTrigger*, PlayerCapManHeroEyesControl*,
+                    PlayerJointParamCenterDynamics*, PlayerJointParamGroundPose*);
     ~PlayerStateWait() override;
-    
+
     void appear() override;
     void kill() override;
     void control() override;
@@ -26,7 +30,7 @@ public:
     bool isPlaySwitchOnAreaAnim() const;
     bool isLandStain() const;
     bool isSleep() const;
-    bool attackHipDropKnockDown(al::HitSensor *,al::HitSensor *);
+    bool attackHipDropKnockDown(al::HitSensor*, al::HitSensor*);
     bool tryClearIgnoreSwitchOnAreaAnim();
     bool requestAnimName(char const*);
     void noticeCarryStart();
@@ -37,7 +41,7 @@ public:
     bool tryChangeRequestAnim();
     bool tryChangeAreaAnim();
     bool tryGetSpecialStatusAnimName(char const**);
-    
+
     void exeLandStiffen();
     void exeLand();
     void exeWait();
@@ -53,21 +57,21 @@ public:
     void exeRequestAnimWait();
 
 private:
-    const PlayerConst *mConst;
-    const IUsePlayerCollision *mCollider;
-    const PlayerModelChangerHakoniwa *mModelChanger;
-    const PlayerJointControlKeeper *mJointControlKeeper;
-    const al::WaterSurfaceFinder *mWaterSurfaceFinder;
-    const IUsePlayerHeightCheck *mHeightCheck;
-    const IJudge *mJudgeForceLand;
-    PlayerAnimator *mAnimator;
-    PlayerTrigger *mTrigger;
-    PlayerCapManHeroEyesControl *mCapEyesControl;
-    PlayerJointParamCenterDynamics *mJointParamCenterDynamics;
-    PlayerJointParamGroundPose *mJointParamGroundPose;
+    const PlayerConst* mConst;
+    const IUsePlayerCollision* mCollider;
+    const PlayerModelChangerHakoniwa* mModelChanger;
+    const PlayerJointControlKeeper* mJointControlKeeper;
+    const al::WaterSurfaceFinder* mWaterSurfaceFinder;
+    const IUsePlayerHeightCheck* mHeightCheck;
+    const IJudge* mJudgeForceLand;
+    PlayerAnimator* mAnimator;
+    PlayerTrigger* mTrigger;
+    PlayerCapManHeroEyesControl* mCapEyesControl;
+    PlayerJointParamCenterDynamics* mJointParamCenterDynamics;
+    PlayerJointParamGroundPose* mJointParamGroundPose;
     bool mIsIgnoreSwitchOnAreaAnim = 0;
-    al::AreaObj *mAnimArea = 0;
-    const char *_90 = 0;
+    al::AreaObj* mAnimArea = 0;
+    const char* _90 = 0;
     sead::Vector3f _98 = {0.0f, 0.0f, 0.0f};
     int _A4 = 0;
     int _A8 = 0;
@@ -77,10 +81,10 @@ private:
     bool pad_AF = 0;
     int _B0 = 0;
     bool _B4 = 0;
-    const char *mRequestAnimName = 0;
+    const char* mRequestAnimName = 0;
     sead::Vector3f _C0 = {0.0f, 0.0f, 0.0f};
     int _CC = 0;
-    al::MtxConnector *_D0 = 0;
+    al::MtxConnector* _D0 = 0;
     sead::Vector3f _D8 = {0.0f, 0.0f, 0.0f};
     bool _E4 = 0;
 };

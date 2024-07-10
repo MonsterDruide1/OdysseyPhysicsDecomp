@@ -32,7 +32,9 @@ public:
     sead::Vector2f _3C = {0.0f, 0.0f};
     bool _44 = 0;
     int _30_2 = 0;
-    sead::Vector2f _34_2 = {0.0f, 0.0f};;
-    sead::Vector2f _3C_2 = {0.0f, 0.0f};;
+    sead::Vector2f _34_2 = {0.0f, 0.0f};
+    ;
+    sead::Vector2f _3C_2 = {0.0f, 0.0f};
+    ;
     bool _44_2 = 0;
 };

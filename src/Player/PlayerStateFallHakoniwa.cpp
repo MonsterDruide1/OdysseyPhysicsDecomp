@@ -35,6 +35,7 @@ PlayerStateFallHakoniwa::PlayerStateFallHakoniwa(
 PlayerStateFallHakoniwa::~PlayerStateFallHakoniwa() {
     CRASH
 }
+
 void PlayerStateFallHakoniwa::appear() {
     mIsDead = false;
     unk = {0.0f, 0.0f, 0.0f};
@@ -42,46 +43,52 @@ void PlayerStateFallHakoniwa::appear() {
     flag2 = false;
     gap1 = 0;
     gap2 = 0;
-    if(mTrigger) {
+    if (mTrigger) {
         flag1 = mTrigger->isOn(PlayerTrigger::ECollisionTrigger_val7);
         flag2 = mTrigger->isOn(PlayerTrigger::EActionTrigger_val14);
-        if(mTrigger->isOn(PlayerTrigger::EActionTrigger_val32)) {
+        if (mTrigger->isOn(PlayerTrigger::EActionTrigger_val32)) {
             gap1 = 8;
             gap2 = 15;
             al::calcFrontDir(&unk, mActor);
         }
     }
 
-    mMaxMoveSpeed = sead::Mathf::max3(al::calcSpeedH(mActor), mConst->getNormalMaxSpeed(), mConst->getJumpMoveSpeedMax());
+    mMaxMoveSpeed = sead::Mathf::max3(al::calcSpeedH(mActor), mConst->getNormalMaxSpeed(),
+                                      mConst->getJumpMoveSpeedMax());
     mInvalidateInputFallArea = nullptr;
     updateFallTargetArea();
     mAirMoveControl->mIs2D = rs::isPlayer2D(mActor);
     al::setNerve(this, &Fall);
 }
+
 void PlayerStateFallHakoniwa::updateFallTargetArea() {
-    if(!mInvalidateInputFallArea) {
-        if(!rs::updateJudgeAndResult(mJudgeInvalidateInputFall))
+    if (!mInvalidateInputFallArea) {
+        if (!rs::updateJudgeAndResult(mJudgeInvalidateInputFall))
             return;
         mInvalidateInputFallArea = mJudgeInvalidateInputFall->mInvalidateInputFallArea;
     }
     CRASH
 }
+
 bool PlayerStateFallHakoniwa::isValidWallCatch() {
-    if(mIsDead) return true;
-    if(!gap2 || al::isGreaterStep(this, gap2)) return true;
+    if (mIsDead)
+        return true;
+    if (!gap2 || al::isGreaterStep(this, gap2))
+        return true;
 
     sead::Vector3f front = {0.0f, 0.0f, 0.0f};
     al::calcFrontDir(&front, mActor);
     return front.dot(unk) < 0.70711f;
 }
+
 void PlayerStateFallHakoniwa::exeFall() {
     updateFallTargetArea();
-    if(al::isFirstStep(this)) {
+    if (al::isFirstStep(this)) {
         // animation stuff
-        mAirMoveControl->setup(mConst->getJumpMoveSpeedMax(), mConst->getJumpMoveSpeedMin(), 0, al::calcSpeedV(mActor), mConst->getJumpGravity(), gap1, 0.0f);
+        mAirMoveControl->setup(mConst->getJumpMoveSpeedMax(), mConst->getJumpMoveSpeedMin(), 0,
+                               al::calcSpeedV(mActor), mConst->getJumpGravity(), gap1, 0.0f);
     }
-    if(rs::isPlayer2D(mActor) && rs::isIn2DArea(mDimension)) {
+    if (rs::isPlayer2D(mActor) && rs::isIn2DArea(mDimension))
         CRASH
-    }
     mAirMoveControl->update();
 }

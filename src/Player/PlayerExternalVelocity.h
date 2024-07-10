@@ -5,23 +5,25 @@
 #include "math/seadVector.h"
 
 class ExternalForceKeeper;
+
 class PlayerExternalVelocity {
 public:
-    PlayerExternalVelocity(al::LiveActor const*,IUsePlayerCollision const*,sead::Vector3f const*);
+    PlayerExternalVelocity(al::LiveActor const*, IUsePlayerCollision const*, sead::Vector3f const*);
     void requestApplyLastGroundInertia();
-    void cancelAndFeedbackLastGroundInertia(al::LiveActor *,float,bool);
+    void cancelAndFeedbackLastGroundInertia(al::LiveActor*, float, bool);
     void update();
     bool isExistForce() const;
     bool isExistSnapForce() const;
+
 public:
-    ExternalForceKeeper *mExternalForceKeeper;
+    ExternalForceKeeper* mExternalForceKeeper;
     sead::Vector3f someForce1;
     sead::Vector3f someForce2;
     sead::Vector3f someVec2;
     int pad;
-    const al::LiveActor *mActor;
-    const IUsePlayerCollision *mCollision;
-    const sead::Vector3f *someVec;
+    const al::LiveActor* mActor;
+    const IUsePlayerCollision* mCollision;
+    const sead::Vector3f* someVec;
     bool someFlag;
     bool gap2[3];
     sead::Vector3f someForce3;

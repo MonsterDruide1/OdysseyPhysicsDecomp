@@ -4,13 +4,8 @@
 #include <container/seadRingBuffer.h>
 #include <math/seadQuat.h>
 #include <math/seadVector.h>
-#include <container/seadPtrArray.h>
-#include <container/seadRingBuffer.h>
-#include <math/seadQuat.h>
-#include <math/seadVector.h>
 #include <prim/seadDelegate.h>
 #include "Library/Yaml/ByamlIter.h"
-
 
 namespace al {
 class ByamlIter;

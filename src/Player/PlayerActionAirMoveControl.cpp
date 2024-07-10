@@ -25,6 +25,7 @@ PlayerActionAirMoveControl::PlayerActionAirMoveControl(al::LiveActor* actor,
                         pConst->getJumpTurnAccelFrame(), pConst->getJumpTurnAccelFrameFast(),
                         pConst->getJumpTurnBrakeFrame());
 }
+
 void PlayerActionAirMoveControl::setup(float a2, float maxSpeed, int extendFrame, float jumpPower,
                                        float jumpGravity, int a7, float jumpInertia) {
     const PlayerConst* mPlayerConst;        // x0
@@ -187,19 +188,24 @@ void PlayerActionAirMoveControl::setup(float a2, float maxSpeed, int extendFrame
     this->someVec.z = 0.0;
     mTurnControl->reset();
 }
+
 void PlayerActionAirMoveControl::setupTurn(float, float, float, float, int, int, int) {
     CRASH
 }
+
 void PlayerActionAirMoveControl::setExtendFrame(int frame) {
     mExtendFrame = frame;
 }
+
 void PlayerActionAirMoveControl::setupCollideWallScaleVelocity(float x, float y, float z) {
     isSetCollideWallScaleVelocity = true;
     mCollideWallScaleVelocity = {x, y, z};
 }
+
 void PlayerActionAirMoveControl::verticalizeStartMoveDir(const sead::Vector3f&) {
     CRASH
 }
+
 void PlayerActionAirMoveControl::update() {
     int mExtendFrame;
     int someCounter;
@@ -266,14 +272,12 @@ void PlayerActionAirMoveControl::update() {
 
     this->someCounter = v5;
     if (unk_flag2 && v5 <= mExtendFrame) {
-        if (this->unk_flag3) {
+        if (this->unk_flag3)
             isHoldHackJump = 1;
-        } else {
-            if (mIUsePlayerHack)
-                isHoldHackJump = rs::isHoldHackJump(this->mIUsePlayerHack);
-            else
-                isHoldHackJump = this->mPlayerInput->isHoldJump();
-        }
+        else if (mIUsePlayerHack)
+            isHoldHackJump = rs::isHoldHackJump(this->mIUsePlayerHack);
+        else
+            isHoldHackJump = this->mPlayerInput->isHoldJump();
 
         this->unk_flag2 = isHoldHackJump & 1;
     } else {
@@ -428,9 +432,11 @@ void PlayerActionAirMoveControl::update() {
 
     this->someCounterRunningBackwards = v50;
 }
+
 bool PlayerActionAirMoveControl::isHoldJumpExtend() const {
     CRASH
 }
+
 void PlayerActionAirMoveControl::calcMoveInput(sead::Vector3f*, const sead::Vector3f&) const {
     CRASH
 }

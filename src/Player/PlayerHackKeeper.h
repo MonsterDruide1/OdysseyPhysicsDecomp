@@ -29,7 +29,8 @@ class PlayerHackKeeper {
 public:
     PlayerHackKeeper(al::LiveActor* player, HackCap* cap, PlayerRecoverySafetyPoint* safetyPoint,
                      const PlayerInput* input, const sead::Matrix34f* mtx,
-                     const PlayerDamageKeeper* damageKeeper, const IPlayerModelChanger* modelChanger,
+                     const PlayerDamageKeeper* damageKeeper,
+                     const IPlayerModelChanger* modelChanger,
                      const IUsePlayerHeightCheck* heightCheck);
                      
     void createHackModel(const al::ActorInitInfo&);

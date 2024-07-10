@@ -16,30 +16,39 @@
 bool PlayerInputFunction::isTriggerCancelWorldWarp(al::LiveActor const*, int) {
     CRASH
 }
+
 bool PlayerInputFunction::isTriggerStartWorldWarp(al::LiveActor const*, int) {
     CRASH
 }
+
 bool PlayerInputFunction::isTriggerTalk(al::LiveActor const*, int) {
     CRASH
 }
+
 bool PlayerInputFunction::isTriggerJump(al::LiveActor const*, int port) {
     return al::isPadTriggerA(port) || al::isPadTriggerB(port);
 }
+
 bool PlayerInputFunction::isTriggerSubAction(al::LiveActor const*, int port) {
     return al::isPadTriggerZL(port) || al::isPadTriggerZR(port);
 }
+
 bool PlayerInputFunction::isHoldSubAction(al::LiveActor const*, int port) {
     return al::isPadHoldZL(port) || al::isPadHoldZR(port);
 }
+
 bool PlayerInputFunction::isHoldAction(al::LiveActor const*, int) {
     CRASH
 }
+
 bool PlayerInputFunction::isHoldJump(al::LiveActor const*, int port) {
     return al::isPadHoldA(port) || al::isPadHoldB(port);
 }
+
 bool PlayerInputFunction::isReleaseAction(al::LiveActor const*, int) {
     CRASH
 }
+
 bool PlayerInputFunction::isReleaseJump(al::LiveActor const*, int) {
     CRASH
 }
@@ -192,6 +201,7 @@ void PlayerInput::calcHoldMoveInput3D(sead::Vector3f*, const sead::Vector3f&,
                                       const sead::Matrix34f*) const {
     CRASH
 }
+
 void PlayerInput::snapWallAlongInput(sead::Vector3f* a2, const sead::Vector3f& a3) const {
     float v14;
     float v16;
@@ -279,6 +289,7 @@ void PlayerInput::snapWallAlongInput(sead::Vector3f* a2, const sead::Vector3f& a
         *a2 = (xyz * readInWalls) + (v45 * *a2);
     }
 }
+
 void PlayerInput::snapAreaInput(sead::Vector3<float>*, const sead::Vector3<float>&) const {
     if (hasSomeSnapMoveDirArea)
         CRASH
@@ -350,6 +361,7 @@ namespace rs {
 bool isSeparatePlay(al::IUseSceneObjHolder const*) {
     return false;
 }
+
 bool isHoldHackJump(IUsePlayerHack*) {
     CRASH
 }

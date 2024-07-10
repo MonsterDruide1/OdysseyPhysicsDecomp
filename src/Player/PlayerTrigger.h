@@ -17,6 +17,7 @@ public:
         // used in PlayerTrigger::isOnYoshiHackEnd
         ECollisionTrigger_val1024 = 1024,
     };
+
     enum EAttackSensorTrigger : u32 {
         // used in PlayerCounterAfterCapCatch::isCapCatch
         EAttackSensorTrigger_val0 = 0,
@@ -69,7 +70,7 @@ public:
     enum EDemoEndTrigger : u32 {
         EDemoEndTrigger_val0 = 0,
     };
-    
+
     enum EMaterialChangeTrigger : u32 {
         EMaterialChangeTrigger_val0 = 0,
     };

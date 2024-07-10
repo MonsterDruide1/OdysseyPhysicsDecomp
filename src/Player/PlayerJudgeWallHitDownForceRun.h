@@ -13,7 +13,9 @@ class PlayerTrigger;
 class PlayerJudgeWallHitDownForceRun : public IJudge {
 public:
     PlayerJudgeWallHitDownForceRun(const al::LiveActor* player, const IUsePlayerCollision* collider,
-                           const PlayerConst* pConst, const PlayerCounterForceRun* counterForceRun, const PlayerTrigger* trigger);
+                                   const PlayerConst* pConst,
+                                   const PlayerCounterForceRun* counterForceRun,
+                                   const PlayerTrigger* trigger);
     void reset() override;
     void update() override;
     bool judge() const override;

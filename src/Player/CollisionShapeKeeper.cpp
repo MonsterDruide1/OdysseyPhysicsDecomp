@@ -129,7 +129,9 @@ void CollisionShapeKeeper::calcRelativeShapeInfo(const sead::Matrix34f& a2) {
 }
 
 void CollisionShapeKeeper::registerCollideResult(const CollidedShapeResult& result) {
-    printf("CollisionShapeKeeper::registerCollideResult(type=%s)\n", result.isSphere() ? "sphere" : result.isArrow() ? "arrow" : "disk");
+    printf("CollisionShapeKeeper::registerCollideResult(type=%s)\n", result.isSphere() ? "sphere" :
+                                                                     result.isArrow()  ? "arrow" :
+                                                                                         "disk");
     *mCollideShapeResult[mNumCollideResult] = result;
     mNumCollideResult++;
 }

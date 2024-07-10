@@ -46,5 +46,6 @@ struct ActorSceneInfo {
     GraphicsSystemInfo* graphicsSystemInfo = nullptr;
     ModelDrawBufferCounter* modelDrawBufferCounter = nullptr;
 };
+
 static_assert(sizeof(ActorSceneInfo) == 0xA0);
 }  // namespace al

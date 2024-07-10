@@ -12,7 +12,7 @@ class PlayerTrigger;
 class PlayerJudgeWallHitDownRolling : public IJudge {
 public:
     PlayerJudgeWallHitDownRolling(const al::LiveActor* player, const IUsePlayerCollision* collider,
-                           const PlayerConst* pConst, const PlayerTrigger* trigger);
+                                  const PlayerConst* pConst, const PlayerTrigger* trigger);
     void reset() override;
     void update() override;
     bool judge() const override;

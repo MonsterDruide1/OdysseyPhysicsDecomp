@@ -14,9 +14,13 @@ public:
     void recordWallLeave(const sead::Vector3f& position, const sead::Vector3f& normal);
 
     bool isJumpStored() const { return mIsJumpStored; }
+
     const sead::Vector3f& getJumpWallPosition() const { return mJumpWallPosition; }
+
     const sead::Vector3f& getJumpWallNormal() const { return mJumpWallNormal; }
+
     bool isLeaveStored() const { return mIsLeaveStored; }
+
     const sead::Vector3f& getLeaveWallPosition() const { return mLeaveWallPosition; }
 
 private:

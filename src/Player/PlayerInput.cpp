@@ -1692,100 +1692,91 @@ void PlayerInput::updateInput3D() {
     }
 }
 
-void PlayerInput::updateWallAlong()
-{
-  float x; // s0
-  float y; // s1
-  float v5; // t1
-  float v6; // s0
-  float v7; // s0
-  int PlayerInputPort; // w20
-  const al::IUseSceneObjHolder *v9; // x0
-  int PlayerControllerPort; // w0
-  int somethingAboutP0; // w2
-  sead::Vector2f MoveInputStick; // kr00_8
-  float v13; // w20
-  float v14; // s0
-  float v15; // w8
-  float v16; // w9
-  float readInWalls; // t1
-  sead::Vector3f v18; // [xsp+0h] [xbp-30h] BYREF
+void PlayerInput::updateWallAlong() {
+    float x;                           // s0
+    float y;                           // s1
+    float v5;                          // t1
+    float v6;                          // s0
+    float v7;                          // s0
+    int PlayerInputPort;               // w20
+    const al::IUseSceneObjHolder* v9;  // x0
+    int PlayerControllerPort;          // w0
+    int somethingAboutP0;              // w2
+    sead::Vector2f MoveInputStick;     // kr00_8
+    float v13;                         // w20
+    float v14;                         // s0
+    float v15;                         // w8
+    float v16;                         // w9
+    float readInWalls;                 // t1
+    sead::Vector3f v18;                // [xsp+0h] [xbp-30h] BYREF
 
-  if ( this->mPlayerCollision )
-  {
-    this->convergeInUpdateWallAlong = al::converge(this->convergeInUpdateWallAlong, 0, 1);
-    v18.x = 0.0;
-    v18.y = 0.0;
-    v18.z = 0.0;
-    if ( rs::tryGetPlayerInputWallAlongWallNormal(&v18, this->mLiveActor) )
-    {
-      if ( this->mIsDisableInput )
-      {
-        x = 0.0;
-        y = 0.0;
-      }
-      else
-      {
-        PlayerInputPort = PlayerFunction::getPlayerInputPort(this->mLiveActor);
-        v9 = this->mLiveActor;
+    if (this->mPlayerCollision) {
+        this->convergeInUpdateWallAlong = al::converge(this->convergeInUpdateWallAlong, 0, 1);
+        v18.x = 0.0;
+        v18.y = 0.0;
+        v18.z = 0.0;
+        if (rs::tryGetPlayerInputWallAlongWallNormal(&v18, this->mLiveActor)) {
+            if (this->mIsDisableInput) {
+                x = 0.0;
+                y = 0.0;
+            } else {
+                PlayerInputPort = PlayerFunction::getPlayerInputPort(this->mLiveActor);
+                v9 = this->mLiveActor;
 
-        if ( rs::isSeparatePlay(v9) )
-        {
-          PlayerControllerPort = al::getPlayerControllerPort(0);
-          somethingAboutP0 = this->somethingAboutP0;
-          PlayerInputPort = PlayerControllerPort;
+                if (rs::isSeparatePlay(v9)) {
+                    PlayerControllerPort = al::getPlayerControllerPort(0);
+                    somethingAboutP0 = this->somethingAboutP0;
+                    PlayerInputPort = PlayerControllerPort;
+                } else {
+                    somethingAboutP0 = 0;
+                }
+
+                MoveInputStick = PlayerInputFunction::getMoveInputStick(
+                    this->mLiveActor, PlayerInputPort, somethingAboutP0);
+                y = MoveInputStick.y;
+                x = MoveInputStick.x;
+            }
+
+            v13 = x;
+            v14 = sqrtf((float)(x * x) + (float)(y * y));
+            if (v14 >= 0.1)
+                v15 = y;
+            else
+                v15 = 0.0;
+
+            if (v14 >= 0.1)
+                v16 = v13;
+            else
+                v16 = 0.0;
+
+            if (!this->convergeInUpdateWallAlong ||
+                (float)((float)((float)(v18.x * this->anotherVectorForWalls.x) +
+                                (float)(v18.y * this->anotherVectorForWalls.y)) +
+                        (float)(v18.z * this->anotherVectorForWalls.z)) > 0.087156 ||
+                (float)((float)(v16 * this->anotherVector2ForWalls2.x) +
+                        (float)(v15 * this->anotherVector2ForWalls2.y)) < 0.98481) {
+                this->anotherVectorForWalls = v18;
+                this->anotherVector2ForWalls2.x = v16;
+                this->anotherVector2ForWalls2.y = v15;
+            }
+
+            this->convergeInUpdateWallAlong = 5;
+            readInWalls = this->readInWalls;
+            v6 = readInWalls;
+            goto LABEL_26;
         }
-        else
-        {
-          somethingAboutP0 = 0;
+
+        v5 = this->readInWalls;
+        v6 = v5;
+        if (this->convergeInUpdateWallAlong >= 1) {
+        LABEL_26:
+            this->readInWalls = v6 + (float)((float)(1.0 - v6) * 0.1);
+            return;
         }
 
-        MoveInputStick = PlayerInputFunction::getMoveInputStick(this->mLiveActor, PlayerInputPort, somethingAboutP0);
-        y = MoveInputStick.y;
-        x = MoveInputStick.x;
-      }
-
-      v13 = x;
-      v14 = sqrtf((float)(x * x) + (float)(y * y));
-      if ( v14 >= 0.1 )
-        v15 = y;
-      else
-        v15 = 0.0;
-
-      if ( v14 >= 0.1 )
-        v16 = v13;
-      else
-        v16 = 0.0;
-
-      if ( !this->convergeInUpdateWallAlong
-        || (float)((float)((float)(v18.x * this->anotherVectorForWalls.x)
-                         + (float)(v18.y * this->anotherVectorForWalls.y))
-                 + (float)(v18.z * this->anotherVectorForWalls.z)) > 0.087156
-        || (float)((float)(v16 * this->anotherVector2ForWalls2.x) + (float)(v15 * this->anotherVector2ForWalls2.y)) < 0.98481 )
-      {
-        this->anotherVectorForWalls = v18;
-        this->anotherVector2ForWalls2.x = v16;
-        this->anotherVector2ForWalls2.y = v15;
-      }
-
-      this->convergeInUpdateWallAlong = 5;
-      readInWalls = this->readInWalls;
-      v6 = readInWalls;
-      goto LABEL_26;
+        v7 = v6 + (float)((float)(0.0 - v6) * 0.05);
+        this->readInWalls = v7;
+        if (v7 < 0.005)
+            this->readInWalls = 0.0;
     }
-
-    v5 = this->readInWalls;
-    v6 = v5;
-    if ( this->convergeInUpdateWallAlong >= 1 )
-    {
-LABEL_26:
-      this->readInWalls = v6 + (float)((float)(1.0 - v6) * 0.1);
-      return;
-    }
-
-    v7 = v6 + (float)((float)(0.0 - v6) * 0.05);
-    this->readInWalls = v7;
-    if ( v7 < 0.005 )
-      this->readInWalls = 0.0;
-  }
 }

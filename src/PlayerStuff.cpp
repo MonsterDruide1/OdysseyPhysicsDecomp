@@ -8,7 +8,6 @@
 
 #include "Player/PlayerColliderHakoniwa.h"
 
-
 void rs::initPlayerActorInfo(PlayerActorBase* player, PlayerInitInfo const& info) {
     player->mPortNo = info.mPortNo;
     player->mViewMtx = info.mViewMtx;
@@ -16,10 +15,9 @@ void rs::initPlayerActorInfo(PlayerActorBase* player, PlayerInitInfo const& info
     sead::Matrix34f mtx;
     mtx.makeQT(info._34, info._20);
     al::updatePoseMtx(player, &mtx);
-
 }
 
-void rs::resetCollisionPose(const IUsePlayerCollision *collider, const sead::Quat<float> &quat) {
+void rs::resetCollisionPose(const IUsePlayerCollision* collider, const sead::Quat<float>& quat) {
     collider->getPlayerCollider()->resetPose(quat);
 }
 
@@ -27,12 +25,13 @@ f32 rs::getGroundHeight(const IUsePlayerHeightCheck* heightCheck) {
     return heightCheck->getGroundHeight();
 }
 
-void rs::calcGroundNormalExceptJustLandOrGravityDir(sead::Vector3<float>* vec, al::LiveActor const* actor, IUsePlayerCollision const* collider) {
-    if(!rs::isJustLand(collider) && rs::isCollidedGround(collider)) {
+void rs::calcGroundNormalExceptJustLandOrGravityDir(sead::Vector3<float>* vec,
+                                                    al::LiveActor const* actor,
+                                                    IUsePlayerCollision const* collider) {
+    if (!rs::isJustLand(collider) && rs::isCollidedGround(collider))
         *vec = rs::getCollidedGroundNormal(collider);
-    } else {
+    else
         *vec = -al::getGravity(actor);
-    }
 }
 
 const al::CollisionParts* rs::getCollidedGroundCollisionParts(IUsePlayerCollision const* collider) {
@@ -42,7 +41,9 @@ const al::CollisionParts* rs::getCollidedGroundCollisionParts(IUsePlayerCollisio
 const al::CollisionParts* rs::getCollidedWallCollisionParts(IUsePlayerCollision const* collider) {
     return collider->getPlayerCollider()->info2->mTriangle.mCollisionParts;
 }
-const al::CollisionParts* rs::getCollidedCeilingCollisionParts(IUsePlayerCollision const* collider) {
+
+const al::CollisionParts*
+rs::getCollidedCeilingCollisionParts(IUsePlayerCollision const* collider) {
     return collider->getPlayerCollider()->info3->mTriangle.mCollisionParts;
 }
 

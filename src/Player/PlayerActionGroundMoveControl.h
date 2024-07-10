@@ -41,11 +41,11 @@ public:
     void set_c4(bool c4) { _C4 = c4; }
 
 public:
-    al::LiveActor *mActor;
-    const PlayerConst *mConst;
-    const PlayerInput *mInput;
-    const IUsePlayerCollision *mCollision;
-    const IUsePlayerHack **_20 = 0;
+    al::LiveActor* mActor;
+    const PlayerConst* mConst;
+    const PlayerInput* mInput;
+    const IUsePlayerCollision* mCollision;
+    const IUsePlayerHack** _20 = 0;
     bool someFlag = 0;
     sead::Vector3f mGroundNormal = {0.0f, 0.0f, 0.0f};
     float mMaxSpeed = 0;
@@ -60,7 +60,7 @@ public:
     int mBrakeOnCounterCorner = 0;
     int _60 = 0;
     bool _64 = 0;
-    IJudge *mJudgeStartDash = 0;
+    IJudge* mJudgeStartDash = 0;
     float mDashMaxSpeed2D = 0;
     int mDashAccelFrame2D = 0;
     bool _78 = 0;
@@ -73,7 +73,7 @@ public:
     bool _A4 = 0;
     float _A8 = 0;
     float _AC = 0;
-    PlayerActionTurnControl *mTurnControl = 0;
+    PlayerActionTurnControl* mTurnControl = 0;
     bool someFlags[3] = {false, false, false};
     bool _BB = 0;
     bool _BC = 0;

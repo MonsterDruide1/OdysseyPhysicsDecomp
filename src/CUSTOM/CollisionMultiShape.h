@@ -2,16 +2,16 @@
 
 #include <math/seadMatrix.h>
 #include <math/seadVector.h>
+#include "CUSTOM/CollisionPartsKeeper.h"
 #include "Library/Collision/CollisionDirector.h"
 #include "Library/Collision/IUseCollision.h"
-#include "CUSTOM/CollisionPartsKeeper.h"
 
 namespace al {
 class CollisionPartsFilterBase;
 class CollisionParts;
 class KCPrismData;
 class KCPrismHeader;
-}
+}  // namespace al
 class CollisionShapeKeeper;
 
 class CollisionPartsKeeper;
@@ -19,12 +19,15 @@ class CollisionPartsKeeper;
 namespace game {
 class CollisionMultiShape {
 public:
-    //CollisionMultiShape(const CollisionPartsKeeper* keeper) : mPartsKeeper(keeper) {}
-    CollisionMultiShape(const al::IUseCollision* part, int) : mPartsKeeper((game::CollisionPartsKeeper*)part->getCollisionDirector()->mActivePartsKeeper) {}
+    // CollisionMultiShape(const CollisionPartsKeeper* keeper) : mPartsKeeper(keeper) {}
+    CollisionMultiShape(const al::IUseCollision* part, int)
+        : mPartsKeeper(
+              (game::CollisionPartsKeeper*)part->getCollisionDirector()->mActivePartsKeeper) {}
 
-    bool check(CollisionShapeKeeper *,sead::Matrix34f const*,float,sead::Vector3f const&,al::CollisionPartsFilterBase const*);
+    bool check(CollisionShapeKeeper*, sead::Matrix34f const*, float, sead::Vector3f const&,
+               al::CollisionPartsFilterBase const*);
     void callbackFromParts(al::CollisionParts*);
-    void callbackFromServer(al::KCPrismData const*,al::KCPrismHeader const*);
+    void callbackFromServer(al::KCPrismData const*, al::KCPrismHeader const*);
 
 private:
     const game::CollisionPartsKeeper* mPartsKeeper;
@@ -34,11 +37,12 @@ private:
     al::CollisionParts* mParts;
     f32 unk6;
 };
-}
+}  // namespace game
 
 class CollisionMultiShape : public game::CollisionMultiShape {
 public:
-    CollisionMultiShape(const al::IUseCollision* part, int s) : game::CollisionMultiShape(part, s) {}
+    CollisionMultiShape(const al::IUseCollision* part, int s)
+        : game::CollisionMultiShape(part, s) {}
 
-    void validateCorrectMovePartsCheck() {WARN_UNIMPL;}
+    void validateCorrectMovePartsCheck() { WARN_UNIMPL; }
 };

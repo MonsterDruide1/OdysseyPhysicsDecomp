@@ -10,104 +10,88 @@
 #include "Player/PlayerJudgePreInputCapThrow.h"
 #include "Player/PlayerTrigger.h"
 
-void sub_7100464C88(
-        sead::FixedSafeString<64> *a1,
-        const char *a2,
-        const PlayerInput *a3,
-        char a4,
-        const sead::Vector3f& a5,
-        const sead::Vector2f& a6,
-        const sead::Vector2f& a7,
-        int a8)
-{
-  const char *v16; // x1
-  const char *v17; // x3
-  sead::FixedSafeString<64> *v18; // x0
-  const char *v19; // x2
-  int v20; // w8
-  unsigned int v21; // w20
+void sub_7100464C88(sead::FixedSafeString<64>* a1, const char* a2, const PlayerInput* a3, char a4,
+                    const sead::Vector3f& a5, const sead::Vector2f& a6, const sead::Vector2f& a7,
+                    int a8) {
+    const char* v16;                 // x1
+    const char* v17;                 // x3
+    sead::FixedSafeString<64>* v18;  // x0
+    const char* v19;                 // x2
+    int v20;                         // w8
+    unsigned int v21;                // w20
 
-  if ( a3->isThrowTypeRolling(a6) )
-  {
-    v16 = "%s%s";
-    if ( a6.y <= 0.0 )
-      v17 = "DoubleDown";
-    else
-      v17 = "DoubleUp";
+    if (a3->isThrowTypeRolling(a6)) {
+        v16 = "%s%s";
+        if (a6.y <= 0.0)
+            v17 = "DoubleDown";
+        else
+            v17 = "DoubleUp";
 
-    goto LABEL_18;
-  }
-
-  if ( a3->isThrowTypeSpiral(a6) )
-  {
-    v16 = "%s%s";
-    if ( a6.x <= 0.0 )
-      v17 = "DoubleLeft";
-    else
-      v17 = "DoubleRight";
-
-    goto LABEL_18;
-  }
-
-  if ( !al::isNearZero(a5, 0.001) )
-  {
-    if ( a5.y >= 0.0 )
-    {
-LABEL_17:
-      v16 = "%s%s";
-      v17 = "Left";
-      goto LABEL_18;
+        goto LABEL_18;
     }
 
-LABEL_16:
-    v16 = "%s%s";
-    v17 = "Right";
+    if (a3->isThrowTypeSpiral(a6)) {
+        v16 = "%s%s";
+        if (a6.x <= 0.0)
+            v17 = "DoubleLeft";
+        else
+            v17 = "DoubleRight";
 
-LABEL_18:
-    v18 = a1;
-    v19 = a2;
-    v18->format(v16, v19, v17);
-    return;
-  }
-
-  if ( a8 != 1 || (a4 & 1) != 0 )
-  {
-    if ( a8 == 2 )
-      v20 = 2;
-    else
-      v20 = 3;
-
-    if ( (a4 & 1) != 0 )
-      v21 = 3;
-    else
-      v21 = v20;
-
-    if ( a3->isThrowTypeLeftRight(a7) )
-    {
-      v16 = "%s%d%s";
-      v19 = "SpinCapStart";
-      v18 = a1;
-      v17 = (const char *)v21;
-      v18->format(v16, v19, v17);
-      return;
+        goto LABEL_18;
     }
 
-    a1->format("%s%dRight", "SpinCapStart", v21);
-    return;
-  }
-  else
-  {
-    if ( a3->isThrowTypeLeftRight(a7) )
-    {
-      if ( a7.x <= 0.0 )
-        goto LABEL_17;
+    if (!al::isNearZero(a5, 0.001)) {
+        if (a5.y >= 0.0) {
+        LABEL_17:
+            v16 = "%s%s";
+            v17 = "Left";
+            goto LABEL_18;
+        }
 
-      goto LABEL_16;
+    LABEL_16:
+        v16 = "%s%s";
+        v17 = "Right";
+
+    LABEL_18:
+        v18 = a1;
+        v19 = a2;
+        v18->format(v16, v19, v17);
+        return;
     }
 
-    a1->format("%s", a2);
-    return;
-  }
+    if (a8 != 1 || (a4 & 1) != 0) {
+        if (a8 == 2)
+            v20 = 2;
+        else
+            v20 = 3;
+
+        if ((a4 & 1) != 0)
+            v21 = 3;
+        else
+            v21 = v20;
+
+        if (a3->isThrowTypeLeftRight(a7)) {
+            v16 = "%s%d%s";
+            v19 = "SpinCapStart";
+            v18 = a1;
+            v17 = (const char*)v21;
+            v18->format(v16, v19, v17);
+            return;
+        }
+
+        a1->format("%s%dRight", "SpinCapStart", v21);
+        return;
+    } else {
+        if (a3->isThrowTypeLeftRight(a7)) {
+            if (a7.x <= 0.0)
+                goto LABEL_17;
+
+            goto LABEL_16;
+        }
+
+        a1->format("%s", a2);
+        return;
+    }
 }
 
 PlayerSpinCapAttack::PlayerSpinCapAttack(HackCap* hackCap, PlayerConst const* pConst,
@@ -239,7 +223,8 @@ void PlayerSpinCapAttack::startCapThrow(sead::Vector3<float> const& a2,
         v6 = 3;
     if (!_45)
         v6 = _44;
-    mHackCap->startThrow(_31, a2, a3, a4, _48, _50, _34, a5, a6, (HackCap::SwingHandType)v6, _30, _58, _40);
+    mHackCap->startThrow(_31, a2, a3, a4, _48, _50, _34, a5, a6, (HackCap::SwingHandType)v6, _30,
+                         _58, _40);
 }
 
 void PlayerSpinCapAttack::attackSpinMsg(al::HitSensor* a2, al::HitSensor* a3) {
@@ -247,14 +232,14 @@ void PlayerSpinCapAttack::attackSpinMsg(al::HitSensor* a2, al::HitSensor* a3) {
 }
 
 bool PlayerSpinCapAttack::tryCancelCapState(PlayerAnimator* animator) {
-    if(!mHackCap->cancelCapState())
+    if (!mHackCap->cancelCapState())
         return false;
     CapFunction::putOnCapPlayer(mHackCap, animator);
     return true;
 }
 
 bool PlayerSpinCapAttack::tryStartCapSpinGroundMiss(PlayerAnimator* animator) {
-    if(_60.isEmpty() || (animator->unk2 && !animator->isSubAnim(_60)))
+    if (_60.isEmpty() || (animator->unk2 && !animator->isSubAnim(_60)))
         return false;
     _B8.format("SpinSeparate");
     animator->startSubAnim(_B8);
@@ -262,9 +247,9 @@ bool PlayerSpinCapAttack::tryStartCapSpinGroundMiss(PlayerAnimator* animator) {
 }
 
 bool PlayerSpinCapAttack::tryStartCapSpinAirMiss(PlayerAnimator* animator) {
-    if(_60.isEmpty() || (animator->unk2 && !animator->isSubAnim(_60)))
+    if (_60.isEmpty() || (animator->unk2 && !animator->isSubAnim(_60)))
         return false;
-    if(animator->isAnim(_60))
+    if (animator->isAnim(_60))
         animator->startAnim("Fall");
     _B8.format("SpinSeparate");
     animator->startSubAnimOnlyAir(_B8);
@@ -276,9 +261,9 @@ bool PlayerSpinCapAttack::isCapSpinAttack() const {
 }
 
 bool PlayerSpinCapAttack::isValidAttackSensor(PlayerAnimator const* animator) const {
-    if(animator->isSubAnim(_60))
+    if (animator->isSubAnim(_60))
         return animator->getSubAnimFrame() <= mConst->getSpinAttackFrame();
-    if(animator->isAnim(_60))
+    if (animator->isAnim(_60))
         return animator->getAnimFrame() <= mConst->getSpinAttackFrame();
 }
 
@@ -295,29 +280,29 @@ bool PlayerSpinCapAttack::isThrowSwingRightDir() const {
 }
 
 s32 PlayerSpinCapAttack::getThrowFrameGround() const {
-    if(_31)
+    if (_31)
         return mConst->getSpinCapThrowFrameContinuous();
-    if(!al::isNearZero(_34, 0.001f) || _44 || _45) {}
-    else {
-        if(_40 != 2)
+    if (!al::isNearZero(_34, 0.001f) || _44 || _45) {
+    } else {
+        if (_40 != 2)
             return mConst->getSpinCapThrowFrameSwing();
     }
     return mConst->getSpinCapThrowFrame();
 }
 
 s32 PlayerSpinCapAttack::getThrowFrameAir() const {
-    if(_31)
+    if (_31)
         return mConst->getSpinCapThrowFrameContinuous();
-    if(!al::isNearZero(_34, 0.001f) || _44 || _45) {}
-    else {
-        if(_40 != 2)
+    if (!al::isNearZero(_34, 0.001f) || _44 || _45) {
+    } else {
+        if (_40 != 2)
             return mConst->getSpinCapThrowFrameSwing();
     }
     return mConst->getSpinCapThrowFrameAir();
 }
 
 s32 PlayerSpinCapAttack::getThrowFrameSwim() const {
-    if(_44 || _45)
+    if (_44 || _45)
         return mConst->getSpinCapThrowFrameSwing();
     return mConst->getSpinCapThrowFrame();
 }

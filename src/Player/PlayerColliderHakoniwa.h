@@ -3,8 +3,8 @@
 #include <math/seadVector.h>
 
 #include "Library/HostIO/HioNode.h"
-#include "Player/IUsePlayerCollision.h"
 #include "Player/IUsePlayerCeilingCheck.h"
+#include "Player/IUsePlayerCollision.h"
 
 namespace al {
 class LiveActor;
@@ -21,6 +21,7 @@ public:
     virtual f32 getGroundHeight() const = 0;
     virtual f32 getShadowDropHeight() const = 0;
 };
+
 class IUsePlayerFallDistanceCheck {
     virtual f32 getFallDistance() const = 0;
 };

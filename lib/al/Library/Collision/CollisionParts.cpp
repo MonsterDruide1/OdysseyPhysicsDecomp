@@ -12,7 +12,11 @@
 
 #define DEREF_NULL *(volatile int*)0;
 #define WARN_UNIMPL printf("Function not implemented: %s (%s:%d)\n", __func__, __FILE__, __LINE__)
-#define CRASH {WARN_UNIMPL;DEREF_NULL}
+#define CRASH                                                                                      \
+    {                                                                                              \
+        WARN_UNIMPL;                                                                               \
+        DEREF_NULL                                                                                 \
+    }
 
 namespace al {
 
@@ -41,7 +45,7 @@ void CollisionParts::initParts(const sead::Matrix34f& mtx) {
 }
 
 void CollisionParts::resetAllMtx(const sead::Matrix34f& mtx_param) {
-    if(!bVar4 && !bVar5)
+    if (!bVar4 && !bVar5)
         return;
 
     sead::Matrix34f mtx = mtx_param;
@@ -52,7 +56,7 @@ void CollisionParts::resetAllMtx(const sead::Matrix34f& mtx_param) {
     mSyncMtx = mtx;
     mPrevBaseInvMtx.setInverse(mPrevBaseMtx);
     mBaseInvMtx = mPrevBaseInvMtx;
-    
+
     calcMtxScale(&mMtxScaleVec, mBaseInvMtx);
     mMtxScale = (mMtxScaleVec.x + mMtxScaleVec.y + mMtxScaleVec.z) / 3.0f;
     mInvMtxScale = 1.0f / mMtxScale;
@@ -66,12 +70,13 @@ void CollisionParts::resetAllMtx(const sead::Matrix34f& mtx_param) {
 f32 CollisionParts::makeEqualScale(sead::Matrix34f* mtx) {
     sead::Vector3f scale;
     calcMtxScale(&scale, *mtx);
-    sead::Vector3f v17 = {scale.z-scale.x, scale.x-scale.y, scale.y-scale.z};
-    if(isNearZero(v17, 0.001f)) return scale.x;
+    sead::Vector3f v17 = {scale.z - scale.x, scale.x - scale.y, scale.y - scale.z};
+    if (isNearZero(v17, 0.001f))
+        return scale.x;
 
     f32 factor = 1.0f;
     sead::Vector3f vec;
-    if(something == 1) {
+    if (something == 1) {
         factor = (scale.x + scale.y + scale.z) / 3.0f;
         vec = {factor / scale.x, factor / scale.y, factor / scale.z};
     } else if (something == 2) {
@@ -84,7 +89,9 @@ f32 CollisionParts::makeEqualScale(sead::Matrix34f* mtx) {
 
 sead::FixedRingBuffer<KCHitInfo, 512> buffer;
 
-s32 CollisionParts::checkStrikeArrow(al::ArrowHitResultBuffer * results,sead::Vector3f const& unk1,sead::Vector3f const& unk2,al::TriangleFilterBase const* filter) {
+s32 CollisionParts::checkStrikeArrow(al::ArrowHitResultBuffer* results, sead::Vector3f const& unk1,
+                                     sead::Vector3f const& unk2,
+                                     al::TriangleFilterBase const* filter) {
     f32 v48 = unk2.length();
     sead::Vector3f v62;
     v62.setMul(mBaseInvMtx, unk1);
@@ -95,16 +102,16 @@ s32 CollisionParts::checkStrikeArrow(al::ArrowHitResultBuffer * results,sead::Ve
     buffer.clear();
     u32 v60 = 0;
     mKCollisionServer->checkArrow(v62, v61, &buffer, &v60, results->capacity() - results->size());
-    for(int i=0; i<buffer.size(); i++) {
+    for (int i = 0; i < buffer.size(); i++) {
         al::ArrowHitInfo info = {};
         results->pushBack(info);
 
         al::KCHitInfo hit = buffer[i];
         info.mTriangle.fillData(*this, hit.mData, hit.mHeader);
-        if(filter && !filter->isInvalidTriangle(info.mTriangle)) {
+        if (filter && !filter->isInvalidTriangle(info.mTriangle)) {
             results->popBack();
             continue;
-        }   
+        }
 
         info.unk = v48 * hit.something;
         info.mCollisionHitPos.setMul(mBaseMtx, (hit.something * v61) + v62);
@@ -125,4 +132,4 @@ void CollisionParts::syncMtx(const sead::Matrix34f& mtx) {
     makeEqualScale(&mSyncMtx);
 }
 
-}
+}  // namespace al

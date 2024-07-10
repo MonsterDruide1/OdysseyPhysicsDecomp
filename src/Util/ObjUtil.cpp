@@ -31,9 +31,15 @@ bool judgeEnableWallKeepHistory(const al::LiveActor* player, const PlayerWallAct
         if (unk2) {
             f32 horizontalDist = horizontalDiff.length();
             if (cosAngleOfWalls <= 0.087156f) {  // cos(85°)
-                v21 = ((sead::Mathf::clamp((1000.0f - horizontalDist) / 500.0f, -1.0f, 1.0f) - 1.0f) * 1500.0f) * 0.5f;
+                v21 =
+                    ((sead::Mathf::clamp((1000.0f - horizontalDist) / 500.0f, -1.0f, 1.0f) - 1.0f) *
+                     1500.0f) *
+                    0.5f;
             } else {
-                v21 = ((sead::Mathf::clamp((750.0f - horizontalDist) / 750.0f, -1.0f, 1.0f) - 1.0f) * 1500.0f) * 0.5f;
+                v21 =
+                    ((sead::Mathf::clamp((750.0f - horizontalDist) / 750.0f, -1.0f, 1.0f) - 1.0f) *
+                     1500.0f) *
+                    0.5f;
             }
         }
         return up.dot(diffToLastJumpPos) <= v21;

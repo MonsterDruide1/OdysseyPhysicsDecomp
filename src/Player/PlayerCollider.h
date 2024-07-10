@@ -5,8 +5,8 @@
 
 #include "Library/Collision/IUseCollision.h"
 #include "Library/Collision/KCollisionServer.h"
-#include "Player/CollidedShapeResult.h"
 #include "Library/HostIO/HioNode.h"
+#include "Player/CollidedShapeResult.h"
 #include "prim/seadBitFlag.h"
 
 namespace al {
@@ -18,8 +18,7 @@ class CollidedShapeResult;
 class CollisionShapeKeeper;
 class CollisionMultiShape;
 
-class PlayerCollider : public al::HioNode, public al::IUseCollision
-{
+class PlayerCollider : public al::HioNode, public al::IUseCollision {
 public:
     PlayerCollider(al::CollisionDirector*, const sead::Matrix34f*, const sead::Vector3f*,
                    const sead::Vector3f*, bool);
@@ -56,8 +55,9 @@ public:
     void validateCorrectMovePartsCheck();
     al::CollisionDirector* getCollisionDirector() const override;
 
-    void setIsValidGroundSupport(bool isValidGroundSupport) { mIsValidGroundSupport = isValidGroundSupport; }
-    
+    void setIsValidGroundSupport(bool isValidGroundSupport) {
+        mIsValidGroundSupport = isValidGroundSupport;
+    }
 
     f32 get_70() const { return val1; }
 
@@ -66,20 +66,20 @@ public:
     void set1b0(f32 value) { unk11 = value; }
 
 public:
-    al::CollisionDirector *mCollisionDirector;
-    const sead::Matrix34f *mMtxPtr;
-    const sead::Vector3f *mTransPtr;
-    const sead::Vector3f *mGravityPtr;
+    al::CollisionDirector* mCollisionDirector;
+    const sead::Matrix34f* mMtxPtr;
+    const sead::Vector3f* mTransPtr;
+    const sead::Vector3f* mGravityPtr;
     sead::Vector3f mTrans;
     float mSize;
     sead::Matrix34f mMtx;
-    al::HitInfo *info1;
+    al::HitInfo* info1;
     float val1;
     int pad1;
-    al::HitInfo *info2;
+    al::HitInfo* info2;
     float val2;
     int pad2;
-    al::HitInfo *info3;
+    al::HitInfo* info3;
     float val3;
     sead::Vector3f unk3;
     bool flag1;
@@ -89,10 +89,10 @@ public:
     sead::Vector3f mCollisionHitPos;
     int mTimeInAir;
     sead::Matrix34f mCollidePosMtx;
-    CollisionShapeKeeper *mCollisionShapeKeeper;
+    CollisionShapeKeeper* mCollisionShapeKeeper;
     float mCollisionShapeScale;
     int pad;
-    CollisionMultiShape *mCollisionMultiShape;
+    CollisionMultiShape* mCollisionMultiShape;
     sead::BitFlag<u32> someBitField;
     bool mIsInFastMoveCollisionArea;
     bool mIsValidGroundSupport;
@@ -100,18 +100,18 @@ public:
     bool pad3[1];
     sead::Vector3f mCutCollideAffectDir;
     int mWallBorderCheckType;
-    const al::CollisionPartsFilterBase *mCollisionPartsFilter;
+    const al::CollisionPartsFilterBase* mCollisionPartsFilter;
     sead::PtrArray<al::HitInfo const> ptrArraysChangeMe[3];
-    al::HitInfo *someHitInfos;
+    al::HitInfo* someHitInfos;
     unsigned int numHitInfosAbove;
     int pad5;
     sead::PtrArray<al::HitInfo> anotherPtrArray;
     int sizeOfArrayBelowIs3;
     int pad4;
-    float *someThreeFloats;
+    float* someThreeFloats;
     int sizeOfArrayBelowIs3_2;
     int pad4_2;
-    float *anotherThreeFloats;
+    float* anotherThreeFloats;
     sead::Vector3f mCollidedGroundPos;
     sead::Vector3f mCollidedGroundNormal;
     float unk11;

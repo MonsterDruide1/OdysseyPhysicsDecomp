@@ -275,7 +275,8 @@ void PlayerStateRolling::exeBoostStart() {
 }
 
 void PlayerStateRolling::updateRollingAnimFrameRate() {
-    WARN_UNIMPL; // required if any animations are used as timers. ExeStart does it, but that's fine
+    WARN_UNIMPL;  // required if any animations are used as timers. ExeStart does it, but that's
+                  // fine
 }
 
 void PlayerStateRolling::exeStart() {
@@ -396,33 +397,37 @@ void PlayerStateRolling::restartRolling(bool w1_0, bool w2_0) {
 
 void PlayerStateRolling::exeJump() {
     const sead::Vector3f& gravity = al::getGravity(mActor);
-    if(al::isFirstStep(this)) {
+    if (al::isFirstStep(this)) {
         rs::noticePlayerJumpStart(mTrigger, mActor);
         mEffect->tryDeleteRollingEffect();
         _9C = 0;
-        if(rs::isModeE3MovieRom()) {
+        if (rs::isModeE3MovieRom())
             mAnimator->startAnim("JumpBroad3");
-        } else {
+        else
             mAnimator->startAnim(mContinuousLongJump->getLongJumpAnimName());
-        }
         mContinuousLongJump->countUp();
         sub_710047B228(mActor, mCollider, mConst, mActionSlopeSlideControl->_2c, 0.0f);
-        rs::setupLongJumpVelocity(mActor, mCollider, mConst->getJumpInertiaRate(), mConst->getLongJumpMovePow(), mConst->getLongJumpSpeedMin(), mConst->getLongJumpInitSpeed(), mConst->getLongJumpJumpPow());
+        rs::setupLongJumpVelocity(mActor, mCollider, mConst->getJumpInertiaRate(),
+                                  mConst->getLongJumpMovePow(), mConst->getLongJumpSpeedMin(),
+                                  mConst->getLongJumpInitSpeed(), mConst->getLongJumpJumpPow());
     }
 
-    if(mTrigger->isOnUpperPunchHit())
+    if (mTrigger->isOnUpperPunchHit())
         rs::reflectCeilingUpperPunch(mActor, mCollider, mInput, mConst, mTrigger, false);
 
-    if(rs::isCollidedCeiling(mCollider))
+    if (rs::isCollidedCeiling(mCollider))
         rs::reflectCeiling(mActor, 0.0f);
 
     sead::Vector3f moveInput = {0.0f, 0.0f, 0.0f};
     mInput->calcMoveInput(&moveInput, -gravity);
-    rs::moveDivingJump(mActor, moveInput, mConst->getLongJumpAccel(), mConst->getLongJumpBrake(), mConst->getLongJumpSpeed(), mConst->getLongJumpSpeedMin(), mConst->getLongJumpSideAccel(), mConst->getLongJumpGravity(), mConst->getFallSpeedMax(), mConst->getSlerpQuatRate());
+    rs::moveDivingJump(mActor, moveInput, mConst->getLongJumpAccel(), mConst->getLongJumpBrake(),
+                       mConst->getLongJumpSpeed(), mConst->getLongJumpSpeedMin(),
+                       mConst->getLongJumpSideAccel(), mConst->getLongJumpGravity(),
+                       mConst->getFallSpeedMax(), mConst->getSlerpQuatRate());
 
-    if(rs::isOnGround(mActor, mCollider)) {
+    if (rs::isOnGround(mActor, mCollider)) {
         rs::startHitReactionLandIfLanding(mActor, mCollider, false);
-        if(mInput->isHoldSquat() && rs::isOnGroundRunAngle(mActor, mCollider, mConst)) {
+        if (mInput->isHoldSquat() && rs::isOnGroundRunAngle(mActor, mCollider, mConst)) {
             _9C = mConst->getSlopeRollingReStartCharge();
             _98 = mConst->getSlopeRollingReStartInterval();
             mActionSlopeSlideControl->setup();
@@ -436,55 +441,57 @@ void PlayerStateRolling::exeJump() {
 }
 
 void PlayerStateRolling::exeLand() {
-    if(al::isFirstStep(this)) {
+    if (al::isFirstStep(this)) {
         mAnimator->startAnim("RollingLand");
         mEffect->tryDeleteRollingEffect();
     }
 
     sub_710047B358(mActor, mActionSlopeSlideControl, mConst, mCollider, mSeCtrl);
 
-    if(!_B0) {
-        if(!mInput->isHoldSquat() && mConst->getSlopeRollingFrameMin() <= _98 && rs::updateJudgeAndResult(mJudgeEnableStandUp)) {
+    if (!_B0) {
+        if (!mInput->isHoldSquat() && mConst->getSlopeRollingFrameMin() <= _98 &&
+            rs::updateJudgeAndResult(mJudgeEnableStandUp)) {
             al::setNerve(this, &StandUp);
             return;
         }
     }
 
-    if(rs::isCollidedGroundLessAngle(mActor, mCollider, mConst->getStandAngleMin()) && rs::updateJudgeAndResult(mJudgeEnableStandUp) && rs::judgeAndResetReturnTrue(mJudgePreInputJump)) {
+    if (rs::isCollidedGroundLessAngle(mActor, mCollider, mConst->getStandAngleMin()) &&
+        rs::updateJudgeAndResult(mJudgeEnableStandUp) &&
+        rs::judgeAndResetReturnTrue(mJudgePreInputJump)) {
         al::setNerve(this, &Jump);
         return;
     }
 
-    if(rs::updateJudgeAndResult(mJudgeStartRolling)) {
-        if(_98 >= mConst->getSlopeRollingReStartInterval()) {
+    if (rs::updateJudgeAndResult(mJudgeStartRolling)) {
+        if (_98 >= mConst->getSlopeRollingReStartInterval()) {
             bool v22;
-            if(mJudgeStartRolling->isTriggerRestartSwing()) {
+            if (mJudgeStartRolling->isTriggerRestartSwing())
                 v22 = mConst->getSlopeRollingReStartSwing() <= _9C;
-            } else if(mConst->getSlopeRollingReStartForce() <= _A0) {
+            else if (mConst->getSlopeRollingReStartForce() <= _A0)
                 v22 = true;
-            } else {
+            else
                 v22 = mConst->getSlopeRollingReStartCharge() <= _9C;
-            }
             restartRolling(v22, mJudgeStartRolling->isTriggerRestartSwing());
             al::setNerve(this, &Start);
             return;
         }
     }
 
-    if(mAnimator->isAnimEnd()) {
+    if (mAnimator->isAnimEnd()) {
         al::setNerve(this, &Rolling);
         return;
     }
 
-    if(isStartRollingBrake()) {
+    if (isStartRollingBrake()) {
         al::setNerve(this, &UnRoll);
         return;
     }
 }
 
 void PlayerStateRolling::exeUnRoll() {
-    if(al::isFirstStep(this)) {
-        if(mAnimator->isAnim("Rolling")) {
+    if (al::isFirstStep(this)) {
+        if (mAnimator->isAnim("Rolling")) {
             f32 currentFrame = mAnimator->getAnimFrame();
             mAnimator->startAnim("RollingEnd");
             mAnimator->setAnimFrame(currentFrame);
@@ -501,49 +508,55 @@ void PlayerStateRolling::exeUnRoll() {
     mInput->calcMoveInput(&moveInput, v38);
 
     sead::Vector3f v36 = {0.0f, 0.0f, 0.0f};
-    rs::moveInertiaSlide(&v36, mActor, mCollider, moveInput, mConst->getSlopeRollingBrake(), 0.0f, 0.0f, 0.0f, mConst->getGravity(), mConst->getGravityAir(), mConst->getFallSpeedMax());
+    rs::moveInertiaSlide(&v36, mActor, mCollider, moveInput, mConst->getSlopeRollingBrake(), 0.0f,
+                         0.0f, 0.0f, mConst->getGravity(), mConst->getGravityAir(),
+                         mConst->getFallSpeedMax());
     rs::slerpUp(mActor, v38, mConst->getSlerpQuatRate(), mConst->getHillPoseDegreeMax());
     updateRollingAnimFrameRate();
 
-    if(rs::updateJudgeAndResult(mJudgeStartRolling)) {
-        if(_98 >= mConst->getSlopeRollingReStartInterval()) {
+    if (rs::updateJudgeAndResult(mJudgeStartRolling)) {
+        if (_98 >= mConst->getSlopeRollingReStartInterval()) {
             bool v24;
-            if(mJudgeStartRolling->isTriggerRestartSwing()) {
+            if (mJudgeStartRolling->isTriggerRestartSwing())
                 v24 = mConst->getSlopeRollingReStartSwing() <= _9C;
-            } else if(mConst->getSlopeRollingReStartForce() <= _A0) {
+            else if (mConst->getSlopeRollingReStartForce() <= _A0)
                 v24 = true;
-            } else {
+            else
                 v24 = mConst->getSlopeRollingReStartCharge() <= _9C;
-            }
             restartRolling(v24, mJudgeStartRolling->isTriggerRestartSwing());
             al::setNerve(this, &Start);
             return;
         }
     }
 
-    if(rs::isCollidedGroundLessAngle(mActor, mCollider, mConst->getStandAngleMin()) && rs::updateJudgeAndResult(mJudgeEnableStandUp) && rs::judgeAndResetReturnTrue(mJudgePreInputJump)) {
+    if (rs::isCollidedGroundLessAngle(mActor, mCollider, mConst->getStandAngleMin()) &&
+        rs::updateJudgeAndResult(mJudgeEnableStandUp) &&
+        rs::judgeAndResetReturnTrue(mJudgePreInputJump)) {
         al::setNerve(this, &Jump);
         return;
     }
 
-    if(_B0) {
+    if (_B0) {
         al::setNerve(this, &Rolling);
         return;
     }
 
-    if(!mInput->isHoldSquat() && mConst->getSlopeRollingFrameMin() <= _98 && rs::updateJudgeAndResult(mJudgeEnableStandUp)) {
+    if (!mInput->isHoldSquat() && mConst->getSlopeRollingFrameMin() <= _98 &&
+        rs::updateJudgeAndResult(mJudgeEnableStandUp)) {
         al::setNerve(this, &StandUp);
         return;
     }
 
-    if(al::isGreaterEqualStep(this, mConst->getSlopeRollingUnRollFrame())) {
+    if (al::isGreaterEqualStep(this, mConst->getSlopeRollingUnRollFrame())) {
         al::setNerve(this, &Brake);
         return;
     }
 }
+
 void PlayerStateRolling::exeBrake() {
-    if(al::isFirstStep(this)) {}
-    
+    if (al::isFirstStep(this)) {
+    }
+
     sead::Vector3f v38 = {0.0f, 0.0f, 0.0f};
     rs::calcGroundNormalOrUpDir(&v38, mActor, mCollider);
 
@@ -551,55 +564,60 @@ void PlayerStateRolling::exeBrake() {
     mInput->calcMoveInput(&moveInput, v38);
 
     sead::Vector3f v36 = {0.0f, 0.0f, 0.0f};
-    rs::moveInertiaSlide(&v36, mActor, mCollider, moveInput, mConst->getSlopeRollingEndBrake(), 0.0f, 0.0f, 0.0f, mConst->getGravity(), mConst->getGravityAir(), mConst->getFallSpeedMax());
+    rs::moveInertiaSlide(&v36, mActor, mCollider, moveInput, mConst->getSlopeRollingEndBrake(),
+                         0.0f, 0.0f, 0.0f, mConst->getGravity(), mConst->getGravityAir(),
+                         mConst->getFallSpeedMax());
     rs::slerpUp(mActor, v38, mConst->getSlerpQuatRate(), mConst->getHillPoseDegreeMax());
     updateRollingAnimFrameRate();
 
-    if(rs::isCollidedGround(mCollider))
+    if (rs::isCollidedGround(mCollider))
         mEffect->tryEmitRollingEffect();
     else
         mEffect->tryDeleteRollingEffect();
 
-    if(rs::updateJudgeAndResult(mJudgeStartRolling)) {
-        if(_98 >= mConst->getSlopeRollingReStartInterval()) {
+    if (rs::updateJudgeAndResult(mJudgeStartRolling)) {
+        if (_98 >= mConst->getSlopeRollingReStartInterval()) {
             bool v24;
-            if(mJudgeStartRolling->isTriggerRestartSwing()) {
+            if (mJudgeStartRolling->isTriggerRestartSwing())
                 v24 = mConst->getSlopeRollingReStartSwing() <= _9C;
-            } else if(mConst->getSlopeRollingReStartForce() <= _A0) {
+            else if (mConst->getSlopeRollingReStartForce() <= _A0)
                 v24 = true;
-            } else {
+            else
                 v24 = mConst->getSlopeRollingReStartCharge() <= _9C;
-            }
             restartRolling(v24, mJudgeStartRolling->isTriggerRestartSwing());
             al::setNerve(this, &Start);
             return;
         }
     }
 
-    if(rs::isCollidedGroundLessAngle(mActor, mCollider, mConst->getStandAngleMin()) && rs::updateJudgeAndResult(mJudgeEnableStandUp) && rs::judgeAndResetReturnTrue(mJudgePreInputJump)) {
+    if (rs::isCollidedGroundLessAngle(mActor, mCollider, mConst->getStandAngleMin()) &&
+        rs::updateJudgeAndResult(mJudgeEnableStandUp) &&
+        rs::judgeAndResetReturnTrue(mJudgePreInputJump)) {
         al::setNerve(this, &Jump);
         return;
     }
 
-    if(!rs::isCollidedGround(mCollider)) {
+    if (!rs::isCollidedGround(mCollider)) {
         kill();
         return;
     }
 
-    if(!_B0) {
-        if(!mInput->isHoldSquat() && mConst->getSlopeRollingFrameMin() <= _98 && rs::updateJudgeAndResult(mJudgeEnableStandUp)) {
+    if (!_B0) {
+        if (!mInput->isHoldSquat() && mConst->getSlopeRollingFrameMin() <= _98 &&
+            rs::updateJudgeAndResult(mJudgeEnableStandUp)) {
             al::setNerve(this, &StandUp);
             return;
         }
     }
 
-    if(v36.length() > mConst->getSlopeRollingEndBrakeEndSpeed()) {
+    if (v36.length() > mConst->getSlopeRollingEndBrakeEndSpeed()) {
         al::setNerve(this, &EndSquat);
         return;
     }
 }
+
 void PlayerStateRolling::exeStandUp() {
-    if(al::isFirstStep(this)) {
+    if (al::isFirstStep(this)) {
         mAnimator->startAnim("RollingStandUp");
         mEffect->tryDeleteRollingEffect();
     }
@@ -611,21 +629,23 @@ void PlayerStateRolling::exeStandUp() {
     mInput->calcMoveInput(&moveInput, v38);
 
     sead::Vector3f v36 = {0.0f, 0.0f, 0.0f};
-    rs::moveInertiaSlide(&v36, mActor, mCollider, moveInput, mConst->getSlopeRollingBrake(), 0.0f, 0.0f, 0.0f, mConst->getGravity(), mConst->getGravityAir(), mConst->getFallSpeedMax());
+    rs::moveInertiaSlide(&v36, mActor, mCollider, moveInput, mConst->getSlopeRollingBrake(), 0.0f,
+                         0.0f, 0.0f, mConst->getGravity(), mConst->getGravityAir(),
+                         mConst->getFallSpeedMax());
     rs::slerpUp(mActor, v38, mConst->getSlerpQuatRate(), mConst->getHillPoseDegreeMax());
 
-    if(_B0) {
+    if (_B0) {
         al::setNerve(this, &Rolling);
         return;
     }
 
-    if(mAnimator->isAnimEnd()) {
+    if (mAnimator->isAnimEnd()) {
         kill();
         return;
     }
 }
+
 void PlayerStateRolling::exeEndSquat() {
-    if(al::isFirstStep(this)) {
+    if (al::isFirstStep(this))
         mEffect->tryDeleteRollingEffect();
-    }
 }

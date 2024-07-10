@@ -11,7 +11,6 @@ bool tryGetArg(bool* val, al::ActorInitInfo const& info, char const* key) {
     return info.getPlacementInfo().getPlacementIter().tryGetBoolByKey(val, key);
 }
 
-
 HitSensor* getHitSensor(al::LiveActor const* actor, char const* name) {
     return alActorSensorFunction::getSensorKeeper(actor)->getSensor(name);
 }
@@ -20,12 +19,12 @@ void setGravity(const al::LiveActor* actor, const sead::Vector3f& gravity) {
     *actor->getPoseKeeper()->getGravityPtr() = gravity;
 }
 
-
-void lerpVec(sead::Vector3<float>* out, sead::Vector3<float> const& a, sead::Vector3<float> const& b, float val) {
+void lerpVec(sead::Vector3<float>* out, sead::Vector3<float> const& a,
+             sead::Vector3<float> const& b, float val) {
     *out = a + (b - a) * val;
 }
 
-}
+}  // namespace al
 
 al::HitSensorKeeper* alActorSensorFunction::getSensorKeeper(al::LiveActor const* actor) {
     return actor->mHitSensorKeeper;

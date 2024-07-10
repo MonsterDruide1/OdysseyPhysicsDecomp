@@ -8,6 +8,7 @@
 #include "Library/LiveActor/ActorInitInfo.h"
 #include "Player/PlayerConst.h"
 #include "Player/PlayerCostumeInfo.h"
+#include "math/seadMatrix.h"
 
 namespace al {
 class LiveActor;

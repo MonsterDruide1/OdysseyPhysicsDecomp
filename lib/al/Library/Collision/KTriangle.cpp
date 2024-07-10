@@ -172,7 +172,8 @@ const sead::Vector3f& Triangle::calcAndGetEdgeNormal(int index) {
 }
 
 const sead::Vector3f& Triangle::calcAndGetPos(int index) {
-    mCollisionParts->getKCollisionServer().calcPosLocal(&mVerts[index], mKCPrismData, index, mKCPrismHeader);
+    mCollisionParts->getKCollisionServer().calcPosLocal(&mVerts[index], mKCPrismData, index,
+                                                        mKCPrismHeader);
     mVerts[index].setMul(mCollisionParts->getBaseMtx(), mVerts[index]);
     return mVerts[index];
 }
@@ -190,7 +191,7 @@ void Triangle::calcForceRotatePower(sead::Quatf* power) const {
 }
 
 bool Triangle::getAttributes(ByamlIter* iter) const {
-    if(!mKCPrismData)
+    if (!mKCPrismData)
         return false;
     return mCollisionParts->getKCollisionServer().getAttributes(iter, mKCPrismData);
 }
@@ -212,6 +213,7 @@ const sead::Matrix34f& Triangle::getPrevBaseMtx() const {
 }
 
 HitInfo::HitInfo() = default;
+
 bool HitInfo::isCollisionAtFace() const {
     return mCollisionLocation == 0;
 }

@@ -25,29 +25,29 @@ NERVE_IMPL(PlayerStateSpinCap, SpinAirSeparate);
 NERVE_IMPL(PlayerStateSpinCap, SpinAir);
 
 NERVES_MAKE_NOSTRUCT(PlayerStateSpinCap, Fall, SpinGroundSeparate, SpinGround, SpinAirSeparate,
-                   SpinAir);
-}
+                     SpinAir);
+}  // namespace
 
-void sub_71004831B8(sead::Vector3f* a1, const al::LiveActor* x1_0, const IUsePlayerCollision* a3, const PlayerInput* x3_0, bool a5) {
+void sub_71004831B8(sead::Vector3f* a1, const al::LiveActor* x1_0, const IUsePlayerCollision* a3,
+                    const PlayerInput* x3_0, bool a5) {
     sead::Vector3f a4 = {0.0f, 0.0f, 0.0f};
     rs::calcGroundNormalOrUpDir(&a4, x1_0, a3);
     x3_0->calcCapThrowInput(a1, a4);
-    if ( a5 ) {
+    if (a5) {
         sead::Vector3f a2 = {0.0f, 0.0f, 0.0f};
         al::calcFrontDir(&a2, x1_0);
         a2 = -a2;
         sead::Vector3f v11 = {0.0f, 0.0f, 0.0f};
         al::calcUpDir(&v11, x1_0);
         al::alongVectorNormalH(&a2, a2, v11, a4);
-        if ( al::tryNormalizeOrZero(&a2) )
-        {
-        f32 v9 = a1->dot(a2);
-        if ( v9 > 0.0 && v9 < 0.96593 )
-            al::verticalizeVec(a1, a2, *a1);
+        if (al::tryNormalizeOrZero(&a2)) {
+            f32 v9 = a1->dot(a2);
+            if (v9 > 0.0 && v9 < 0.96593)
+                al::verticalizeVec(a1, a2, *a1);
         }
     }
 
-    if ( !al::tryNormalizeOrZero(a1) ) {
+    if (!al::tryNormalizeOrZero(a1)) {
         sead::Vector3f a2 = {0.0, 0.0, 0.0};
         al::calcUpDir(&a2, x1_0);
         al::calcFrontDir(a1, x1_0);
@@ -95,20 +95,22 @@ void PlayerStateSpinCap::appear() {
     _A8 = 0;
     // TODO set something on JudgeWaterSurfaceRun
     _A9 = mTrigger->isOn(PlayerTrigger::EActionTrigger_val0);
-    bool v10 = rs::isOnGround(mActor, mCollider) && !mTrigger->isOn(PlayerTrigger::EActionTrigger_val2);
+    bool v10 =
+        rs::isOnGround(mActor, mCollider) && !mTrigger->isOn(PlayerTrigger::EActionTrigger_val2);
 
-    if(v2 || v10) {
-        if(rs::isOnGroundSkateCode(mActor, mCollider))
+    if (v2 || v10) {
+        if (rs::isOnGroundSkateCode(mActor, mCollider))
             mSpinCapAttack->clearAttackInfo();
 
-        if(mTrigger->isOn(PlayerTrigger::EActionTrigger_val1)) {
-            al::alongVectorNormalH(al::getVelocityPtr(mActor), al::getVelocity(mActor), -al::getGravity(mActor), rs::getCollidedGroundNormal(mCollider));
+        if (mTrigger->isOn(PlayerTrigger::EActionTrigger_val1)) {
+            al::alongVectorNormalH(al::getVelocityPtr(mActor), al::getVelocity(mActor),
+                                   -al::getGravity(mActor), rs::getCollidedGroundNormal(mCollider));
         }
 
         mActionGroundMoveControl->appear();
         mSpinCapAttack->setupAttackInfo();
 
-        if(mSpinCapAttack->isSeparateSingleSpin())
+        if (mSpinCapAttack->isSeparateSingleSpin())
             al::setNerve(this, &SpinGroundSeparate);
         else
             al::setNerve(this, &SpinGround);
@@ -116,7 +118,7 @@ void PlayerStateSpinCap::appear() {
     } else {
         _78 = 1;
         mSpinCapAttack->setupAttackInfo();
-        if(mSpinCapAttack->isSeparateSingleSpin())
+        if (mSpinCapAttack->isSeparateSingleSpin())
             al::setNerve(this, &SpinAirSeparate);
         else
             al::setNerve(this, &SpinAir);
@@ -126,7 +128,7 @@ void PlayerStateSpinCap::appear() {
 
 void PlayerStateSpinCap::kill() {
     mIsDead = true;
-    if(mSpinCapAttack->tryCancelCapState(mAnimator)) {
+    if (mSpinCapAttack->tryCancelCapState(mAnimator)) {
         // TODO something in JointParamCapThrow
     }
 }
@@ -140,12 +142,13 @@ bool PlayerStateSpinCap::update() {
 }
 
 void PlayerStateSpinCap::control() {
-    if(rs::isOnGround(mActor, mCollider))
+    if (rs::isOnGround(mActor, mCollider))
         _78 = false;
 }
 
 bool PlayerStateSpinCap::noticeInWater() {
-    if(mIsInWater) return false;
+    if (mIsInWater)
+        return false;
     mIsInWater = true;
     return true;
 }
@@ -155,11 +158,12 @@ void PlayerStateSpinCap::resetJoint() {
 }
 
 void PlayerStateSpinCap::cancelPoseInterpole() {
-    if(_99 && al::isNerve(this, &SpinAir) && !al::isGreaterStep(this, 20)) {
+    if (_99 && al::isNerve(this, &SpinAir) && !al::isGreaterStep(this, 20)) {
         sead::Vector3f gravity = al::getGravity(mActor);
         sead::Vector3f up = {0.0f, 0.0f, 0.0f};
         al::calcUpDir(&up, mActor);
-        if(up.dot(-gravity) <= sead::Mathf::cos(sead::Mathf::deg2rad(mConst->getCollisionResetLimit())))
+        if (up.dot(-gravity) <=
+            sead::Mathf::cos(sead::Mathf::deg2rad(mConst->getCollisionResetLimit())))
             mTrigger->set(PlayerTrigger::EActionTrigger_val3);
 
         sead::Quatf quat = sead::Quatf::unit;
@@ -169,43 +173,50 @@ void PlayerStateSpinCap::cancelPoseInterpole() {
 }
 
 bool PlayerStateSpinCap::isEnableCancelHipDrop() const {
-    if(isEnableCancelAir()) return true;
-    if(al::isNerve(this, &SpinAirSeparate))
+    if (isEnableCancelAir())
+        return true;
+    if (al::isNerve(this, &SpinAirSeparate))
         return al::isGreaterStep(this, 10);
-    if(al::isNerve(this, &SpinAir))
+    if (al::isNerve(this, &SpinAir))
         return !mSpinCapAttack->isCapSpinAttack();
     return false;
 }
 
 bool PlayerStateSpinCap::isEnableCancelAir() const {
-    if(al::isNerve(this, &Fall)) return true;
-    if(!al::isNerve(this, &SpinAir) && !al::isNerve(this, &SpinAirSeparate)) return false;
+    if (al::isNerve(this, &Fall))
+        return true;
+    if (!al::isNerve(this, &SpinAir) && !al::isNerve(this, &SpinAirSeparate))
+        return false;
     return !isSpinAttackAir();
 }
 
 bool PlayerStateSpinCap::isSpinAttackAir() const {
-    return !mIsDead && (al::isNerve(this, &SpinAir) || al::isNerve(this, &SpinAirSeparate)) && al::isLessEqualStep(this, 22);
+    return !mIsDead && (al::isNerve(this, &SpinAir) || al::isNerve(this, &SpinAirSeparate)) &&
+           al::isLessEqualStep(this, 22);
 }
 
 bool PlayerStateSpinCap::isEnableCancelGround() const {
-    if(al::isNerve(this, &SpinGroundSeparate))
+    if (al::isNerve(this, &SpinGroundSeparate))
         return al::isGreaterStep(this, 10);
-    if(al::isNerve(this, &SpinGround))
+    if (al::isNerve(this, &SpinGround))
         return !mSpinCapAttack->isCapSpinAttack();
     return false;
 }
 
 bool PlayerStateSpinCap::isEnableCancelCarry() const {
-    if(mIsDead) return false;
+    if (mIsDead)
+        return false;
     return isEnableCancelGround() || isEnableCancelAir();
 }
 
 bool PlayerStateSpinCap::isEnableReThrowCap() const {
-    if(!isEnableCancelGround()) return false;
-    if(al::isLessStep(this, 20)) return false;
-    if(al::isNerve(this, &SpinGroundSeparate))
+    if (!isEnableCancelGround())
+        return false;
+    if (al::isLessStep(this, 20))
+        return false;
+    if (al::isNerve(this, &SpinGroundSeparate))
         return rs::isCollidedGroundRunAngle(mActor, mCollider, mConst);
-    return true; 
+    return true;
 }
 
 bool PlayerStateSpinCap::isWaterSurfaceRun() const {
@@ -213,14 +224,15 @@ bool PlayerStateSpinCap::isWaterSurfaceRun() const {
 }
 
 void PlayerStateSpinCap::exeSpinGround() {
-    if(al::isFirstStep(this)) {
+    if (al::isFirstStep(this)) {
         mSpinCapAttack->startCapSpinAttack(mAnimator, mInput);
         // TODO something in JointParamCapThrow
     }
 
     updateSpinGroundNerve();
 
-    if(al::isStep(this, mSpinCapAttack->getThrowFrameGround()) && mSpinCapAttack->isCapSpinAttack()) {
+    if (al::isStep(this, mSpinCapAttack->getThrowFrameGround()) &&
+        mSpinCapAttack->isCapSpinAttack()) {
         rs::addPlayerThrowCapCount(mActor);
         sead::Vector3f v9 = {0.0f, 0.0f, 0.0f};
         rs::calcGroundNormalOrGravityDir(&v9, mActor, mCollider);
@@ -228,25 +240,25 @@ void PlayerStateSpinCap::exeSpinGround() {
         mSpinCapAttack->startCapThrow(_7C, v9, 1.0f, false, sead::Vector3f::zero);
     }
 
-    if(mAnimator->isAnimEnd() && mSpinCapAttack->isCapSpinAttack())
+    if (mAnimator->isAnimEnd() && mSpinCapAttack->isCapSpinAttack())
         kill();
 }
 
 void PlayerStateSpinCap::updateSpinGroundNerve() {
-    if(al::isFirstStep(this)) {
+    if (al::isFirstStep(this)) {
         sub_71004831B8(&_7C, mActor, mCollider, mInput, _A9);
 
         sead::Vector3f v6364 = {0.0f, 0.0f, 0.0f};
         rs::calcGroundNormalOrGravityDir(&v6364, mActor, mCollider);
         rs::slerpUpFront(mActor, v6364, _7C, 1.0f, mConst->getHillPoseDegreeMax());
 
-        if(rs::isOnGroundSkateCode(mActor, mCollider)) {
+        if (rs::isOnGroundSkateCode(mActor, mCollider))
             CRASH
-        }
     }
 
-    if(!rs::isOnGroundSkateCode(mActor, mCollider)) {
-        if(!(mCounterForceRun->isForceRun() || rs::isJudge(mJudgeWaterSurfaceRun)) || al::isLessStep(this, mConst->getSpinBrakeFrame())) {
+    if (!rs::isOnGroundSkateCode(mActor, mCollider)) {
+        if (!(mCounterForceRun->isForceRun() || rs::isJudge(mJudgeWaterSurfaceRun)) ||
+            al::isLessStep(this, mConst->getSpinBrakeFrame())) {
             sead::Vector3f a2 = {0.0f, 0.0f, 0.0f};
             rs::calcGroundNormalOrUpDir(&a2, mActor, mCollider);
             sead::Vector3f v67 = {0.0f, 0.0f, 0.0f};
@@ -257,95 +269,106 @@ void PlayerStateSpinCap::updateSpinGroundNerve() {
             mActionGroundMoveControl->updateNormalAndSnap(al::getVelocityPtr(mActor));
             sead::Vector3f v65 = {0.0f, 0.0f, 0.0f};
             sead::Quatf v6364 = sead::Quatf::unit;
-            rs::moveInertiaTurn(&v65, &v6364, mActor, mCollider, a1, mConst->getSpinBrakeRate(), mConst->getSpinRoundLimitDegree(), mConst->getGravityMove(), mConst->getGravityAir(), mConst->getFallSpeedMax());
+            rs::moveInertiaTurn(&v65, &v6364, mActor, mCollider, a1, mConst->getSpinBrakeRate(),
+                                mConst->getSpinRoundLimitDegree(), mConst->getGravityMove(),
+                                mConst->getGravityAir(), mConst->getFallSpeedMax());
 
             sead::Vector3f v62 = {0.0f, 0.0f, 0.0f};
             al::calcFrontDir(&v62, mActor);
 
-            f32 v33 = (float)((float)(v6364.y * v62.z) - (float)(v6364.z * v62.y)) + (float)(v6364.w * v62.x);
-            f32 v34 = (float)(v62.y * v6364.w) + (float)((float)(v6364.z * v62.x) - (float)(v62.z * v6364.x));
-            f32 v35 = (float)(v62.z * v6364.w) + (float)((float)(v62.y * v6364.x) - (float)(v6364.y * v62.x));
-            f32 v36 = (float)((float)-(float)(v62.x * v6364.x) - (float)(v6364.y * v62.y)) - (float)(v62.z * v6364.z);
-            v62.x = (float)((float)(v6364.y * v35) + (float)((float)(v6364.w * v33) - (float)(v6364.z * v34)))
-                    - (float)(v6364.x * v36);
-            v62.y = (float)((float)((float)(v33 * v6364.z) + (float)(v34 * v6364.w)) - (float)(v35 * v6364.x))
-                    - (float)(v36 * v6364.y);
-            v62.z = (float)((float)((float)(v34 * v6364.x) - (float)(v33 * v6364.y)) + (float)(v35 * v6364.w))
-                    - (float)(v36 * v6364.z);
-            
-            rs::slerpUpFront(mActor, a2, v62, mConst->getSlerpQuatRate(), mConst->getHillPoseDegreeMax());
-        }
-        else {
-            if(_80 || al::isStep(this, mConst->getSpinBrakeFrame())) {
+            f32 v33 = (float)((float)(v6364.y * v62.z) - (float)(v6364.z * v62.y)) +
+                      (float)(v6364.w * v62.x);
+            f32 v34 = (float)(v62.y * v6364.w) +
+                      (float)((float)(v6364.z * v62.x) - (float)(v62.z * v6364.x));
+            f32 v35 = (float)(v62.z * v6364.w) +
+                      (float)((float)(v62.y * v6364.x) - (float)(v6364.y * v62.x));
+            f32 v36 = (float)((float)-(float)(v62.x * v6364.x) - (float)(v6364.y * v62.y)) -
+                      (float)(v62.z * v6364.z);
+            v62.x = (float)((float)(v6364.y * v35) +
+                            (float)((float)(v6364.w * v33) - (float)(v6364.z * v34))) -
+                    (float)(v6364.x * v36);
+            v62.y = (float)((float)((float)(v33 * v6364.z) + (float)(v34 * v6364.w)) -
+                            (float)(v35 * v6364.x)) -
+                    (float)(v36 * v6364.y);
+            v62.z = (float)((float)((float)(v34 * v6364.x) - (float)(v33 * v6364.y)) +
+                            (float)(v35 * v6364.w)) -
+                    (float)(v36 * v6364.z);
+
+            rs::slerpUpFront(mActor, a2, v62, mConst->getSlerpQuatRate(),
+                             mConst->getHillPoseDegreeMax());
+        } else {
+            if (_80 || al::isStep(this, mConst->getSpinBrakeFrame())) {
                 _80 = false;
                 goto LABEL_30;
             }
             mActionGroundMoveControl->update();
         }
-    }
-    else if(!_80 || al::isFirstStep(this)) {
+    } else if (!_80 || al::isFirstStep(this)) {
         _80 = true;
     LABEL_30:
-        mActionGroundMoveControl->setup(mConst->getNormalMaxSpeed(), mConst->getNormalMinSpeed(), mConst->getNormalAccelFrame(), mConst->getStickOnBrakeFrame(), mConst->getNormalBrakeFrame(), mConst->getGravityMove(), mConst->getNormalMaxSpeed(), 0);
+        mActionGroundMoveControl->setup(
+            mConst->getNormalMaxSpeed(), mConst->getNormalMinSpeed(), mConst->getNormalAccelFrame(),
+            mConst->getStickOnBrakeFrame(), mConst->getNormalBrakeFrame(), mConst->getGravityMove(),
+            mConst->getNormalMaxSpeed(), 0);
         mActionGroundMoveControl->updateNormalAndSnap(al::getVelocityPtr(mActor));
         mActionGroundMoveControl->reset(mActionGroundMoveControl->mGroundNormal);
         mActionGroundMoveControl->update();
     }
 
-    if(rs::isJudge(mJudgeWaterSurfaceRun)) {
+    if (rs::isJudge(mJudgeWaterSurfaceRun))
         CRASH
-    }
-    
-    if(mAnimator->getAnimFrameMax() - mAnimator->getAnimFrame() <= 3.0f)
+
+    if (mAnimator->getAnimFrameMax() - mAnimator->getAnimFrame() <= 3.0f)
         _A8 = true;
 }
 
 void PlayerStateSpinCap::exeSpinGroundSeparate() {
-    if(al::isFirstStep(this))
+    if (al::isFirstStep(this))
         mSpinCapAttack->startSpinSeparate(mAnimator);
 
     updateSpinGroundNerve();
-    if(mAnimator->isAnimEnd())
+    if (mAnimator->isAnimEnd())
         kill();
 }
 
 void PlayerStateSpinCap::exeSpinAir() {
-    if(al::isFirstStep(this)) {
+    if (al::isFirstStep(this)) {
         mSpinCapAttack->startCapSpinAttackAir(mAnimator, mInput);
         // TODO something in JointParamCapThrow
     }
 
     updateSpinAirNerve();
 
-    if(al::isStep(this, mSpinCapAttack->getThrowFrameAir()) && mSpinCapAttack->isCapSpinAttack()) {
+    if (al::isStep(this, mSpinCapAttack->getThrowFrameAir()) && mSpinCapAttack->isCapSpinAttack()) {
         rs::addPlayerThrowCapCount(mActor);
-        sead::Vector3f v18 = _9C * -sead::Mathf::clampMin(9-al::getNerveStep(this), 0);
+        sead::Vector3f v18 = _9C * -sead::Mathf::clampMin(9 - al::getNerveStep(this), 0);
         mSpinCapAttack->startCapThrow(_7C, -al::getGravity(mActor), 1.0f, false, v18);
     }
 
-    if(!al::isLessEqualStep(this, 22) && mSpinCapAttack->isCapSpinAttack())
+    if (!al::isLessEqualStep(this, 22) && mSpinCapAttack->isCapSpinAttack())
         al::setNerve(this, &Fall);
 }
 
 void PlayerStateSpinCap::updateSpinAirNerve() {
-    if(al::isFirstStep(this)) {
+    if (al::isFirstStep(this)) {
         sub_71004831B8(&_7C, mActor, mCollider, mInput, _A9);
 
         _99 = false;
-        if(rs::isCollidedGround(mCollider)) {
+        if (rs::isCollidedGround(mCollider)) {
             mTrigger->set(PlayerTrigger::EActionTrigger_val3);
-            rs::slerpUpFront(mActor, rs::getCollidedGroundNormal(mCollider), _7C, 1.0f, mConst->getHillPoseDegreeMax());
+            rs::slerpUpFront(mActor, rs::getCollidedGroundNormal(mCollider), _7C, 1.0f,
+                             mConst->getHillPoseDegreeMax());
         } else {
             sead::Matrix34f dest = sead::Matrix34f::ident;
-            
+
             dest = *mActor->getBaseMtx();
-            //mAnimator->calcModelJointRootMtx(&dest);
-            
+            // mAnimator->calcModelJointRootMtx(&dest);
+
             sead::Vector3f v1416;
             dest.getBase(v1416, 1);
             sead::Vector3f negGravity = -al::getGravity(mActor);
             f32 v20 = v1416.dot(negGravity);
-            if(v20 < 0.5f) {
+            if (v20 < 0.5f) {
                 sead::Vector3f v6062;
                 dest.getBase(v6062, 3);
                 sead::Vector3f v5859 = {0.0f, 0.0f, 0.0f};
@@ -370,7 +393,7 @@ void PlayerStateSpinCap::updateSpinAirNerve() {
                 f32 v23 = sead::Mathf::abs(v21);
                 f32 v22 = sead::Mathf::abs(front.dot(a1));
 
-                if(v23 <= v22) {
+                if (v23 <= v22) {
                     front = a1;
                 } else {
                     sead::Vector3f v51 = {0.0f, 0.0f, 0.0f};
@@ -379,8 +402,8 @@ void PlayerStateSpinCap::updateSpinAirNerve() {
                     f32 v26 = v51.length();
                     f32 v27 = front.dot(negGravity);
 
-                    if(v21 <= 0.0f || v27 <= 0.0f) {
-                        if(v27 < 0.0f && v21 < 0.0f)
+                    if (v21 <= 0.0f || v27 <= 0.0f) {
+                        if (v27 < 0.0f && v21 < 0.0f)
                             v26 = -v26;
                     } else {
                         v26 = -v26;
@@ -389,7 +412,7 @@ void PlayerStateSpinCap::updateSpinAirNerve() {
                     front = (v26 * a1) + v52;
                 }
 
-                if(al::isParallelDirection(up, front, 0.01f)) {
+                if (al::isParallelDirection(up, front, 0.01f)) {
                     up = negGravity;
                     front = a1;
                 }
@@ -403,54 +426,54 @@ void PlayerStateSpinCap::updateSpinAirNerve() {
                 al::calcTransLocalOffsetByMtx(&v52, v51, v5859);
 
                 sead::Vector3f v3234 = v6062 - v52;
-                al::setTrans(mActor, v3234+al::getTrans(mActor));
+                al::setTrans(mActor, v3234 + al::getTrans(mActor));
                 _9C = v3234 * 0.1f;
                 mTrigger->set(PlayerTrigger::EActionTrigger_val3);
                 _99 = true;
-            }
-            else {
-                if(v20 <= sead::Mathf::cos(sead::Mathf::deg2rad(mConst->getCollisionResetLimit())))
+            } else {
+                if (v20 <= sead::Mathf::cos(sead::Mathf::deg2rad(mConst->getCollisionResetLimit())))
                     mTrigger->set(PlayerTrigger::EActionTrigger_val3);
 
                 rs::slerpUpFront(mActor, negGravity, _7C, 1.0f, mConst->getHillPoseDegreeMax());
             }
         }
 
-        mActionAirMoveControl->setup(mConst->getSpinAirSpeedMax(), mConst->getSpinAirSpeedMax(), 0, mConst->getSpinAirJumpPower(), mConst->getGravitySpinAir(), 0, 0.0f);
-        if(_99) {
+        mActionAirMoveControl->setup(mConst->getSpinAirSpeedMax(), mConst->getSpinAirSpeedMax(), 0,
+                                     mConst->getSpinAirJumpPower(), mConst->getGravitySpinAir(), 0,
+                                     0.0f);
+        if (_99) {
             mActionAirMoveControl->something2 = mConst->getSlerpQuatRateSpinAir();
             mActionAirMoveControl->someVec = _7C;
         }
     }
 
-    if(_99 && al::isLessStep(this, 10)) {
+    if (_99 && al::isLessStep(this, 10))
         al::setTrans(mActor, al::getTrans(mActor) - _9C);
-    }
 
-    if(mTrigger->isOnUpperPunchHit() || rs::isCollidedCeiling(mCollider))
+    if (mTrigger->isOnUpperPunchHit() || rs::isCollidedCeiling(mCollider))
         rs::reflectCeiling(mActor, 0.0f);
 
     mActionAirMoveControl->update();
 }
 
 void PlayerStateSpinCap::exeSpinAirSeparate() {
-    if(al::isFirstStep(this))
+    if (al::isFirstStep(this))
         mSpinCapAttack->startSpinSeparate(mAnimator);
 
     updateSpinAirNerve();
-    if(al::isLessEqualStep(this, 22))
+    if (al::isLessEqualStep(this, 22))
         return al::setNerve(this, &Fall);
 }
 
 void PlayerStateSpinCap::exeFall() {
-    if(al::isFirstStep(this)) {
-        mActionAirMoveControl->setup(mConst->getJumpMoveSpeedMax(), mConst->getJumpMoveSpeedMin(), 0, al::calcSpeedV(mActor), mConst->getJumpGravity(), 0, 0.0f);
-        if(_99) {
+    if (al::isFirstStep(this)) {
+        mActionAirMoveControl->setup(mConst->getJumpMoveSpeedMax(), mConst->getJumpMoveSpeedMin(),
+                                     0, al::calcSpeedV(mActor), mConst->getJumpGravity(), 0, 0.0f);
+        if (_99)
             mActionAirMoveControl->something2 = mConst->getSlerpQuatRateSpinAir();
-        }
     }
 
-    if(!mAnimator->isAnim("Fall") && mAnimator->isAnimEnd())
+    if (!mAnimator->isAnim("Fall") && mAnimator->isAnimEnd())
         mAnimator->startAnim("Fall");
 
     mActionAirMoveControl->update();

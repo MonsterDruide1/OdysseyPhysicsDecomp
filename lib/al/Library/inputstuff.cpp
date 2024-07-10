@@ -5,8 +5,12 @@
 
 namespace al {
 
-bool isPadTypeJoySingle(int) {CRASH}
-bool isValidReplayController(u32) {CRASH}
-sead::ControllerBase* getReplayController(u32) {CRASH}
+bool isPadTypeJoySingle(int) {
+    CRASH
+}
+
+bool isValidReplayController(u32){CRASH} sead::ControllerBase* getReplayController(u32) {
+    CRASH
+}
 
 }  // namespace al

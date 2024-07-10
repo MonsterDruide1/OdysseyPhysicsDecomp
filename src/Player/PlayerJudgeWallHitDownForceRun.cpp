@@ -9,7 +9,6 @@
 
 bool sub_710045CA18(const PlayerConst* x0_0, const sead::Vector3f& a2, const sead::Vector3f& a3,
                     const sead::Vector3f& a4, const sead::Vector3f& a5) {
-
     sead::Vector3f a1 = {0.0, 0.0, 0.0};
     al::verticalizeVec(&a1, a4, a3);
     if (!al::tryNormalizeOrZero(&a1))
@@ -20,7 +19,8 @@ bool sub_710045CA18(const PlayerConst* x0_0, const sead::Vector3f& a2, const sea
         return false;
 
     f32 hitDownEscapeAngleV = x0_0->getCollisionHitDownEscapeAngleV();
-    return al::isInRange(al::calcAngleDegree(a5, a3), hitDownEscapeAngleV, 180.0 - hitDownEscapeAngleV);
+    return al::isInRange(al::calcAngleDegree(a5, a3), hitDownEscapeAngleV,
+                         180.0 - hitDownEscapeAngleV);
 }
 
 PlayerJudgeWallHitDownForceRun::PlayerJudgeWallHitDownForceRun(

@@ -13,6 +13,7 @@ PlayerActionTurnControl::PlayerActionTurnControl(al::LiveActor* actor) : mActor(
     arr_size = 5;
     _44 = 0;
 }
+
 void PlayerActionTurnControl::setup(f32 turnAngleStart, f32 turnAngleFast, f32 turnAngleLimit,
                                     f32 turnAngleFastLimit, s32 turnAccelFrame,
                                     s32 turnAccelFrameFast, s32 turnBrakeFrame) {
@@ -24,6 +25,7 @@ void PlayerActionTurnControl::setup(f32 turnAngleStart, f32 turnAngleFast, f32 t
     mTurnAccelFrameFast = turnAccelFrameFast;
     mTurnBrakeFrame = turnBrakeFrame;
 }
+
 void PlayerActionTurnControl::reset() {
     _44 = 0;
     _48 = 0;
@@ -33,6 +35,7 @@ void PlayerActionTurnControl::reset() {
     _18 = {0.0f, 0.0f, 0.0f};
     _24 = {0.0f, 0.0f, 0.0f};
 }
+
 void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vector3f& a3) {
     sead::Vector3f* p_c;            // x22
     const sead::Vector3f* Gravity;  // x0
@@ -564,6 +567,7 @@ LABEL_82:
 LABEL_101:
     this->_5c = v98;
 }
+
 void PlayerActionTurnControl::calcTilt(sead::Vector3f*, const sead::Vector3f&, f32){
     CRASH} f32 PlayerActionTurnControl::calcTurnPowerRate(const sead::Vector3f& a2) const {
     f32 result = al::easeIn(al::calcRate01(_8, mTurnAngleStart, mTurnAngleLimit));

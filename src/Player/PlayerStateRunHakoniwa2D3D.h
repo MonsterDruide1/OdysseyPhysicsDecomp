@@ -17,9 +17,13 @@ class PlayerJudgeWaterSurfaceRun;
 
 class PlayerStateRunHakoniwa2D3D : public al::ActorStateBase {
 public:
-    PlayerStateRunHakoniwa2D3D(al::LiveActor *,PlayerConst const*,IUseDimension const*,PlayerInput const*,IUsePlayerCollision const*,al::WaterSurfaceFinder const*,PlayerCounterForceRun const*,PlayerCounterQuickTurnJump const*,PlayerTrigger *,PlayerAnimator *,PlayerEffect *,PlayerJointParamCenterDynamics *,bool);
+    PlayerStateRunHakoniwa2D3D(al::LiveActor*, PlayerConst const*, IUseDimension const*,
+                               PlayerInput const*, IUsePlayerCollision const*,
+                               al::WaterSurfaceFinder const*, PlayerCounterForceRun const*,
+                               PlayerCounterQuickTurnJump const*, PlayerTrigger*, PlayerAnimator*,
+                               PlayerEffect*, PlayerJointParamCenterDynamics*, bool);
     ~PlayerStateRunHakoniwa2D3D() override;
-    
+
     void appear() override;
     bool update() override;
     bool isEnableLookAt() const;
@@ -28,7 +32,7 @@ public:
     bool isRunDashFast() const;
     bool isRunWaterSurface() const;
     bool isBrake2D() const;
-    bool tryTurnJump(IJudge *,sead::Vector3<float> *);
+    bool tryTurnJump(IJudge*, sead::Vector3<float>*);
     f32 getTurnTiltRate() const;
     f32 getCenterTiltRate() const;
     f32 getInverseKinematicsRate() const;

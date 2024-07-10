@@ -368,7 +368,8 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
 LABEL_110:
     a2 = this->mGroundNormal;
     if (this->_BB)
-        this->mTurnControl->calcTilt(&a2, this->mGroundNormal, this->mConst->getTiltPoseDegreeMax());
+        this->mTurnControl->calcTilt(&a2, this->mGroundNormal,
+                                     this->mConst->getTiltPoseDegreeMax());
 
     updatePoseUpFront(a2, v124, A0);
     this->_90 = v124;
@@ -445,9 +446,8 @@ void PlayerActionGroundMoveControl::updateHillAffect(sead::Vector3f const& a2,
 
     auto* a1 = this;
 
-    if (!a1->_78) {
+    if (!a1->_78)
         return;
-    }
 
     v9 = sead::Mathf::clamp((al::getGravity(a1->mActor)).dot(-a1->mGroundNormal), -1.0, 1.0);
 
@@ -466,9 +466,8 @@ void PlayerActionGroundMoveControl::updateHillAffect(sead::Vector3f const& a2,
 
         v20 = sead::Mathf::clampMin(v13 * v16, 0.0);
         v18 = v17 > 0.0;
-        if (v17 > 0.0 && _7C < 0.0) {
+        if (v17 > 0.0 && _7C < 0.0)
             _7C = 0.0;
-        }
     } else {
         v17 = 0.0;
         v18 = 0;
@@ -487,7 +486,8 @@ void PlayerActionGroundMoveControl::updateHillAffect(sead::Vector3f const& a2,
 
         v23 = (int)v26 + v27 + 1;
         if (v18) {
-            v30 = al::calcRate01(v20, mConst->getHillAccelSubAngleMin(), mConst->getHillAccelSubAngleMax());
+            v30 = al::calcRate01(v20, mConst->getHillAccelSubAngleMin(),
+                                 mConst->getHillAccelSubAngleMax());
             v17 = al::lerpValue(v17, _7C, al::easeOut(al::easeOut(v30)));
         }
     }
@@ -526,16 +526,14 @@ f32 PlayerActionGroundMoveControl::calcAccelRate(float a2) const {
 
     l_mJudgeStartDash = mJudgeStartDash;
     if ((l_mJudgeStartDash &&
-         !((mMaxSpeed - a2 <= 0.0) ? (IJudge*)(v6 = 0) :
-                                           (v6 = !al::isNearZero(mMaxSpeed - a2, 0.001f),
-                                            l_mJudgeStartDash = mJudgeStartDash),
-           (isJudge = rs::isJudge(l_mJudgeStartDash), v6) || !isJudge))) {
+         !((mMaxSpeed - a2 <= 0.0) ?
+               (IJudge*)(v6 = 0) :
+               (v6 = !al::isNearZero(mMaxSpeed - a2, 0.001f), l_mJudgeStartDash = mJudgeStartDash),
+           (isJudge = rs::isJudge(l_mJudgeStartDash), v6) || !isJudge)))
         return (mDashMaxSpeed2D - mMaxSpeed) / mDashAccelFrame2D;
-    }
 
-    if (!_D4 || !(mMaxSpeed > a2)) {
+    if (!_D4 || !(mMaxSpeed > a2))
         return mMaxSpeed / mAccelFrame;
-    }
 
     v11 = (mAccelFrame * mAccelFrame);
     v12 = (mMaxSpeed / mAccelFrame) * mConst->getRunAccelAverageScale();

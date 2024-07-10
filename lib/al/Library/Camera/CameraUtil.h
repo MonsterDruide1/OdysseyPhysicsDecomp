@@ -4,7 +4,6 @@
 #include <gfx/seadCamera.h>
 #include <math/seadMatrix.h>
 #include <math/seadVector.h>
-#include <math/seadMatrix.h>
 
 namespace al {
 class CameraTicket;

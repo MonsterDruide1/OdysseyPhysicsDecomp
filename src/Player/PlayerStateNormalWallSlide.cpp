@@ -95,7 +95,9 @@ void PlayerStateNormalWallSlide::appear() {
 
     sead::Vector3f offset =
         mNormalStart *
-        sead::Mathf::clampMin((al::getTrans(mActor) - collidedWallPos).dot(mNormalStart) - mConst->getCollisionRadius(), 0.0f);
+        sead::Mathf::clampMin((al::getTrans(mActor) - collidedWallPos).dot(mNormalStart) -
+                                  mConst->getCollisionRadius(),
+                              0.0f);
     al::setTrans(mActor, al::getTrans(mActor) - offset);
     _5c = 0;
     _60 = 0;
@@ -196,7 +198,7 @@ bool PlayerStateNormalWallSlide::followNormal() {
 }
 
 void PlayerStateNormalWallSlide::exeSlide() {
-    if(!followNormal())
+    if (!followNormal())
         return;
 
     if (al::isFirstStep(this)) {

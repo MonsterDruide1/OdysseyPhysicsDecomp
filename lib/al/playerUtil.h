@@ -11,27 +11,28 @@
 namespace al {
 class FootPrintServer;
 
-void registerExecutorFunctor(char const*,al::ExecuteDirector *,al::FunctorBase const&);
+void registerExecutorFunctor(char const*, al::ExecuteDirector*, al::FunctorBase const&);
 
 sead::Vector3f* getTransPtr(al::LiveActor*);
-AreaObjGroup* tryFindAreaObjGroup(al::IUseAreaObj const*,char const*);
-AreaObj* tryFindAreaObj(al::IUseAreaObj const*,char const*,sead::Vector3<float> const&);
-bool isPlayingEntranceCamera(al::IUseCamera const*,int);
+AreaObjGroup* tryFindAreaObjGroup(al::IUseAreaObj const*, char const*);
+AreaObj* tryFindAreaObj(al::IUseAreaObj const*, char const*, sead::Vector3<float> const&);
+bool isPlayingEntranceCamera(al::IUseCamera const*, int);
 
 class WaterSurfaceFinder {
 public:
     WaterSurfaceFinder(al::LiveActor const*);
-    void update(sead::Vector3<float> const&,sead::Vector3<float> const&,float);
-    
+    void update(sead::Vector3<float> const&, sead::Vector3<float> const&, float);
+
 private:
-    void* size[0x38/8];
+    void* size[0x38 / 8];
 };
+
 class FootPrintHolder {
 public:
-    FootPrintHolder(al::LiveActor *,char const*,al::HitSensor *,al::FootPrintServer *);
+    FootPrintHolder(al::LiveActor*, char const*, al::HitSensor*, al::FootPrintServer*);
+
 public:
-    void* size[0x58/8];
+    void* size[0x58 / 8];
 };
 
-
-}
+}  // namespace al

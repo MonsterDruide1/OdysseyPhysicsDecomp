@@ -4,8 +4,8 @@
 
 class In2DAreaMoveControl {
 public:
-    In2DAreaMoveControl() {WARN_UNIMPL;}
+    In2DAreaMoveControl() { WARN_UNIMPL; }
 
 private:
-    void* size[0xA0/8];
+    void* size[0xA0 / 8];
 };

@@ -79,7 +79,7 @@ bool isActionCodeNoActionWall(const IUsePlayerCollision*);
 bool isActionCodeNoActionCeiling(const IUsePlayerCollision*);
 
 bool isAutoRunOnGroundSkateCode(const al::LiveActor*, const IUsePlayerCollision*, float);
-                                  
+
 bool isActionCodeNoWallGrab(const al::HitInfo*);
 bool isActionCodeNoWallPopUp(const al::HitInfo*);
 
