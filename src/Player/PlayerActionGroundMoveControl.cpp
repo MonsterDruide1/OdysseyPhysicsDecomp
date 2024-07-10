@@ -125,7 +125,6 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
     float v18;
     bool v24;
     bool v25;
-    PlayerActionTurnControl* v29;
     bool v36;
     const sead::Vector3f* v37;
     bool v43;
@@ -215,8 +214,7 @@ f32 PlayerActionGroundMoveControl::updateNormalMove() {
 
     sead::Vector3f xyz;
     if (v25 || !v24) {
-        v29 = this->mTurnControl;
-        xyz = v29->_5c;
+        xyz = this->mTurnControl->_5c;
         v124 = xyz;
         va50 = xyz;
     } else {
