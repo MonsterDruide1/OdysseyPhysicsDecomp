@@ -564,7 +564,7 @@ void PlayerStateJump::exeJumpSpinGround() {
 
     mActionAirMoveControl->update();
     if (mInput->isTriggerHipDrop()) {
-        al::setNerve(this, &JumpSpinFlowerDownFall);
+        al::setNerve(this, &JumpSpinGroundDownFall);
         return;
     }
 
