@@ -79,16 +79,6 @@ void makeMtxUpFrontPos(sead::Matrix34f* out, const sead::Vector3f& up, const sea
     makeMtxFrontUpPos(out, front, up, pos);
 }
 
-void normalize(sead::Vector3f* vec) {
-    sead::Vector3f tmp = *vec;
-    al::normalize(vec, tmp);
-}
-
-void normalize(sead::Vector3f* out, const sead::Vector3f& vec) {
-    *out = vec;
-    out->normalize();
-}
-
 void calcQuatUp(sead::Vector3f* out, const sead::Quatf& quat) {
     out->x = 2.0f * (quat.x * quat.y - quat.w * quat.z);
     out->y = (1 - (quat.x * quat.x)) - 2.0f * (quat.z * quat.z);
@@ -1187,18 +1177,6 @@ void calcQuat(sead::Quatf* quat, const LiveActor* actor) {
     mtx.toQuat(*quat);
 }
 
-void makeQuatFrontUp(sead::Quatf* quat, const sead::Vector3f& front, const sead::Vector3f& up) {
-    sead::Matrix34f mtx = sead::Matrix34f::ident;
-    al::makeMtxFrontUp(&mtx, front, up);
-    mtx.toQuat(*quat);
-}
-
-void makeQuatUpFront(sead::Quatf* quat, const sead::Vector3f& up, const sead::Vector3f& front) {
-    sead::Matrix34f mtx = sead::Matrix34f::ident;
-    al::makeMtxUpFront(&mtx, up, front);
-    mtx.toQuat(*quat);
-}
-
 void makeMtxUpFront(sead::Matrix34f* mtx, const sead::Vector3f& up, const sead::Vector3f& front) {
     sead::Vector3f upn = up;
     al::normalize(&upn);
@@ -1216,7 +1194,19 @@ void makeMtxUpFront(sead::Matrix34f* mtx, const sead::Vector3f& up, const sead::
 }
 
 void makeMtxFrontUp(sead::Matrix34f* mtx, const sead::Vector3f& front, const sead::Vector3f& up) {
-    makeMtxUpFront(mtx, up, front);
+    sead::Vector3f frontn = front;
+    al::normalize(&frontn);
+
+    sead::Vector3f cross_up_front;
+    cross_up_front.setCross(up, frontn);
+    al::normalize(&cross_up_front);
+
+    sead::Vector3f cross_cross;
+    cross_cross.setCross(frontn, cross_up_front);
+
+    mtx->setBase(0, cross_up_front);
+    mtx->setBase(1, cross_cross);
+    mtx->setBase(2, frontn);
 }
 
 void separateVectorHV(sead::Vector3f* h, sead::Vector3f* v, const sead::Vector3f& vertical,
