@@ -265,6 +265,7 @@ bool PlayerSpinCapAttack::isValidAttackSensor(PlayerAnimator const* animator) co
         return animator->getSubAnimFrame() <= mConst->getSpinAttackFrame();
     if (animator->isAnim(_60))
         return animator->getAnimFrame() <= mConst->getSpinAttackFrame();
+    return false;
 }
 
 bool PlayerSpinCapAttack::isEnablePlaySpinCapMiss(PlayerAnimator const* animator) const {
