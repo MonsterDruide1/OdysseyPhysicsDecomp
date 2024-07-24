@@ -77,9 +77,9 @@ void sub_710044F864(sead::Vector3f* a1, sead::Vector3f* x1_0, const sead::Vector
 
     sead::Vector3f mtx0, mtx1, mtx2;
 
-    mtx->getBase(mtx0, 0);
-    mtx->getBase(mtx1, 1);
-    mtx->getBase(mtx2, 2);
+    mtx0 = {mtx->m[0][0], mtx->m[0][1], mtx->m[0][2]};
+    mtx1 = {mtx->m[1][0], mtx->m[1][1], mtx->m[1][2]};
+    mtx2 = {mtx->m[2][0], mtx->m[2][1], mtx->m[2][2]};
 
     v19 = aVec.dot(mtx1);
     v20 = aVec.dot(-mtx2);
