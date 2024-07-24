@@ -1,5 +1,6 @@
 #include "Player/PlayerStateWait.h"
 
+#include "Library/LiveActor/ActorActionFunction.h"
 #include "Library/LiveActor/ActorMovementFunction.h"
 #include "Library/LiveActor/ActorPoseKeeper.h"
 #include "Library/Nerve/NerveSetupUtil.h"
@@ -243,7 +244,23 @@ bool PlayerStateWait::tryGetSpecialStatusAnimName(char const**) {
 }
 
 void PlayerStateWait::exeLandStiffen() {
-    CRASH
+    f32 v16 = 0.0f;
+    if(al::isFirstStep(this)) {
+        _B0 = mConst->getHipDropLandCancelFrame();
+        if(!mAnimator->isAnim("SpinJumpDownFall") && !mAnimator->isAnim("SpinJumpDownFallL") && !mAnimator->isAnim("SpinJumpDownFallR")) {
+            al::startHitReaction(mActor, "高所着地");
+            mAnimator->startAnim("LandStiffen");
+            _B0 = -1;
+        } else {
+            mAnimator->startAnim("LandDownFall");
+        }
+        rs::landGroundPoseAndSnap(mActor, mTrigger, &v16, mCollider, mConst);
+    }
+
+    rs::waitGround(mActor, mCollider, mConst->getGravity() + v16, mConst->getFallSpeedMax(), mConst->getSlerpQuatRateWait(), mConst->getWaitPoseDegreeMax());
+    if(mAnimator->isAnimEnd()) {
+        al::setNerve(this, &Wait);
+    }
 }
 
 void PlayerStateWait::exeLand() {

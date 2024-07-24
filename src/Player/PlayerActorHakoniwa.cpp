@@ -1266,7 +1266,7 @@ void PlayerActorHakoniwa::exeWait() {
     tryActionCapReturn();
     al::updateNerveState(this);
     if (al::isFirstStep(this) && mPlayerStateWait->isLandStain())
-        CRASH
+        WARN_UNIMPL;
 
     if (rs::updateJudgeAndResult(mPlayerJudgeWallCatchInputDir)) {
         mPlayerStateWallCatch->setup(
