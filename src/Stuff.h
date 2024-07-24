@@ -106,3 +106,7 @@ bool tryGetPlayerInputWallAlongWallNormal(sead::Vector3<float>*, al::LiveActor c
 void faceToCamera(al::LiveActor*);
 
 }  // namespace rs
+
+namespace CollisionShapeUtil {
+void setShapeOffsetAllArrow(IUsePlayerCollision*, const sead::Vector3f&);
+}

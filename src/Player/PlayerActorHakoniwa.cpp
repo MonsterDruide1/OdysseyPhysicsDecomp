@@ -1056,10 +1056,46 @@ void PlayerActorHakoniwa::executeAfterCapTarget() {
     CRASH
 }
 
-// TODO missing to enable changing collision on duck/dive/...
 void PlayerActorHakoniwa::syncSensorAndCollision() {
-    WARN_UNIMPL;
-    mPlayerColliderHakoniwa->changeCollisionNormal();
+    if(mPlayerModelChangerHakoniwa->is2DModel())
+        mPlayerFormSensorCollisionArranger->setFormModel2D();
+    else
+        mPlayerFormSensorCollisionArranger->setFormModel3D();
+
+    if(al::isNerve(this, &Hack))
+        mPlayerFormSensorCollisionArranger->setFormActionHack();
+    else if(al::isNerve(this, &Squat) || al::isNerve(this, &Slope) || (al::isNerve(this, &Rolling) && mPlayerStateRolling->isRolling()) ||
+        (al::isNerve(this, &Jump) && mPlayerStateJump->isFormSquat2D()) || (al::isNerve(this, &Damage) && mPlayerStateDamageLife->isFormSquat()) )
+        mPlayerFormSensorCollisionArranger->setFormActionSquat();
+    else if(al::isNerve(this, &WallCatch) && mPlayerStateWallCatch->isWallCatchForm())
+        mPlayerFormSensorCollisionArranger->setFormActionWallGrab(mPlayerStateWallCatch->getWallCatchFront());
+    else if(al::isNerve(this, &GrabCeil) && mPlayerStateGrabCeil->isFormGrabCeil())
+        mPlayerFormSensorCollisionArranger->setFormActionGrabCeil(mPlayerStateGrabCeil->getGrabCeilFront());
+    else if(al::isNerve(this, &PoleClimb) && mPlayerStatePoleClimb->isFormPoleClimb())
+        mPlayerFormSensorCollisionArranger->setFormActionPoleClimb(mPlayerStatePoleClimb->getPoleClimbFront());
+    else if(al::isNerve(this, &Swim))
+        mPlayerFormSensorCollisionArranger->setFormActionSwim();
+    // setFormActionRecovery
+    else if(al::isNerve(this, &Abyss))
+        mPlayerFormSensorCollisionArranger->setFormActionAbyss(al::getGravity(this));
+    else if(al::isNerve(this, &Dead))
+        mPlayerFormSensorCollisionArranger->setFormActionDead();
+    else if(al::isNerve(this, &Bind))
+        {CRASH}
+    else
+        mPlayerFormSensorCollisionArranger->setFormActionStandup();
+
+    if(mPlayerSpinCapAttack->isValidAttackSensor(mPlayerAnimator))
+        mPlayerFormSensorCollisionArranger->setFormAttackSensorSpin();
+    else
+        mPlayerFormSensorCollisionArranger->setFormAttackSensorNone();
+
+    mPlayerFormSensorCollisionArranger->update();
+
+    // TODO SandSinkAffect - stuff
+
+    if(mPlayerTrigger->isOnCollisionExpandCheck())
+        rs::resetCollisionExpandCheck(mPlayerColliderHakoniwa);
 }
 
 // void PlayerActorHakoniwa::checkDamageFromCollision() { WARN_UNIMPL; }

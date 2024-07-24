@@ -12,6 +12,7 @@
 #include "Library/Math/VectorUtil.h"
 #include "Library/Player/PlayerUtil.h"
 #include "Library/stuff.h"
+#include "Player/CollisionShapeKeeper.h"
 #include "Player/PlayerActionFunction.h"
 #include "Player/PlayerActionVelocityControl.h"
 #include "Player/PlayerCollider.h"
@@ -19,6 +20,7 @@
 #include "Player/PlayerInput.h"
 #include "Player/PlayerTrigger.h"
 #include "PlayerUtil.h"
+#include "Util/CollisionShapeFunction.h"
 #include "math/seadMatrix.h"
 #include "math/seadQuat.h"
 #include "math/seadVectorFwd.h"
@@ -2412,3 +2414,19 @@ bool findGrabCeilPosNoWallHit(const al::CollisionParts** x0_0, sead::Vector3f* x
 }
 
 }  // namespace rs
+
+namespace CollisionShapeUtil {
+
+void setShapeOffsetAllArrow(IUsePlayerCollision* collider, const sead::Vector3f& offset) {
+    CollisionShapeKeeper* keeper = collider->getPlayerCollider()->mCollisionShapeKeeper;
+    s32 count = keeper->mCollisionShape.size();
+    for (s32 i = 0; i < count; ++i) {
+        const CollisionShapeInfoBase* shape = keeper->getShapeInfoBase(i);
+        if (CollisionShapeFunction::isShapeArrow(shape)) {
+            CollisionShapeFunction::updateShapeOffset(const_cast<CollisionShapeInfoBase*>(shape), offset);
+        }
+    }
+
+}
+
+}

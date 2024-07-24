@@ -248,11 +248,57 @@ void PlayerColliderHakoniwa::changeCollisionPoleClimb(const sead::Vector3f& cutC
     mPlayerCeilingCheck->setCollisionPartsFilter(nullptr);
 }
 
-// void PlayerColliderHakoniwa::changeCollision2DNormal();
-// void PlayerColliderHakoniwa::changeCollision2DMini();
-// void PlayerColliderHakoniwa::changeCollisionHack(const al::CollisionPartsFilterBase*);
-// void PlayerColliderHakoniwa::changeCollisionRecovery(bool);
-// void PlayerColliderHakoniwa::changeCollisionAbyss(const sead::Vector3f&);
+void PlayerColliderHakoniwa::changeCollision2DNormal() {
+    mPlayerCollider->setCollisionShapeKeeper(mShapeKeeper2DNormal);
+    mPlayerCollider->setCollisionPartsFilter(mFilter2DOnly);
+    mPlayerCollider->mIsDuringRecovery = false;
+    mPlayerCollider->offCutCollideAffectDir();
+    mPlayerCollider->setWallBorderCheckTypeNoFace();
+    mPlayerCeilingCheck->setupCeilingCheckNormal();
+    mPlayerCeilingCheck->setCollisionPartsFilter(mFilter2DOnly);
+
+}
+
+void PlayerColliderHakoniwa::changeCollision2DMini() {
+    mPlayerCollider->setCollisionShapeKeeper(mShapeKeeper2DMini);
+    mPlayerCollider->setCollisionPartsFilter(mFilter2DOnly);
+    mPlayerCollider->mIsDuringRecovery = false;
+    mPlayerCollider->offCutCollideAffectDir();
+    mPlayerCollider->setWallBorderCheckTypeNoFace();
+    mPlayerCeilingCheck->setupCeilingCheckNormal();
+    mPlayerCeilingCheck->setCollisionPartsFilter(mFilter2DOnly);
+
+}
+
+void PlayerColliderHakoniwa::changeCollisionHack(const al::CollisionPartsFilterBase* filter) {
+    mPlayerCollider->setCollisionShapeKeeper(mShapeKeeperNormal);
+    mPlayerCollider->setCollisionPartsFilter(nullptr);
+    mPlayerCollider->mIsDuringRecovery = false;
+    mPlayerCollider->offCutCollideAffectDir();
+    mPlayerCollider->setWallBorderCheckTypeNoFace();
+    mPlayerCeilingCheck->setupCeilingCheckGrab();
+    mPlayerCeilingCheck->setCollisionPartsFilter(filter);
+
+}
+
+void PlayerColliderHakoniwa::changeCollisionRecovery(bool is2d) {
+    if (is2d)
+        changeCollision2DNormal();
+    else
+        changeCollisionNormal();
+    mPlayerCollider->mIsDuringRecovery = true;
+}
+
+void PlayerColliderHakoniwa::changeCollisionAbyss(const sead::Vector3f& cutCollideAffectDir) {
+    mPlayerCollider->setCollisionShapeKeeper(mShapeKeeperNormal);
+    mPlayerCollider->setCollisionPartsFilter(nullptr);
+    mPlayerCollider->mIsDuringRecovery = false;
+    mPlayerCollider->onCutCollideAffectDir(cutCollideAffectDir);
+    mPlayerCollider->setWallBorderCheckTypeNoFace();
+    mPlayerCeilingCheck->setupCeilingCheckNormal();
+    mPlayerCeilingCheck->setCollisionPartsFilter(nullptr);
+}
+
 // void PlayerColliderHakoniwa::prepareCollisionEndHack();
 // void PlayerColliderHakoniwa::prepareCollisionEndRecovery();
 // f32 PlayerColliderHakoniwa::getColliderRadius() const;

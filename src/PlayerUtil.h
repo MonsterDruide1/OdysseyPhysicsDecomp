@@ -354,15 +354,7 @@ public:
 };
 
 #include "Player/PlayerHackKeeper.h"
-
-class PlayerFormSensorCollisionArranger {
-public:
-    PlayerFormSensorCollisionArranger(al::LiveActor*, PlayerColliderHakoniwa*,
-                                      IPlayerModelChanger const*, PlayerHackKeeper const*);
-
-private:
-    void* size[0x40 / 8];
-};
+#include "Player/PlayerFormSensorCollisionArranger.h"
 
 class PlayerCapManHeroEyesControl {
 public:
@@ -785,6 +777,7 @@ public:
                sead::Vector3<float> const&);
     bool isWallCatchForm();
     const sead::Vector3f& getCeilingCheckPos();
+    const sead::Vector3f& getWallCatchFront() const;
 
 private:
     void* size[0xB8 / 8];
@@ -800,6 +793,8 @@ public:
     void setup(al::CollisionParts const*, sead::Vector3<float> const&, sead::Vector3<float> const&,
                sead::Vector3<float> const&);
     bool isEnableNextGrabCeil();
+    bool isFormGrabCeil() const { return false; }
+    const sead::Vector3f& getGrabCeilFront() const { CRASH; }
 
 private:
     void* size[0xC8 / 8];
@@ -814,6 +809,8 @@ public:
 
     void setup(al::CollisionParts const*, sead::Vector3<float> const&, sead::Vector3<float> const&,
                sead::Vector3<float> const&, float, float, char const*);
+    bool isFormPoleClimb() const { return false; }
+    const sead::Vector3f& getPoleClimbFront() const { CRASH; }
 
 private:
     void* size[0xC0 / 8];

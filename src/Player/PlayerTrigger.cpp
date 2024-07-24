@@ -120,3 +120,7 @@ bool PlayerTrigger::isOnNoDamageDown() const {
     return mActionTrigger.isOnBit(EActionTrigger_val11) ||
            mPreMovementTrigger.isOnBit(EPreMovementTrigger_val5);
 }
+
+bool PlayerTrigger::isOnCollisionExpandCheck() const {
+    return mActionTrigger.isOnBit(EActionTrigger_val3);
+}

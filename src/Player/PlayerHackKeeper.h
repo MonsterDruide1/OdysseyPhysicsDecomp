@@ -10,6 +10,7 @@ class LiveActor;
 class HitSensor;
 class CollisionPartsFilterBase;
 struct ActorInitInfo;
+class CollisionPartsFilterBase;
 }  // namespace al
 
 class PlayerRecoverySafetyPoint;
