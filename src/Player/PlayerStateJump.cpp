@@ -521,10 +521,9 @@ void PlayerStateJump::updateNerveDownFall(const char* animationName, f32 initSpe
             mInput->calcMoveInput(&moveDir, -al::getGravity(mActor));
             rs::slerpUpFront(mActor, rs::getCollidedGroundNormal(mCollision), moveDir,
                              mConst->getSlerpQuatRate(), mConst->getHillPoseDegreeMax());
-        } else {
-            kill();
-            return;
         }
+        kill();
+        return;
     }
 }
 
