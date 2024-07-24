@@ -80,7 +80,7 @@ void sub_710047B358(const al::LiveActor* a1, PlayerActionSlopeSlideControl* a2,
                               a3->getSlopeRollingAgainst(), a3->getSlopeRollingAnglePowerMax(),
                               a3->getSlopeRollingMaxSpeed(), a3->getSlopeRollingSideAccel(),
                               a3->getSlopeRollingSideBrake(), a3->getSlopeRollingSideMaxSpeed(),
-                              a3->getSlopeTurnDegree(), a3->getGravityAir(), false);
+                              a3->getSlopeTurnDegree(), a3->getGravityAir(), true);
     }
 }
 
