@@ -7,6 +7,7 @@
 #include "Library/Collision/KCollisionServer.h"
 #include "Library/HostIO/HioNode.h"
 #include "Player/CollidedShapeResult.h"
+#include "container/seadBuffer.h"
 #include "prim/seadBitFlag.h"
 
 namespace al {
@@ -106,12 +107,8 @@ public:
     unsigned int numHitInfosAbove;
     int pad5;
     sead::PtrArray<al::HitInfo> anotherPtrArray;
-    int sizeOfArrayBelowIs3;
-    int pad4;
-    float* someThreeFloats;
-    int sizeOfArrayBelowIs3_2;
-    int pad4_2;
-    float* anotherThreeFloats;
+    sead::Buffer<f32> someThreeFloats1;
+    sead::Buffer<f32> someThreeFloats2;
     sead::Vector3f mCollidedGroundPos;
     sead::Vector3f mCollidedGroundNormal;
     float unk11;
