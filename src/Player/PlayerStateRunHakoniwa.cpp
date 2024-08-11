@@ -195,11 +195,10 @@ void PlayerStateRunHakoniwa::exeRun() {
         v22 = this->mConst->getDashJudgeSpeed() + this->mConst->getRunSkateAnimSpeedOffset();
 
     if (al::isFirstStep(this)) {
-        // this->mAnimControlRun->reset(v22, al::isNerve(this, &RunAfterTurn));
+        this->mAnimControlRun->reset(v22, al::isNerve(this, &RunAfterTurn));
     }
 
-    // PlayerAnimControlRun::update((__int64)this->mAnimControlRun,
-    // &this->mActionGroundMoveControl->_84.x, v24, v22);
+    this->mAnimControlRun->update(v22, this->mActionGroundMoveControl->_84);
     f32 ikBlendFrameRun = this->mConst->getIKBlendFrameRun();
     s32 v30 = al::isNearZeroOrGreater(v22 - this->mConst->getNormalMinSpeed(), 0.001f) ?
                   ikBlendFrameRun :

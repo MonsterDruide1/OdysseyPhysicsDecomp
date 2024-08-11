@@ -1040,12 +1040,18 @@ public:
             maxFrame = 8;
         else if (al::isEqualString(name, "DamageDown"))
             maxFrame = 92;
+        else if (al::isEqualString(name, "Move"))
+            maxFrame = 60;  // starts all of Walk, Run, Dash, DashFast, RunStart at once, so just use the longest (walk = 60)
         else {
             printf("unknown animation: %s\n", name);
             CRASH
         }
         currentFrame = 0;
         currentAnim = name;
+    }
+
+    s32 getRunStartAnimFrameMax() {
+        return 30;
     }
 
     void startAnimDead() {

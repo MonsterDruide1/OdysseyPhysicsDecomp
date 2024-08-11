@@ -122,20 +122,14 @@ public:
     void tryEmitRollingEffect();
     void tryDeleteRollingEffect();
     void clearRunEffect();
+    void tryStartRunEffectDashWaterSurface();
+    void tryStartRunEffectRunStart();
 
 private:
     void* size[0xC0 / 8];
 };
 
-class PlayerAnimControlRun {
-public:
-    PlayerAnimControlRun(PlayerAnimator*, PlayerConst const*, IJudge const*, PlayerEffect*, bool);
-    bool isAnimDashFast() const;
-
-private:
-    void* size[0x40 / 8];
-};
-
+#include "Player/PlayerAnimControlRun.h"
 #include "Player/PlayerContinuousJump.h"
 #include "Player/PlayerContinuousLongJump.h"
 
