@@ -398,7 +398,7 @@ const KCPrismData* KCollisionServer::checkPoint(sead::Vector3f* point, f32 a3, f
     return v4;
 }
 
-// NON_MATCHING: See calcAreaBlockOffset
+// NON_MATCHING: Order of operands for ADD
 const u8* KCollisionServer::searchBlock(s32* coordShift, const sead::Vector3u& pos,
                                         const KCPrismHeader* header) const {
     s32 v5 = calcAreaBlockOffset(pos, header);
@@ -407,15 +407,14 @@ const u8* KCollisionServer::searchBlock(s32* coordShift, const sead::Vector3u& p
     if (header->mCoordShift.z == -1 && header->mCoordShift.y == -1)
         v5 = 0;
 
-    u32 v8 = getBlockData((u32*)octreeData, v5);
-    while ((v8 & 0x80000000) == 0) {
+    s32 v8 = getBlockData((u32*)octreeData, v5);
+    while (v8 >= 0) {
         (*coordShift)--;
-        octreeData += v8;
-        u32 v10 = calcChildBlockOffset(pos, *coordShift);
-        v8 = getBlockData((u32*)octreeData, v10);
+        octreeData += (u32)v8;
+        v8 = getBlockData((u32*)octreeData, calcChildBlockOffset(pos, *coordShift));
     }
 
-    return &octreeData[v8 & 0x7FFFFFFF];
+    return octreeData + (v8 & 0x7FFFFFFF);
 }
 
 s32 KCollisionServer::checkSphere(const sead::Vector3f*, f32, f32, u32,
@@ -1132,101 +1131,101 @@ void KCollisionServer::searchPrismMinMax(
     const u8* v7 = 0LL;
     const u8* v73 = 0LL;
     for (v6 = 0; (long)v6 < (int)getNumInnerKcl(); v6++) {
-        al::KCPrismHeader* header = mModelsData[v6];
+        KCPrismHeader* header = mModelsData[v6];
 
         sead::Vector3u pos1, pos2;
-        if (outCheckAndCalcArea(&pos1, &pos2, a2, a3, header)) {
-            sead::Vector3u copyPos1 = pos1;
-            sead::Vector3u copyPos2 = pos2;
+        if (!outCheckAndCalcArea(&pos1, &pos2, a2, a3, header))
+            continue;
+
+        sead::Vector3u copyPos1 = pos1;
+        do {
+            int stepSizeZ = 1000000;
             do {
-                int stepSizeZ = 1000000;
-                do {
-                    int stepSizeY = 1000000;
-                    int v23 = 0;
-                    if (v7) {
-                        do {
-                            int mCoordShift;
-                            const u8* v32 = searchBlock(&mCoordShift, pos1, header);
+                int stepSizeY = 1000000;
+                int v23 = 0;
+                if (v7) {
+                    do {
+                        int mCoordShift;
+                        const u8* v32 = searchBlock(&mCoordShift, pos1, header);
 
-                            int v33 = 1 << mCoordShift;
-                            int stepSizeX = v33 - ((v33 - 1) & pos1.x);
-                            int v35 = v33 - ((v33 - 1) & pos1.y);
-                            int v36 = v33 - ((v33 - 1) & pos1.z);
+                        int v33 = 1 << mCoordShift;
+                        int stepSizeX = v33 - ((v33 - 1) & pos1.x);
+                        int v35 = v33 - ((v33 - 1) & pos1.y);
+                        int v36 = v33 - ((v33 - 1) & pos1.z);
 
-                            if (v36 < stepSizeZ)
-                                stepSizeZ = v36;
-                            if (v35 < stepSizeY)
-                                stepSizeY = v35;
+                        if (v36 < stepSizeZ)
+                            stepSizeZ = v36;
+                        if (v35 < stepSizeY)
+                            stepSizeY = v35;
 
-                            if (v35 > v23 && *((short*)v32 + 1)) {
-                                v23 = v35;
-                                v73 = v32;
-                            }
+                        if (v35 > v23 && *((short*)v32 + 1)) {
+                            v23 = v35;
+                            v73 = v32;
+                        }
 
-                            u16* innerData = (u16*)(v32 + 2);
-                            if (v32 == v7) {
-                                pos1.x += stepSizeX;
-                                continue;
-                            }
-
-                            int v39 = *innerData++;
-                            while (v39 != 0xFFFF) {
-                                const KCPrismData& data = getPrismData(v39, header);
-                                if (data.mLength > 0.0f)
-                                    a4.invoke(&data, header);
-
-                                v39 = *innerData++;
-                            }
-
+                        u16* innerData = (u16*)(v32 + 2);
+                        if (v32 == v7) {
                             pos1.x += stepSizeX;
-                        } while (pos1.x <= copyPos2.x);
-                    } else {
-                        do {
-                            int mCoordShift;
-                            const u8* v32 = searchBlock(&mCoordShift, pos1, header);
+                            continue;
+                        }
 
-                            int v33 = 1 << mCoordShift;
+                        int v39 = *innerData++;
+                        while (v39 != 0xFFFF) {
+                            const KCPrismData& data = getPrismData(v39, header);
+                            if (data.mLength > 0.0f)
+                                a4.invoke(&data, header);
 
-                            int stepSizeX = v33 - ((v33 - 1) & pos1.x);
-                            int v35 = v33 - ((v33 - 1) & pos1.y);
-                            int v36 = v33 - ((v33 - 1) & pos1.z);
+                            v39 = *innerData++;
+                        }
 
-                            if (v36 < stepSizeZ)
-                                stepSizeZ = v36;
-                            if (v35 < stepSizeY)
-                                stepSizeY = v35;
+                        pos1.x += stepSizeX;
+                    } while (pos1.x <= pos2.x);
+                } else {
+                    do {
+                        int mCoordShift;
+                        const u8* v32 = searchBlock(&mCoordShift, pos1, header);
 
-                            if (v35 > v23 && *((short*)v32 + 1)) {
-                                v23 = v35;
-                                v73 = v32;
-                            }
+                        int v33 = 1 << mCoordShift;
 
-                            u16* innerData = (u16*)(v32 + 2);
-                            int v39 = *innerData++;
-                            while (v39 != 0xFFFF) {
-                                const KCPrismData& data = getPrismData(v39, header);
-                                if (!(0.0f >= data.mLength))
-                                    a4.invoke(&data, header);
+                        int stepSizeX = v33 - ((v33 - 1) & pos1.x);
+                        int v35 = v33 - ((v33 - 1) & pos1.y);
+                        int v36 = v33 - ((v33 - 1) & pos1.z);
 
-                                v39 = *innerData++;
-                            }
+                        if (v36 < stepSizeZ)
+                            stepSizeZ = v36;
+                        if (v35 < stepSizeY)
+                            stepSizeY = v35;
 
-                            pos1.x += stepSizeX;
-                        } while (pos1.x <= copyPos2.x);
-                    }
+                        if (v35 > v23 && *((short*)v32 + 1)) {
+                            v23 = v35;
+                            v73 = v32;
+                        }
 
-                    pos1.x = copyPos1.x;
-                    v7 = v73;
-                    pos1.y += stepSizeY;
-                } while (pos1.y <= pos2.y);
+                        u16* innerData = (u16*)(v32 + 2);
+                        int v39 = *innerData++;
+                        while (v39 != 0xFFFF) {
+                            const KCPrismData& data = getPrismData(v39, header);
+                            if (!(0.0f >= data.mLength))
+                                a4.invoke(&data, header);
 
-                pos1.y = copyPos1.y;
+                            v39 = *innerData++;
+                        }
+
+                        pos1.x += stepSizeX;
+                    } while (pos1.x <= pos2.x);
+                }
+
+                pos1.x = copyPos1.x;
                 v7 = v73;
-                pos1.z += stepSizeZ;
-            } while (pos1.z <= copyPos2.z);
+                pos1.y += stepSizeY;
+            } while (pos1.y <= pos2.y);
 
+            pos1.y = copyPos1.y;
             v7 = v73;
-        }
+            pos1.z += stepSizeZ;
+        } while (pos1.z <= pos2.z);
+
+        v7 = v73;
     }
 }
 
@@ -1448,11 +1447,10 @@ bool KCollisionServer::doBoxCheck(const sead::Vector3f* pos1, const sead::Vector
     return outCheckAndCalcArea(posOut1, posOut2, min, max, header);
 }
 
-// NON_MATCHING: Different order of loading mCoordShift
 s32 KCollisionServer::calcAreaBlockOffset(const sead::Vector3u& pos,
                                           const KCPrismHeader* header) const {
-    return 4 * ((pos.y >> header->mCoordShift.x << header->mCoordShift.y) |
-                (pos.z >> header->mCoordShift.x << header->mCoordShift.z) |
+    return 4 * ((pos.z >> header->mCoordShift.x << header->mCoordShift.z) |
+                (pos.y >> header->mCoordShift.x << header->mCoordShift.y) |
                 (pos.x >> header->mCoordShift.x));
 }
 
