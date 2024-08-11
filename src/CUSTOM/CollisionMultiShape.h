@@ -20,9 +20,11 @@ namespace game {
 class CollisionMultiShape {
 public:
     // CollisionMultiShape(const CollisionPartsKeeper* keeper) : mPartsKeeper(keeper) {}
-    CollisionMultiShape(const al::IUseCollision* part, int)
+    CollisionMultiShape(const al::IUseCollision* part, int a3)
         : mPartsKeeper(
-              (game::CollisionPartsKeeper*)part->getCollisionDirector()->mActivePartsKeeper) {}
+              (game::CollisionPartsKeeper*)part->getCollisionDirector()->mActivePartsKeeper) {
+        mCheckedTriangles.allocBuffer(a3, nullptr);
+    }
 
     bool check(CollisionShapeKeeper*, sead::Matrix34f const*, float, sead::Vector3f const&,
                al::CollisionPartsFilterBase const*);
@@ -36,6 +38,8 @@ private:
     int mCurrentShapeIndex;
     al::CollisionParts* mParts;
     f32 unk6;
+    sead::PtrArray<const al::KCPrismData> mCheckedTriangles;
+    const al::KCPrismHeader* mHeader;
 };
 }  // namespace game
 
