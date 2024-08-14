@@ -145,7 +145,7 @@ void PlayerStateJump::appear() {
     _BC = {0.0f, 0.0f, 0.0f};
     mJumpAnimName = nullptr;
     mMoveSpeedMax =
-        sead::Mathf::min(mConst->getJumpMoveSpeedMax(), mActionAirMoveControl->mJumpSpeedMax);
+        sead::Mathf::max(mConst->getJumpMoveSpeedMax(), mActionAirMoveControl->mJumpSpeedMax);
     switch (mJumpMessageRequest->mJumpType) {
     case PlayerJumpType::val_0C:
         rs::noticePlayerJumpStart(mTrigger, mActor);
