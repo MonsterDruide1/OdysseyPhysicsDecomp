@@ -76,6 +76,9 @@ void SpherePoseInterpolator::startInterp(const sead::Vector3f& posStart,
                                          const sead::Vector3f& posEnd, f32 sizeStart, f32 sizeEnd,
                                          const sead::Quatf& quatStart, const sead::Quatf& quatEnd,
                                          f32 steps) {
+    dbg_printf("SpherePoseInterpolator::startInterp(start=(%f, %f, %f), end=(%f, %f, %f), ..., "
+           "steps=%f)\n",
+           posStart.x, posStart.y, posStart.z, posEnd.x, posEnd.y, posEnd.z, steps);
     mCurrentStep = 0.0f;
     mPrevStep = 0.0f;
     mPos = posStart;
@@ -121,6 +124,11 @@ void SpherePoseInterpolator::calcInterp(sead::Vector3f* pos, f32* size, sead::Qu
     slerpQuat(quat, mQuatStart, mQuatEnd, mCurrentStep);
     quat->normalize();
     calcRemainMoveVector(remainMoveVec);
+    dbg_printf("SpherePoseInterpolator::calcInterp(pos=(%f, %f, %f), size=%f, quat=(%f, %f, %f, %f), "
+           "remainMoveVec=(%f, %f, %f))\n",
+           pos->x, pos->y, pos->z, *size, quat->x, quat->y, quat->z, quat->w,
+           remainMoveVec ? remainMoveVec->x : -0, remainMoveVec ? remainMoveVec->y : -0,
+           remainMoveVec ? remainMoveVec->z : -0);
 }
 
 void SpherePoseInterpolator::calcRemainMoveVector(sead::Vector3f* remainMoveVec) const {

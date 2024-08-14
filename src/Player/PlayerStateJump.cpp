@@ -158,7 +158,7 @@ void PlayerStateJump::appear() {
         al::setNerve(this, &JumpSpinGround);
         return;
     case PlayerJumpType::val_0D:
-        printf("PlayerStateJump::appear: unknown jump type %x\n", mJumpMessageRequest->mJumpType);
+        dbg_printf("PlayerStateJump::appear: unknown jump type %x\n", mJumpMessageRequest->mJumpType);
         CRASH
     case PlayerJumpType::val_0E:
         rs::noticePlayerJumpStart(mTrigger, mActor);
@@ -176,47 +176,47 @@ void PlayerStateJump::appear() {
         al::setNerve(this, &JumpTurn);
         return;
     case PlayerJumpType::val_12:
-        printf("PlayerStateJump::appear: unknown jump type %x\n", mJumpMessageRequest->mJumpType);
+        dbg_printf("PlayerStateJump::appear: unknown jump type %x\n", mJumpMessageRequest->mJumpType);
         CRASH
     default:
         bool isMove = mInput->isMove();
         f32 dot = al::getVelocity(mActor).dot(al::getGravity(mActor));
         switch (mJumpMessageRequest->mJumpType) {
         case PlayerJumpType::val_01:
-            printf("PlayerStateJump::appear: unknown jump type %x\n",
+            dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
                    mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_02:
-            printf("PlayerStateJump::appear: unknown jump type %x\n",
+            dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
                    mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_04:
         case PlayerJumpType::val_0B:
-            printf("PlayerStateJump::appear: unknown jump type %x\n",
+            dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
                    mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_05:
-            printf("PlayerStateJump::appear: unknown jump type %x\n",
+            dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
                    mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_06:
-            printf("PlayerStateJump::appear: unknown jump type %x\n",
+            dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
                    mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_07:
-            printf("PlayerStateJump::appear: unknown jump type %x\n",
+            dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
                    mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_08:
-            printf("PlayerStateJump::appear: unknown jump type %x\n",
+            dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
                    mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_09:
-            printf("PlayerStateJump::appear: unknown jump type %x\n",
+            dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
                    mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_0A:
-            printf("PlayerStateJump::appear: unknown jump type %x\n",
+            dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
                    mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::HipDropJump:
@@ -416,7 +416,6 @@ void PlayerStateJump::exeJump() {
 
     bool v43 = mCounterForceRun->getCounter() < 1 ? rs::isOnGround(mActor, mCollision) :
                                                     rs::isOnGroundAndGravity(mActor, mCollision);
-    printf("v43: %s\n", v43 ? "true" : "false");
 
     if (rs::isCollidedCeiling(mCollision) && !al::isFirstStep(this)) {
         rs::reflectCeiling(mActor, 0.0f);

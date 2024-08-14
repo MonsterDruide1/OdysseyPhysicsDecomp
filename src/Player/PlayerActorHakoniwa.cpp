@@ -157,8 +157,6 @@ void PlayerActorHakoniwa::initAfterPlacement() {
 }
 
 void PlayerActorHakoniwa::movement() {
-    printf("Currently in %s\n",
-           mNerveKeeper->getStateCtrl()->findStateInfo(mNerveKeeper->getCurrentNerve())->name);
     if (mHackCap->isNoPutOnHide())
         CRASH
 
@@ -392,7 +390,7 @@ void PlayerActorHakoniwa::updateCollider() {
         sead::Vector3f result = mPlayerColliderHakoniwa->updateCollider(velocity);
         const sead::Vector3f& a2 = velocity;
         const PlayerCollider* a1 = mPlayerColliderHakoniwa->mPlayerCollider;
-        printf("Collide: (%.02f, %.02f, %.02f)+(%.02f, %.02f, %.02f) => (%.02f, %.02f, %.02f) ; "
+        dbg_printf("Collide: (%.02f, %.02f, %.02f)+(%.02f, %.02f, %.02f) => (%.02f, %.02f, %.02f) ; "
                "isRecovery=%s\n",
                a1->mTrans.x, a1->mTrans.y, a1->mTrans.z, a2.x, a2.y, a2.z, result.x, result.y,
                result.z, "false");
