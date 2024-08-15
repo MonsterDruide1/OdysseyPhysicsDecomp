@@ -158,7 +158,8 @@ void PlayerStateJump::appear() {
         al::setNerve(this, &JumpSpinGround);
         return;
     case PlayerJumpType::val_0D:
-        dbg_printf("PlayerStateJump::appear: unknown jump type %x\n", mJumpMessageRequest->mJumpType);
+        dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
+                   mJumpMessageRequest->mJumpType);
         CRASH
     case PlayerJumpType::val_0E:
         rs::noticePlayerJumpStart(mTrigger, mActor);
@@ -176,7 +177,8 @@ void PlayerStateJump::appear() {
         al::setNerve(this, &JumpTurn);
         return;
     case PlayerJumpType::val_12:
-        dbg_printf("PlayerStateJump::appear: unknown jump type %x\n", mJumpMessageRequest->mJumpType);
+        dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
+                   mJumpMessageRequest->mJumpType);
         CRASH
     default:
         bool isMove = mInput->isMove();
@@ -184,40 +186,40 @@ void PlayerStateJump::appear() {
         switch (mJumpMessageRequest->mJumpType) {
         case PlayerJumpType::val_01:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                   mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_02:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                   mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_04:
         case PlayerJumpType::val_0B:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                   mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_05:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                   mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_06:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                   mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_07:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                   mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_08:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                   mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_09:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                   mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::val_0A:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                   mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->mJumpType);
             CRASH
         case PlayerJumpType::HipDropJump:
             rs::noticePlayerJumpStart(mTrigger, mActor);
@@ -311,8 +313,28 @@ void PlayerStateJump::appear() {
 // f32 PlayerStateJump::calcJumpPowerMin() const;
 // f32 PlayerStateJump::calcJumpPowerMax() const;
 // f32 PlayerStateJump::calcJumpGravity() const;
-void PlayerStateJump::tryCountUpContinuousJump(PlayerContinuousJump*) {
-    WARN_UNIMPL;
+void PlayerStateJump::tryCountUpContinuousJump(PlayerContinuousJump* continuousJump) {
+    if (!_B4 || mModelChanger->is2DModel()) {
+        continuousJump->clear();
+        return;
+    }
+
+    sead::Vector3f v11 = {0.0f, 0.0f, 0.0f};
+    al::verticalizeVec(&v11, al::getGravity(mActor), al::getVelocity(mActor));
+    al::tryNormalizeOrZero(&v11);
+
+    if (continuousJump->mCount) {
+        f32 jumpPower = mJumpPower;
+        f32 v8 = mConst->getJumpPowerMax() * 0.99f;
+        f32 v9 = v11.dot(continuousJump->mLastJumpDir);
+        bool v10 = !mIsMoon ? v9 >= 0.70711f : v9 >= 6.123e-17f;
+        if (jumpPower < v8 || !v10) {
+            continuousJump->clear();
+            return;
+        }
+    }
+
+    continuousJump->countUp(v11);
 }
 
 bool PlayerStateJump::isJumpCapCatch() const {
