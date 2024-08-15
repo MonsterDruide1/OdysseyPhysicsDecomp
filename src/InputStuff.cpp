@@ -59,7 +59,6 @@ void PlayerInput::calcMoveInput(sead::Vector3f* out, const sead::Vector3f& in) c
         return;
     }
     calcMoveInputImpl(out, in, false, false, false);
-    al::tryNormalizeOrZero(out);
 }
 
 bool PlayerInput::isMove() const {
