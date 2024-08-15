@@ -102,7 +102,9 @@ public:
     void calcGroundPoseUp(sead::Vector3<float>*) const;
 
 public:
-    void* gap[24];
+    void* gap1[5];
+    al::LiveActor* mPlayer;
+    void* gap2[18];
     sead::Matrix34f* mtx;
     void* size_f0[5];
 };

@@ -486,7 +486,8 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
 
     mPlayerConst = PlayerFunction::createMarioConst(isMoon ? "Moon" : "");
     mPlayerJointControlKeeper = new PlayerJointControlKeeper(
-        mPlayerModelHolder->findModelActor("Normal"), mPlayerConst, costumeInfo->isNeedShrinkNose(),
+        //mPlayerModelHolder->findModelActor("Normal")
+        this, mPlayerConst, costumeInfo->isNeedShrinkNose(),
         costumeInfo->isEnableBigEar(), costumeInfo->isFollowJoeStrap());
 
     PlayerColliderHakoniwa* collider = new PlayerColliderHakoniwa(this, mPlayerConst);
@@ -572,7 +573,7 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
     mPlayerBindKeeper = new PlayerBindKeeper(mBodyHitSensor, mPlayerPuppet);
     mPlayerCarryKeeper = new PlayerCarryKeeper(
         this, mBodyHitSensor, mPlayerAnimator, mPlayerModelChangerHakoniwa, mPlayerColliderHakoniwa,
-        (PlayerJointParamHandLegAngle*)mPlayerJointControlKeeper->gap[12]);
+        (PlayerJointParamHandLegAngle*)mPlayerJointControlKeeper->gap2[6]);
     mPlayerEquipmentUser =
         new PlayerEquipmentUser(mPlayerInput, mPlayerModelHolder, mPlayerModelChangerHakoniwa);
     mPlayerSeCtrl = new PlayerSeCtrl(
@@ -692,8 +693,8 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
         this, mPlayerConst, playerCollision, mPlayerModelChangerHakoniwa, mPlayerJointControlKeeper,
         mWaterSurfaceFinder, mPlayerColliderHakoniwa, mPlayerJudgeForceLand, mPlayerAnimator,
         mPlayerTrigger, mPlayerCapManHeroEyesControl,
-        (PlayerJointParamCenterDynamics*)mPlayerJointControlKeeper->gap[13],
-        (PlayerJointParamGroundPose*)mPlayerJointControlKeeper->gap[15]);
+        (PlayerJointParamCenterDynamics*)mPlayerJointControlKeeper->gap2[7],
+        (PlayerJointParamGroundPose*)mPlayerJointControlKeeper->gap2[9]);
     mPlayerStateSandSink = new PlayerStateSandSink(this, mPlayerConst, mPlayerInput, mPlayerTrigger,
                                                    mPlayerColliderHakoniwa, mPlayerAnimator,
                                                    mPlayerJudgeStartRun, mPlayerJudgePreInputJump);
@@ -701,7 +702,7 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
     mPlayerStateSpinCap = new PlayerStateSpinCap(
         this, mPlayerConst, mPlayerInput, mPlayerCounterForceRun, mWaterSurfaceFinder,
         mPlayerColliderHakoniwa, mPlayerTrigger, mPlayerSpinCapAttack, mPlayerAnimator,
-        (PlayerJointParamCapThrow*)mPlayerJointControlKeeper->gap[10]);
+        (PlayerJointParamCapThrow*)mPlayerJointControlKeeper->gap2[4]);
     mPlayerStateSquat =
         new PlayerStateSquat(this, mPlayerConst, mPlayerAnimator, mPlayerInput, playerCollision,
                              mPlayerModelChangerHakoniwa, mPlayerTrigger, mPlayerJudgeStartSquat,
@@ -709,7 +710,7 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
     mPlayerStateRunHakoniwa2D3D = new PlayerStateRunHakoniwa2D3D(
         this, mPlayerConst, this, mPlayerInput, playerCollision, mWaterSurfaceFinder,
         mPlayerCounterForceRun, mPlayerCounterQuickTurnJump, mPlayerTrigger, mPlayerAnimator,
-        mPlayerEffect, (PlayerJointParamCenterDynamics*)mPlayerJointControlKeeper->gap[13], isMoon);
+        mPlayerEffect, (PlayerJointParamCenterDynamics*)mPlayerJointControlKeeper->gap2[7], isMoon);
     mPlayerStateSlope =
         new PlayerStateSlope(this, mPlayerConst, mPlayerInput, playerCollision, mPlayerAnimator);
     mPlayerStateRolling = new PlayerStateRolling(
@@ -734,15 +735,15 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
     mPlayerStateWallCatch = new PlayerStateWallCatch(
         this, mPlayerConst, mPlayerInput, getPlayerCollision(), mPlayerColliderHakoniwa,
         mPlayerModelHolder, mPlayerAreaChecker, mPlayerAnimator, mPlayerTrigger,
-        mPlayerJudgePreInputJump, (PlayerJointParamGrab*)mPlayerJointControlKeeper->gap[11]);
+        mPlayerJudgePreInputJump, (PlayerJointParamGrab*)mPlayerJointControlKeeper->gap2[5]);
     mPlayerStateGrabCeil = new PlayerStateGrabCeil(
         this, mPlayerConst, mPlayerInput, mPlayerModelHolder, mPlayerTrigger, getPlayerCollision(),
         mPlayerAnimator, mPlayerJudgePreInputJump, mBodyHitSensor,
-        (PlayerJointParamGrab*)mPlayerJointControlKeeper->gap[11]);
+        (PlayerJointParamGrab*)mPlayerJointControlKeeper->gap2[5]);
     mPlayerStatePoleClimb = new PlayerStatePoleClimb(
         this, mPlayerConst, mPlayerInput, mPlayerTrigger, mPlayerModelHolder, getPlayerCollision(),
         mPlayerAnimator, mPlayerWallActionHistory,
-        (PlayerJointParamHandLegAngle*)mPlayerJointControlKeeper->gap[12], mPlayerJudgePreInputJump,
+        (PlayerJointParamHandLegAngle*)mPlayerJointControlKeeper->gap2[6], mPlayerJudgePreInputJump,
         mPlayerActionDiveInWater);
     mPlayerStateHipDrop = new PlayerStateHipDrop(
         this, mPlayerConst, mPlayerInput, mPlayerColliderHakoniwa, mPlayerAnimator, mPlayerTrigger);
@@ -761,7 +762,7 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
         this, mPlayerConst, playerCollision, mPlayerInput, mPlayerTrigger, mPlayerCarryKeeper,
         mPlayerModelHolder, mPlayerExternalVelocity, mPlayerAnimator, mPlayerSpinCapAttack,
         mWaterSurfaceFinder, mPlayerEffect,
-        (PlayerJointParamSwim*)mPlayerJointControlKeeper->gap[14]);
+        (PlayerJointParamSwim*)mPlayerJointControlKeeper->gap2[8]);
     mPlayerStateDamageLife =
         new PlayerStateDamageLife(this, mPlayerConst, playerCollision, mPlayerInput,
                                   mPlayerColliderHakoniwa, mPlayerAnimator, mPlayerTrigger);
