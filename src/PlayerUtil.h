@@ -103,7 +103,7 @@ public:
 
 public:
     void* gap1[5];
-    al::LiveActor* mPlayer;
+    al::LiveActor* mPlayer; // this is wrong, I confused it with `PlayerJointControlGroundPose`
     void* gap2[18];
     sead::Matrix34f* mtx;
     void* size_f0[5];
