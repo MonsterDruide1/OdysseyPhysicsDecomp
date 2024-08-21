@@ -1085,6 +1085,8 @@ bool KCollisionServer::KCHitSphereForPlayer(const KCPrismData* data, const KCPri
                 }
 
                 *a7 = v30 - v53v.squaredLength();
+            } else {
+                goto LABEL_23;
             }
         } else {
             e1xe3 = edge3.dot(edge1);
@@ -1097,6 +1099,7 @@ bool KCollisionServer::KCHitSphereForPlayer(const KCPrismData* data, const KCPri
                 goto LABEL_35;
             }
 
+            LABEL_23:
             if (fxe3 > fxf)
                 return false;
 
