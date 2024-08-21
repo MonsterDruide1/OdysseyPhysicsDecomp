@@ -754,7 +754,7 @@ void calcCollidedNormalSum(sead::Vector3<float>* a1, IUsePlayerCollision const* 
     a1->x = 0.0;
     a1->y = 0.0;
     a1->z = 0.0;
-    if (*(float*)(a2->getPlayerCollider() + 112) >= 0.0) {
+    if (a2->getPlayerCollider()->val1 >= 0.0) {
         v4 = (float*)a2->getPlayerCollider();
         y = a1->y;
         a1->x = a1->x + v4[105];
@@ -762,7 +762,7 @@ void calcCollidedNormalSum(sead::Vector3<float>* a1, IUsePlayerCollision const* 
         a1->z = a1->z + v4[107];
     }
 
-    if (*(float*)(a2->getPlayerCollider() + 128) >= 0.0) {
+    if (a2->getPlayerCollider()->val2 >= 0.0) {
         FaceNormal = &a2->getPlayerCollider()->info2->mTriangle.getFaceNormal();
         v8 = a1->y;
         a1->x = a1->x + FaceNormal->x;
@@ -770,7 +770,7 @@ void calcCollidedNormalSum(sead::Vector3<float>* a1, IUsePlayerCollision const* 
         a1->z = a1->z + FaceNormal->z;
     }
 
-    if (*(float*)(a2->getPlayerCollider() + 144) >= 0.0) {
+    if (a2->getPlayerCollider()->val3 >= 0.0) {
         v13 = &a2->getPlayerCollider()->info3->mTriangle.getFaceNormal();
         v14 = a1->y;
         x = a1->x + v13->x;
