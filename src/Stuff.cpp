@@ -1533,6 +1533,13 @@ bool isCollisionCodeGrabCeil(al::HitInfo const& a1) {
     return isFloorCode(a1.mTriangle, "GrabCeil");
 }
 
+bool isCollisionCodePoisonTouch(IUsePlayerCollision const* a1) {
+    return (a1->getPlayerCollider()->val1 >= 0.0f &&
+            al::isFloorCode(a1->getPlayerCollider()->info1, "Poison")) ||
+           (a1->getPlayerCollider()->val2 >= 0.0f &&
+            al::isWallCode(a1->getPlayerCollider()->info2, "Poison"));
+}
+
 bool calcExistCollisionBorderWallCatch(al::IUseCollision const* a1,
                                        sead::Vector3<float> const& x1_0,
                                        sead::Vector3<float> const& x2_0,
@@ -2423,10 +2430,10 @@ void setShapeOffsetAllArrow(IUsePlayerCollision* collider, const sead::Vector3f&
     for (s32 i = 0; i < count; ++i) {
         const CollisionShapeInfoBase* shape = keeper->getShapeInfoBase(i);
         if (CollisionShapeFunction::isShapeArrow(shape)) {
-            CollisionShapeFunction::updateShapeOffset(const_cast<CollisionShapeInfoBase*>(shape), offset);
+            CollisionShapeFunction::updateShapeOffset(const_cast<CollisionShapeInfoBase*>(shape),
+                                                      offset);
         }
     }
-
 }
 
-}
+}  // namespace CollisionShapeUtil
