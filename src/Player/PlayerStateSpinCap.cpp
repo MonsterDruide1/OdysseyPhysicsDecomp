@@ -461,7 +461,7 @@ void PlayerStateSpinCap::exeSpinAirSeparate() {
         mSpinCapAttack->startSpinSeparate(mAnimator);
 
     updateSpinAirNerve();
-    if (al::isLessEqualStep(this, 22))
+    if (!al::isLessEqualStep(this, 22))
         return al::setNerve(this, &Fall);
 }
 
