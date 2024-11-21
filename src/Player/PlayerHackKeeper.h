@@ -65,7 +65,6 @@ public:
     void receiveRequestDamage();
     void sendSyncDamageVisibility();
     void pushWorldEndBorder(const sead::Vector3f&);
-    const char* getCurrentHackName() const;
     PlayerCollider* getPlayerCollision();
     f32 getHackGuideHeight();
     bool isHackGuideEnable() const;
@@ -78,7 +77,6 @@ public:
     bool isHackCancelCeilingCheck() const;
     bool isHackInvalidLifeRecovery() const;
     void requestForceHackStageStart(al::HitSensor*, const CapTargetInfo*, al::LiveActor*);
-    void executeForceHackStageStart(al::HitSensor*, IUsePlayerHack*);
     void startDemo();
     void endDemo();
 

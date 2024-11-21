@@ -325,7 +325,7 @@ void PlayerActorHakoniwa::control() {
         mPlayerDamageKeeper->update(mPlayerModelChangerHakoniwa,
                                     rs::isJudge(mPlayerJudgeRecoveryLifeFast),
                                     !al::isNerve(this, &Demo));
-        if (!rs::isJudge(mPlayerInfo->mPlayerJudgeSafetyPointRecovery)) {
+        if (!rs::isJudge(mPlayerInfo->mJudgeSafetyPointRecovery)) {
             mActorDimensionKeeper->update();
             // possibly jumping out of 2d area
             al::setGravity(this, {0.0f, -1.0f, 0.0f});
@@ -868,57 +868,57 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
         mPlayerHackKeeper, mPlayerStateWait, mPlayerStateSwim, iceWaterJudge);
 
     mPlayerInfo = new PlayerInfo();
-    mPlayerInfo->mPlayerModelChangerHakoniwa = mPlayerModelChangerHakoniwa;
-    mPlayerInfo->mPlayerOxygen = mPlayerOxygen;
-    mPlayerInfo->mPlayerBindKeeper = mPlayerBindKeeper;
-    mPlayerInfo->mPlayerDamageKeeper = mPlayerDamageKeeper;
-    mPlayerInfo->mPlayerDemoActionFlag = mPlayerDemoActionFlag;
-    mPlayerInfo->mPlayerEquipmentUser = mPlayerEquipmentUser;
+    mPlayerInfo->mModelChangerHakoniwa = mPlayerModelChangerHakoniwa;
+    mPlayerInfo->mOxygen = mPlayerOxygen;
+    mPlayerInfo->mBindKeeper = mPlayerBindKeeper;
+    mPlayerInfo->mDamageKeeper = mPlayerDamageKeeper;
+    mPlayerInfo->mDemoActionFlag = mPlayerDemoActionFlag;
+    mPlayerInfo->mEquipmentUser = mPlayerEquipmentUser;
     mPlayerInfo->mHackCap = mHackCap;
     mPlayerInfo->mWorldEndBorderKeeper = mWorldEndBorderKeeper;
-    mPlayerInfo->mPlayerFormSensorCollisionArranger = mPlayerFormSensorCollisionArranger;
-    mPlayerInfo->mPlayerAnimator = mPlayerAnimator;
-    mPlayerInfo->mPlayerInput = mPlayerInput;
-    mPlayerInfo->mPlayerModelHolder = mPlayerModelHolder;
+    mPlayerInfo->mFormSensorCollisionArranger = mPlayerFormSensorCollisionArranger;
+    mPlayerInfo->mAnimator = mPlayerAnimator;
+    mPlayerInfo->mInput = mPlayerInput;
+    mPlayerInfo->mModelHolder = mPlayerModelHolder;
     mPlayerInfo->mCeilingCheck = mPlayerColliderHakoniwa;
-    mPlayerInfo->mPlayerHackKeeper = mPlayerHackKeeper;
-    mPlayerInfo->mPlayerCapManHeroEyesControl = mPlayerCapManHeroEyesControl;
-    mPlayerInfo->mPlayerCarryKeeper = mPlayerCarryKeeper;
-    mPlayerInfo->mPlayerJointControlKeeper = mPlayerJointControlKeeper;
-    mPlayerInfo->mPlayerCounterIceWater = mPlayerCounterIceWater;
-    mPlayerInfo->mPlayerStainControl = mPlayerStainControl;
+    mPlayerInfo->mHackKeeper = mPlayerHackKeeper;
+    mPlayerInfo->mCapManHeroEyesControl = mPlayerCapManHeroEyesControl;
+    mPlayerInfo->mCarryKeeper = mPlayerCarryKeeper;
+    mPlayerInfo->mJointControlKeeper = mPlayerJointControlKeeper;
+    mPlayerInfo->mCounterIceWater = mPlayerCounterIceWater;
+    mPlayerInfo->mStainControl = mPlayerStainControl;
     mPlayerInfo->mFootPrintHolder = mFootPrintHolder;
     mPlayerInfo->mBodyHitSensor = mBodyHitSensor;
-    mPlayerInfo->mPlayerRecoverySafetyPoint = mPlayerRecoverySafetyPoint;
-    mPlayerInfo->mPlayerCostumeInfo = costumeInfo;
-    mPlayerInfo->mPlayerJudgeCameraInWater =
+    mPlayerInfo->mRecoverySafetyPoint = mPlayerRecoverySafetyPoint;
+    mPlayerInfo->mCostumeInfo = costumeInfo;
+    mPlayerInfo->mJudgeCameraInWater =
         new PlayerJudgeCameraInWater(this, mPlayerJudgeInWater1, mWaterSurfaceFinder);
-    mPlayerInfo->mPlayerJudgeActiveCameraSubjective =
+    mPlayerInfo->mJudgeActiveCameraSubjective =
         new PlayerJudgeActiveCameraSubjective(mPlayerStateCameraSubjective);
-    mPlayerInfo->mPlayerJudgeTalkGround = new PlayerJudgeTalkGround(
+    mPlayerInfo->mJudgeTalkGround = new PlayerJudgeTalkGround(
         this, mPlayerModelChangerHakoniwa, mPlayerHackKeeper, mPlayerCarryKeeper, playerCollision,
         mPlayerInput, mPlayerConst, mPlayerStateWait);
-    mPlayerInfo->mPlayerJudgeTalkSwim =
+    mPlayerInfo->mJudgeTalkSwim =
         new PlayerJudgeTalkSwim(mPlayerHackKeeper, mPlayerCarryKeeper, mPlayerStateSwim);
-    mPlayerInfo->mPlayerJudgeDead = new PlayerJudgeDead(this);
-    mPlayerInfo->mPlayerJudgeDeadWipeStart = mPlayerJudgeDeadWipeStart;
-    mPlayerInfo->mPlayerJudgeDrawForward =
+    mPlayerInfo->mJudgeDead = new PlayerJudgeDead(this);
+    mPlayerInfo->mJudgeDeadWipeStart = mPlayerJudgeDeadWipeStart;
+    mPlayerInfo->mJudgeDrawForward =
         new PlayerJudgeDrawForward(this, mPlayerJudgeDeadWipeStart);
-    mPlayerInfo->mPlayerJudgeNrvPoleClimb = new PlayerJudgeSameNerve(this, &PoleClimb);
-    mPlayerInfo->mPlayerJudgeNrvGrabCeil = new PlayerJudgeSameNerve(this, &GrabCeil);
-    mPlayerInfo->mPlayerJudgeNrvWallCatch = new PlayerJudgeSameNerve(this, &WallCatch);
-    mPlayerInfo->mPlayerJudgeNrvSwim = new PlayerJudgeSameNerve(this, &Swim);
-    mPlayerInfo->mPlayerJudgeFailureCameraSubjective = new PlayerJudgeFailureCameraSubjective(
+    mPlayerInfo->mJudgeNrvPoleClimb = new PlayerJudgeSameNerve(this, &PoleClimb);
+    mPlayerInfo->mJudgeNrvGrabCeil = new PlayerJudgeSameNerve(this, &GrabCeil);
+    mPlayerInfo->mJudgeNrvWallCatch = new PlayerJudgeSameNerve(this, &WallCatch);
+    mPlayerInfo->mJudgeNrvSwim = new PlayerJudgeSameNerve(this, &Swim);
+    mPlayerInfo->mJudgeFailureCameraSubjective = new PlayerJudgeFailureCameraSubjective(
         mPlayerInput, new PlayerJudgeSameNerve(this, &Camera));
-    mPlayerInfo->mPlayerJudgeSafetyPointRecovery = new PlayerJudgeSafetyPointRecovery(
+    mPlayerInfo->mJudgeSafetyPointRecovery = new PlayerJudgeSafetyPointRecovery(
         new PlayerJudgeSameNerve(this, &Abyss), mPlayerStateAbyss);
-    mPlayerInfo->mPlayerJudgeStatusPoleClimb = new PlayerJudgeStatusPoleClimb(
+    mPlayerInfo->mJudgeStatusPoleClimb = new PlayerJudgeStatusPoleClimb(
         new PlayerJudgeSameNerve(this, &PoleClimb), mPlayerStatePoleClimb);
-    mPlayerInfo->mPlayerJudgePlaySwitchOnAreaWaitAnim =
+    mPlayerInfo->mJudgePlaySwitchOnAreaWaitAnim =
         new PlayerJudgePlaySwitchOnAreaWaitAnim(mPlayerStateWait);
-    mPlayerInfo->mPlayerJudgeSleep = new PlayerJudgeSleep(mPlayerStateWait);
-    mPlayerInfo->mPlayerJudgeEnableGuideArrow = new PlayerJudgeEnableGuideArrow(mPlayerPuppet);
-    mPlayerInfo->mPlayerJudgeEnablePeachAmiibo =
+    mPlayerInfo->mJudgeSleep = new PlayerJudgeSleep(mPlayerStateWait);
+    mPlayerInfo->mJudgeEnableGuideArrow = new PlayerJudgeEnableGuideArrow(mPlayerPuppet);
+    mPlayerInfo->mJudgeEnablePeachAmiibo =
         new PlayerJudgeEnablePeachAmiibo(mPlayerStateDamageFire);
     mPlayerInfo->mIsMoon = isMoon;
 
@@ -1011,11 +1011,11 @@ void PlayerActorHakoniwa::endDemoKeepCarry() {
     CRASH
 }
 
-void PlayerActorHakoniwa::getDemoActor() {
+al::DemoActor* PlayerActorHakoniwa::getDemoActor() {
     CRASH
 }
 
-void* PlayerActorHakoniwa::getDemoAnimator() {
+PlayerAnimator* PlayerActorHakoniwa::getDemoAnimator() {
     CRASH
 }
 
@@ -1023,7 +1023,7 @@ bool PlayerActorHakoniwa::isDamageStopDemo() const {
     CRASH
 }
 
-void* PlayerActorHakoniwa::getPlayerPuppet(){CRASH}
+PlayerPuppet* PlayerActorHakoniwa::getPlayerPuppet(){CRASH}
 
 PlayerInfo* PlayerActorHakoniwa::getPlayerInfo() const {
     return mPlayerInfo;
