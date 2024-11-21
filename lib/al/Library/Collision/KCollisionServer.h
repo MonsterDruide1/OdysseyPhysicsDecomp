@@ -179,7 +179,7 @@ public:
     f32 calcRadiusBaseScale(f32 unk) const;
     void getMoveVector(sead::Vector3f* moveVec);
 
-private:
+public:
     sead::Vector3f mPos;
     sead::Vector3f mMove;
     f32 mSizeStart;
