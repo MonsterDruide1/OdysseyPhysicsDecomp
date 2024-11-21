@@ -313,13 +313,15 @@ ActorSceneInfo* LiveActor::getSceneInfo() const {
 }
 
 void LiveActor::initHitSensor(s32 amount) {
-    mHitSensorKeeper = new HitSensorKeeper(amount);
+    CRASH
+    //mHitSensorKeeper = new HitSensorKeeper(amount);
 }
 
 void LiveActor::initCollider(f32 radius, f32 offsetY, u32 allocatedHitInfo) {
-    mCollider = new Collider(getCollisionDirector(), getBaseMtx(), &getTrans(this),
+    CRASH
+    /*mCollider = new Collider(getCollisionDirector(), getBaseMtx(), &getTrans(this),
                              &getGravity(this), radius, offsetY, allocatedHitInfo);
-    mFlags->isCollideOff = false;
+    mFlags->isCollideOff = false;*/
 }
 
 void LiveActor::initPoseKeeper(ActorPoseKeeperBase* poseKeeper) {
@@ -331,7 +333,8 @@ void LiveActor::initExecuteInfo(ActorExecuteInfo* executeInfo) {
 }
 
 void LiveActor::initRailKeeper(const ActorInitInfo& info, const char* linkName) {
-    mRailKeeper = tryCreateRailKeeper(*info.placementInfo, linkName);
+    CRASH
+    //mRailKeeper = tryCreateRailKeeper(*info.placementInfo, linkName);
 }
 
 void LiveActor::initModelKeeper(ModelKeeper* modelKeeper) {
@@ -344,11 +347,13 @@ void LiveActor::initScoreKeeper() {
 }
 
 void LiveActor::initStageSwitchKeeper() {
-    mStageSwitchKeeper = new StageSwitchKeeper();
+    CRASH
+    //mStageSwitchKeeper = new StageSwitchKeeper();
 }
 
 void LiveActor::initItemKeeper(s32 itemAmount) {
-    mItemKeeper = new ActorItemKeeper(this, itemAmount);
+    CRASH
+    //mItemKeeper = new ActorItemKeeper(this, itemAmount);
 }
 
 void LiveActor::initActionKeeper(ActorActionKeeper* actionKeeper) {

@@ -29,7 +29,7 @@ void Triangle::fillData(const CollisionParts& parts, const KCPrismData* data,
     mKCPrismData = data;
     mKCPrismHeader = header;
 
-    KCollisionServer* kCollisionServer = parts.getKCollisionServer();
+    const KCollisionServer* kCollisionServer = &parts.getKCollisionServer();
     const sead::Matrix34f& baseMtx = parts.getBaseMtx();
 
     mNormals[0].setRotated(baseMtx, kCollisionServer->getFaceNormal(data, mKCPrismHeader));
@@ -81,7 +81,7 @@ const LiveActor* Triangle::getHostActor() const {
 }
 
 bool Triangle::isHostMoved() const {
-    return mCollisionParts->get_15c() == 0 || mCollisionParts->isMoving();
+    return mCollisionParts->getSomeCounter() == 0 || mCollisionParts->isMoving();
 }
 
 bool Triangle::isValid() const {
@@ -110,7 +110,7 @@ void Triangle::calcCenterPos(sead::Vector3f* center) const {
 
 const sead::Vector3f& Triangle::calcAndGetNormal(s32 index) {
     const CollisionParts* collisionParts = mCollisionParts;
-    KCollisionServer* kCollisionServer = collisionParts->getKCollisionServer();
+    const KCollisionServer* kCollisionServer = &collisionParts->getKCollisionServer();
     switch (index) {
     case 0:
         return calcAndGetFaceNormal();
@@ -137,7 +137,7 @@ const sead::Vector3f& Triangle::calcAndGetNormal(s32 index) {
 const sead::Vector3f& Triangle::calcAndGetFaceNormal() {
     const CollisionParts* collisionParts = mCollisionParts;
     mNormals[0] =
-        collisionParts->getKCollisionServer()->getFaceNormal(mKCPrismData, mKCPrismHeader);
+        collisionParts->getKCollisionServer().getFaceNormal(mKCPrismData, mKCPrismHeader);
     mNormals[0].setRotated(collisionParts->getBaseMtx(), mNormals[0]);
     normalize(&mNormals[0]);
     return mNormals[0];
@@ -145,7 +145,7 @@ const sead::Vector3f& Triangle::calcAndGetFaceNormal() {
 
 const sead::Vector3f& Triangle::calcAndGetEdgeNormal(s32 index) {
     const CollisionParts* collisionParts = mCollisionParts;
-    KCollisionServer* kCollisionServer = collisionParts->getKCollisionServer();
+    const KCollisionServer* kCollisionServer = &collisionParts->getKCollisionServer();
     switch (index) {
     case 0:
         mNormals[1] = kCollisionServer->getEdgeNormal1(mKCPrismData, mKCPrismHeader);
@@ -168,14 +168,14 @@ const sead::Vector3f& Triangle::calcAndGetEdgeNormal(s32 index) {
 }
 
 const sead::Vector3f& Triangle::calcAndGetPos(s32 index) {
-    mCollisionParts->getKCollisionServer()->calcPosLocal(&mPositions[index], mKCPrismData, index,
+    mCollisionParts->getKCollisionServer().calcPosLocal(&mPositions[index], mKCPrismData, index,
                                                          mKCPrismHeader);
     mPositions[index].mul(getBaseMtx());
     return getPos(index);
 }
 
 void Triangle::getLocalPos(sead::Vector3f* pos, s32 index) const {
-    mCollisionParts->getKCollisionServer()->calcPosLocal(pos, mKCPrismData, index, mKCPrismHeader);
+    mCollisionParts->getKCollisionServer().calcPosLocal(pos, mKCPrismData, index, mKCPrismHeader);
 }
 
 void Triangle::calcForceMovePower(sead::Vector3f* power, const sead::Vector3f& pos) const {
@@ -189,7 +189,7 @@ void Triangle::calcForceRotatePower(sead::Quatf* power) const {
 bool Triangle::getAttributes(ByamlIter* iter) const {
     if (!isValid())
         return false;
-    return mCollisionParts->getKCollisionServer()->getAttributes(iter, mKCPrismData);
+    return mCollisionParts->getKCollisionServer().getAttributes(iter, mKCPrismData);
 }
 
 const HitSensor* Triangle::getSensor() const {
