@@ -13,15 +13,15 @@ class CollisionParts;
 class LiveActor;
 
 struct KCPrismHeader {
-    u32 positionsOffset;
-    u32 normalsOffset;
-    u32 trianglesOffset;
-    u32 octreeOffset;
-    f32 thickness;
-    sead::Vector3f octreeOrigin;
-    sead::Vector3u widthMask;
-    sead::Vector3u widthShift;
-    f32 hitboxRadiusCap;
+    u32 mPositionsOffset;
+    u32 mNormalsOffset;
+    u32 mTrianglesOffset;
+    u32 mOctreeOffset;
+    f32 mThickness;
+    sead::Vector3f mOctreeOrigin;
+    sead::Vector3u mMask;
+    sead::Vector3u mCoordShift;
+    f32 mHitboxRadiusCap;
 };
 
 struct KCPrismData {
@@ -34,10 +34,10 @@ struct KCPrismData {
 };
 
 struct KCHitInfo {
-    const KCPrismHeader* header;
-    const KCPrismData* data;
-    f32 _10;
-    u8 _14;  // collision location, enum
+    const KCPrismHeader* mHeader;
+    const KCPrismData* mData;
+    f32 something;  // _16
+    u8 mCollisionLocation;  // _20
 };
 
 class KCollisionServer {
@@ -131,14 +131,14 @@ public:
     static s32 calcChildBlockOffset(const sead::Vector3u& block, s32 shift);
     static u32 getBlockData(const u32* data, u32 offset);
 
-private:
+//private:
     sead::PtrArray<KCPrismHeader> mModelsData;
     void* mData = nullptr;
     ByamlIter* mIter = nullptr;
     void* mModelListData = nullptr;
     void* mOctreeData = nullptr;
-    sead::Vector3u mCoordShift = {0,0,0};
-    sead::Vector3u unkShiftedByCoordShift = {0,0,0};
+    sead::Vector3u mCoordShift = {0, 0, 0};
+    sead::Vector3u unkShiftedByCoordShift = {0, 0, 0};
     f32 mFarthestVertexDistance = 1.0f;
 };
 
