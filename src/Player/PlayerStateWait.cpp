@@ -42,6 +42,37 @@ NERVE_MAKE(PlayerStateWait, WaitRelaxStart);
 NERVE_MAKE(PlayerStateWait, AreaAnimTurn);
 }  // namespace
 
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerStateWait>(u128* state, int startOffset, PlayerStateWait* player) {
+    constexpr int size = 13;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &WaitRelax);
+    *state |= al::isNerve(player, &RequestAnimWait) << 1;
+    *state |= al::isNerve(player, &Wait) << 2;
+    *state |= al::isNerve(player, &LandStiffen) << 3;
+    *state |= al::isNerve(player, &Land) << 4;
+    *state |= al::isNerve(player, &WaitConnect2D) << 5;
+    *state |= al::isNerve(player, &WaitSnoozeStart) << 6;
+    *state |= al::isNerve(player, &WaitSnooze) << 7;
+    *state |= al::isNerve(player, &WaitSleepStart) << 8;
+    *state |= al::isNerve(player, &WaitSleep) << 9;
+    *state |= al::isNerve(player, &AreaAnimWait) << 10;
+    *state |= al::isNerve(player, &WaitRelaxStart) << 11;
+    *state |= al::isNerve(player, &AreaAnimTurn) << 12;
+
+    int offset = startOffset+size;
+    if(player->isDead()) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
+
 PlayerStateWait::PlayerStateWait(al::LiveActor* player, PlayerConst const* pConst,
                                  IUsePlayerCollision const* collider,
                                  PlayerModelChangerHakoniwa const* modelChanger,

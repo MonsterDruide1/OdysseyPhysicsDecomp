@@ -29,6 +29,30 @@ NERVE_MAKE(PlayerStateRunHakoniwa, Turn);
 NERVE_MAKE(PlayerStateRunHakoniwa, Pivot);
 }  // namespace
 
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerStateRunHakoniwa>(u128* state, int startOffset, PlayerStateRunHakoniwa* player) {
+    constexpr int size = 6;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &Run);
+    *state |= al::isNerve(player, &Push) << 1;
+    *state |= al::isNerve(player, &Brake) << 2;
+    *state |= al::isNerve(player, &RunAfterTurn) << 3;
+    *state |= al::isNerve(player, &Turn) << 4;
+    *state |= al::isNerve(player, &Pivot) << 5;
+
+    int offset = startOffset+size;
+    if(player->isDead()) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
+
 PlayerStateRunHakoniwa::PlayerStateRunHakoniwa(
     al::LiveActor* player, PlayerConst const* pConst, PlayerInput const* input,
     IUsePlayerCollision const* collider, PlayerCounterForceRun const* counterForceRun,

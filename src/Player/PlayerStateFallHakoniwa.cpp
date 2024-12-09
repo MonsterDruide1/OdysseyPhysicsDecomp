@@ -10,6 +10,7 @@
 #include "Stuff.h"
 #include "Util/ActorDimensionKeeper.h"
 #include "Util/StageSceneFunction.h"
+#include "nn/types.h"
 
 namespace {
 
@@ -18,6 +19,25 @@ NERVE_IMPL(PlayerStateFallHakoniwa, Fall);
 NERVE_MAKE(PlayerStateFallHakoniwa, Fall);
 
 }  // namespace
+
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerStateFallHakoniwa>(u128* state, int startOffset, PlayerStateFallHakoniwa* player) {
+    constexpr int size = 1;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &Fall);
+
+    int offset = startOffset+size;
+    if(player->isDead()) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
 
 PlayerStateFallHakoniwa::PlayerStateFallHakoniwa(
     al::LiveActor* actor, const PlayerConst* pConst, const IUsePlayerCollision* collision,

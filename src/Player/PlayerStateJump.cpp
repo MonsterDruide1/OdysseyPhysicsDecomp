@@ -47,6 +47,33 @@ NERVE_MAKE(PlayerStateJump, Hovering2D);
 
 }  // namespace
 
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerStateJump>(u128* state, int startOffset, PlayerStateJump* player) {
+    constexpr int size = 9;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &Jump);
+    *state |= al::isNerve(player, &HoveringJump2D) << 1;
+    *state |= al::isNerve(player, &JumpSpinFlower) << 2;
+    *state |= al::isNerve(player, &JumpBack) << 3;
+    *state |= al::isNerve(player, &JumpTurn) << 4;
+    *state |= al::isNerve(player, &JumpSpinGround) << 5;
+    *state |= al::isNerve(player, &JumpSpinFlowerDownFall) << 6;
+    *state |= al::isNerve(player, &JumpSpinGroundDownFall) << 7;
+    *state |= al::isNerve(player, &Hovering2D) << 8;
+
+    int offset = startOffset+size;
+    if(player->isDead()) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
+
 PlayerStateJump::PlayerStateJump(al::LiveActor* player, const PlayerConst* pConst,
                                  const IPlayerModelChanger* modelChanger,
                                  const IUseDimension* dimension, const PlayerInput* input,

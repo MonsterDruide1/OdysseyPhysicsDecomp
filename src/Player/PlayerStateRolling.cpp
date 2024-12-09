@@ -36,6 +36,33 @@ NERVE_MAKE(PlayerStateRolling, UnRoll);
 NERVE_MAKE(PlayerStateRolling, Brake);
 }  // namespace
 
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerStateRolling>(u128* state, int startOffset, PlayerStateRolling* player) {
+    constexpr int size = 9;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &Land);
+    *state |= al::isNerve(player, &Start) << 1;
+    *state |= al::isNerve(player, &Rolling) << 2;
+    *state |= al::isNerve(player, &BoostStart) << 3;
+    *state |= al::isNerve(player, &Jump) << 4;
+    *state |= al::isNerve(player, &StandUp) << 5;
+    *state |= al::isNerve(player, &EndSquat) << 6;
+    *state |= al::isNerve(player, &UnRoll) << 7;
+    *state |= al::isNerve(player, &Brake) << 8;
+
+    int offset = startOffset+size;
+    if(player->isDead()) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
+
 void sub_710047B228(al::LiveActor* a1, const IUsePlayerCollision* a2, const PlayerConst* a3,
                     const sead::Vector3f& x3_0, float a5) {
     const sead::Vector3f* v14;

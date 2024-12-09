@@ -28,6 +28,29 @@ NERVES_MAKE_NOSTRUCT(PlayerStateSpinCap, Fall, SpinGroundSeparate, SpinGround, S
                      SpinAir);
 }  // namespace
 
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerStateSpinCap>(u128* state, int startOffset, PlayerStateSpinCap* player) {
+    constexpr int size = 5;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &Fall);
+    *state |= al::isNerve(player, &SpinGroundSeparate) << 1;
+    *state |= al::isNerve(player, &SpinGround) << 2;
+    *state |= al::isNerve(player, &SpinAirSeparate) << 3;
+    *state |= al::isNerve(player, &SpinAir) << 4;
+
+    int offset = startOffset+size;
+    if(player->isDead()) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
+
 void sub_71004831B8(sead::Vector3f* a1, const al::LiveActor* x1_0, const IUsePlayerCollision* a3,
                     const PlayerInput* x3_0, bool a5) {
     sead::Vector3f a4 = {0.0f, 0.0f, 0.0f};

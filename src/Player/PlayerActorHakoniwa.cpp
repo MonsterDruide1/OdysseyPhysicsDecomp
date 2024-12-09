@@ -113,6 +113,86 @@ NERVE_MAKE(PlayerActorHakoniwa, Fall);
 
 }  // namespace
 
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerActorHakoniwa>(u128* state, int startOffset, PlayerActorHakoniwa* player) {
+    constexpr int size = 31;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &Wait);
+    *state |= al::isNerve(player, &Squat) << 1;
+    *state |= al::isNerve(player, &Run) << 2;
+    *state |= al::isNerve(player, &Slope) << 3;
+    *state |= al::isNerve(player, &Rolling) << 4;
+    *state |= al::isNerve(player, &SpinCap) << 5;
+    *state |= al::isNerve(player, &Jump) << 6;
+    *state |= al::isNerve(player, &CapCatchPop) << 7;
+    *state |= al::isNerve(player, &WallAir) << 8;
+    *state |= al::isNerve(player, &WallCatch) << 9;
+    *state |= al::isNerve(player, &GrabCeil) << 10;
+    *state |= al::isNerve(player, &PoleClimb) << 11;
+    *state |= al::isNerve(player, &HipDrop) << 12;
+    *state |= al::isNerve(player, &HeadSliding) << 13;
+    *state |= al::isNerve(player, &LongJump) << 14;
+    *state |= al::isNerve(player, &SandSink) << 15;
+    *state |= al::isNerve(player, &SandGeyser) << 16;
+    *state |= al::isNerve(player, &Rise) << 17;
+    *state |= al::isNerve(player, &Swim) << 18;
+    *state |= al::isNerve(player, &Damage) << 19;
+    *state |= al::isNerve(player, &DamageSwim) << 20;
+    *state |= al::isNerve(player, &DamageFire) << 21;
+    *state |= al::isNerve(player, &Press) << 22;
+    *state |= al::isNerve(player, &Hack) << 23;
+    *state |= al::isNerve(player, &EndHack) << 24;
+    *state |= al::isNerve(player, &Bind) << 25;
+    *state |= al::isNerve(player, &Camera) << 26;
+    *state |= al::isNerve(player, &Abyss) << 27;
+    *state |= al::isNerve(player, &Demo) << 28;
+    *state |= al::isNerve(player, &Dead) << 29;
+    *state |= al::isNerve(player, &Fall) << 30;
+
+    int offset = startOffset+size;
+    offset += getStateBitMap(state, offset, player->mPlayerStateWait);
+    offset += getStateBitMap(state, offset, player->mPlayerStateSquat);
+    offset += getStateBitMap(state, offset, player->mPlayerStateRunHakoniwa2D3D);
+    offset += getStateBitMap(state, offset, player->mPlayerStateSlope);
+    offset += getStateBitMap(state, offset, player->mPlayerStateRolling);
+    offset += getStateBitMap(state, offset, player->mPlayerStateSpinCap);
+    offset += getStateBitMap(state, offset, player->mPlayerStateJump);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateCapCatchPop);
+    offset += getStateBitMap(state, offset, player->mPlayerStateWallAir);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateWallCatch);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateGrabCeil);
+    //offset += getStateBitMap(state, offset, player->mPlayerStatePoleClimb);
+    offset += getStateBitMap(state, offset, player->mPlayerStateHipDrop);
+    offset += getStateBitMap(state, offset, player->mPlayerStateHeadSliding);
+    offset += getStateBitMap(state, offset, player->mPlayerStateLongJump);
+    offset += getStateBitMap(state, offset, player->mPlayerStateFallHakoniwa);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateSandSink);
+    //offset += getStateBitMap(state, offset, player->mActorStateSandGeyser);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateRise);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateSwim);
+    offset += getStateBitMap(state, offset, player->mPlayerStateDamageLife);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateDamageSwim);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateDamageFire);
+    //offset += getStateBitMap(state, offset, player->mPlayerStatePress);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateHack);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateEndHack);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateBind);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateCameraSubjective);
+    //offset += getStateBitMap(state, offset, player->mPlayerStateAbyss);
+
+    if(al::isDead(player)) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
+
+
 // NON_MATCHING: slightly different when stopping/restarting memset
 PlayerActorHakoniwa::PlayerActorHakoniwa(const char* name)
     : PlayerActorBase(name), mComboCounter(new al::ComboCounter()) {}

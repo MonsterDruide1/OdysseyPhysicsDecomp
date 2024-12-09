@@ -18,6 +18,25 @@ NERVE_IMPL(PlayerStateGroundSpin, GroundSpin);
 NERVES_MAKE_STRUCT(PlayerStateGroundSpin, GroundSpin);
 }  // namespace
 
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerStateGroundSpin>(u128* state, int startOffset, PlayerStateGroundSpin* player) {
+    constexpr int size = 1;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &GroundSpin);
+
+    int offset = startOffset+size;
+    if(player->isDead()) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
+
 PlayerStateGroundSpin::PlayerStateGroundSpin(al::LiveActor* parent,
                                              const IUsePlayerCollision* collision,
                                              const PlayerInput* input, const PlayerConst* pConst,

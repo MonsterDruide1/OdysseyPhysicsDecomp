@@ -3260,3 +3260,7 @@ bool al::isInRange(f32 a2, f32 a3, f32 a4) {
     else
         return (a3 >= a2) & (a2 >= a4);
 }
+
+const sead::Quatf& al::getQuat(const al::LiveActor* actor) {
+    return actor->getPoseKeeper()->getQuat();
+}

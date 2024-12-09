@@ -16,6 +16,31 @@ NERVE_MAKE(PlayerStateRunHakoniwa2D3D, GroundSpin3D);
 NERVE_MAKE(PlayerStateRunHakoniwa2D3D, Run2D);
 }  // namespace
 
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerStateRunHakoniwa2D3D>(u128* state, int startOffset, PlayerStateRunHakoniwa2D3D* player) {
+    constexpr int size = 3;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &Run3D);
+    *state |= al::isNerve(player, &GroundSpin3D) << 1;
+    *state |= al::isNerve(player, &Run2D) << 2;
+
+    int offset = startOffset+size;
+    offset += getStateBitMap(state, offset, player->mStateRunHakoniwa);
+    offset += getStateBitMap(state, offset, player->mStateGroundSpin);
+    //offset += getStateBitMap(state, offset, player->mStateRun2D);
+
+    if(player->isDead()) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
+
 PlayerStateRunHakoniwa2D3D::PlayerStateRunHakoniwa2D3D(
     al::LiveActor* player, PlayerConst const* pConst, IUseDimension const* dimension,
     PlayerInput const* input, IUsePlayerCollision const* collider,
