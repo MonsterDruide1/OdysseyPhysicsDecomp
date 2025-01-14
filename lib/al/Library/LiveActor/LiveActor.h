@@ -1,5 +1,6 @@
 #pragma once
 
+#include <math/seadQuat.h>
 #include <math/seadMatrix.h>
 
 #include "Library/Area/IUseAreaObj.h"

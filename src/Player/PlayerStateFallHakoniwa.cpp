@@ -9,7 +9,7 @@
 #include "Player/PlayerTrigger.h"
 #include "Stuff.h"
 #include "Util/ActorDimensionKeeper.h"
-#include "Util/StageSceneFunction.h"
+#include "Util/JudgeUtil.h"
 #include "nn/types.h"
 
 namespace {

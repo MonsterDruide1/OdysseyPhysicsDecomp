@@ -41,7 +41,7 @@
 #include "Stuff.h"
 #include "System/GameDataFunction.h"
 #include "Util/ActorDimensionKeeper.h"
-#include "Util/StageSceneFunction.h"
+#include "Util/JudgeUtil.h"
 #include "math/seadQuat.h"
 #include "playerUtil.h"
 
@@ -1006,7 +1006,7 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
     syncSensorAndCollision();
     makeActorAlive();
     rs::resetCollision(mPlayerColliderHakoniwa);
-    mGaugeAir = new GaugeAir("酸素タイマー", *al::getLayoutInitInfo(actorInfo));
+    mGaugeAir = new GaugeAir("酸素タイマー", al::getLayoutInitInfo(actorInfo));
     mWaterSurfaceShadow = new WaterSurfaceShadow(actorInfo, "WaterSurfaceShadow");
     mWaterSurfaceShadow->_10 = {1500.0f, 0.25f, 0.75f};
     mWaterSurfaceShadow->setScale(0.5f);

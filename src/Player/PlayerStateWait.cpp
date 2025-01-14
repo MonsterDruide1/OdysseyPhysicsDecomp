@@ -8,7 +8,7 @@
 #include "Library/stuff.h"
 #include "Player/PlayerTrigger.h"
 #include "Stuff.h"
-#include "Util/StageSceneFunction.h"
+#include "Util/JudgeUtil.h"
 #include "basis/seadTypes.h"
 #include "playerUtil.h"
 

@@ -12,7 +12,7 @@
 #include "PlayerUtil.h"
 #include "Stuff.h"
 #include "Util/Hack.h"
-#include "Util/StageSceneFunction.h"
+#include "Util/JudgeUtil.h"
 #include "math/seadVectorFwd.h"
 
 PlayerActionGroundMoveControl::PlayerActionGroundMoveControl(al::LiveActor* player,

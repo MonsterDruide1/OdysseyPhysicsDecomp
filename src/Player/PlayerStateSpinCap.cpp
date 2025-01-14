@@ -14,7 +14,7 @@
 #include "PlayerUtil.h"
 #include "Stuff.h"
 #include "Util/PlayerCollisionUtil.h"
-#include "Util/StageSceneFunction.h"
+#include "Util/JudgeUtil.h"
 #include "math/seadMatrix.h"
 
 namespace {

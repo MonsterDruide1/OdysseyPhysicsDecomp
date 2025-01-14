@@ -1,5 +1,7 @@
 #include "Library/MapObj/ClockMapParts.h"
 
+#include <math/seadQuat.h>
+
 #include "Library/Fluid/RippleCtrl.h"
 #include "Library/LiveActor/ActorActionFunction.h"
 #include "Library/LiveActor/ActorAreaFunction.h"

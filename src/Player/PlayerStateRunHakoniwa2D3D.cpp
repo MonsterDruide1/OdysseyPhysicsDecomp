@@ -4,7 +4,7 @@
 #include "Player/PlayerStateRunHakoniwa.h"
 #include "PlayerUtil.h"
 #include "Util/ActorDimensionKeeper.h"
-#include "Util/StageSceneFunction.h"
+#include "Util/JudgeUtil.h"
 
 namespace {
 NERVE_IMPL(PlayerStateRunHakoniwa2D3D, Run3D);

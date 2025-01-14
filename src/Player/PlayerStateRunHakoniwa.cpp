@@ -11,7 +11,7 @@
 #include "Player/PlayerTrigger.h"
 #include "PlayerUtil.h"
 #include "Stuff.h"
-#include "Util/StageSceneFunction.h"
+#include "Util/JudgeUtil.h"
 
 namespace {
 NERVE_IMPL(PlayerStateRunHakoniwa, Run);
