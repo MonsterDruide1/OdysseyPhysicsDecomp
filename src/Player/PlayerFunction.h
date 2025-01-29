@@ -4,7 +4,7 @@
 #include <math/seadVector.h>
 #include <prim/seadSafeString.h>
 
-#include "Library/Audio/AudioKeeper.h"
+#include "Library/Audio/System/AudioKeeper.h"
 #include "Library/LiveActor/ActorInitInfo.h"
 #include "Player/PlayerConst.h"
 #include "Player/PlayerCostumeInfo.h"

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Library/Collision/Collider.h"
+#include "Library/Collision/KCollisionServer.h"
 #include "Library/LiveActor/LiveActor.h"
 #include "Library/Nerve/NerveStateBase.h"
 #include "Player/IJudge.h"
@@ -156,6 +157,10 @@ public:
 private:
     void* size[0x18 / 8];
 };
+
+namespace al {
+class CollisionPartsFilterOnlySpecialPurpose : public CollisionPartsFilterBase {};
+}
 
 class PlayerCounterAfterCapCatch;
 #include "Player/PlayerCapActionHistory.h"

@@ -1570,19 +1570,6 @@ bool al::isNearDirection(const sead::Vector3f& a1, const sead::Vector3f& a2, flo
     return v12 <= a3;
 }
 
-void al::SphereHitInfo::calcFixVector(sead::Vector3f* a1, sead::Vector3f* a2) const {
-    if (mCollisionLocation == 1) {
-        *a1 = unk * mTriangle.mFaceNormal;
-        if (a2)
-            *a2 = mTriangle.mFaceNormal;
-    } else {
-        sead::Vector3f v20 = unk3 - mCollisionHitPos;
-        al::tryNormalizeOrZero(&v20);
-        *a1 = v20 * (unk * mTriangle.mFaceNormal).dot(v20);
-        *a2 = v20 * mTriangle.mFaceNormal.dot(v20);
-    }
-}
-
 bool al::separateScalarAndDirection(f32* a1, sead::Vector3f* a2, const sead::Vector3f& a3) {
     float x;      // s1
     bool result;  // w0
@@ -1616,12 +1603,6 @@ bool al::separateScalarAndDirection(f32* a1, sead::Vector3f* a2, const sead::Vec
     }
 
     return result;
-}
-
-void al::SphereHitInfo::calcFixVectorNormal(sead::Vector3f* a1, sead::Vector3f* a2) const {
-    *a1 = unk * mTriangle.mFaceNormal;
-    if (a2)
-        *a2 = mTriangle.mFaceNormal;
 }
 
 bool al::isReverseDirection(const sead::Vector3f& a1, const sead::Vector3f& a2, f32 a3) {
@@ -1852,9 +1833,10 @@ void alKCollisionFunc::calcSphereHitPos(sead::Vector3<float>* a1, const al::KCol
     }
 }
 
-void al::normalize(sead::Vector2<float>* out, sead::Vector2<float> const& in) {
+bool al::normalize(sead::Vector2<float>* out, sead::Vector2<float> const& in) {
     *out = in;
     out->normalize();
+    return true;
 }
 
 f32 al::calcAngleDegree(sead::Vector2<float> const& a, sead::Vector2<float> const& b) {
@@ -3260,3 +3242,5 @@ bool al::isInRange(f32 a2, f32 a3, f32 a4) {
 const sead::Quatf& al::getQuat(const al::LiveActor* actor) {
     return actor->getPoseKeeper()->getQuat();
 }
+
+al::ActorSceneInfo::ActorSceneInfo() = default;

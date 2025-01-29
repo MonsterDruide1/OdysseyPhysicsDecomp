@@ -8,7 +8,9 @@
 #include "Player/CollisionShapeKeeper.h"
 #include "Player/PlayerCeilingCheck.h"
 #include "Player/PlayerCollider.h"
+#include "Util/ActorDimensionKeeper.h"
 #include "Stuff.h"
+#include "PlayerUtil.h"
 #include "math/seadVectorFwd.h"
 
 PlayerColliderHakoniwa::PlayerColliderHakoniwa(al::LiveActor* player, const PlayerConst* pConst)

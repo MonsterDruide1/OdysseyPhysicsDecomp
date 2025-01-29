@@ -70,8 +70,6 @@ void landGroundPoseAndSnap(al::LiveActor*, PlayerTrigger*, float*, IUsePlayerCol
 bool reboundVelocityFromCollision(al::LiveActor*, IUsePlayerCollision const*, float, float, float);
 void calcCollidedNormalSum(sead::Vector3<float>*, IUsePlayerCollision const*);
 
-al::CollisionPartsFilterBase* createCollisionPartsFilter2DOnly();
-
 al::HitSensor* tryGetCollidedWallSensor(IUsePlayerCollision const*);
 al::HitSensor* tryGetCollidedGroundSensor(IUsePlayerCollision const*);
 bool calcGroundHeight(float*, sead::Vector3<float>*, al::IUseCollision const*,
