@@ -5,5 +5,4 @@
 class ProjectActorFactory : public al::ActorFactory {
 public:
     ProjectActorFactory();
-    const char* convertName(const char* name) const override;
 };
