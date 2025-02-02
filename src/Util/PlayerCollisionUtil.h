@@ -88,6 +88,7 @@ bool isCollisionCodeGrabCeilWall(const IUsePlayerCollision*);
 bool isCollisionCodeGrabCeilCeiling(const IUsePlayerCollision*);
 bool isCollisionCodeGrabCeilGrround(const IUsePlayerCollision*);
 bool isCollisionCodePoisonTouch(const IUsePlayerCollision*);
+bool isCollisionCodeDamageFireGround(const IUsePlayerCollision*);
 
 u32 reboundVelocityPart(al::LiveActor*, const IUsePlayerCollision*, f32, f32, f32, f32);
 

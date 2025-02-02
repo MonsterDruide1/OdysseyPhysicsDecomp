@@ -1539,6 +1539,10 @@ bool isCollisionCodePoisonTouch(IUsePlayerCollision const* a1) {
            (a1->getPlayerCollider()->val2 >= 0.0f &&
             al::isWallCode(a1->getPlayerCollider()->info2, "Poison"));
 }
+bool isCollisionCodeDamageFireGround(IUsePlayerCollision const* a1) {
+    return (a1->getPlayerCollider()->val1 >= 0.0f &&
+            al::isFloorCode(a1->getPlayerCollider()->info1, "DamageFire"));
+}
 
 bool calcExistCollisionBorderWallCatch(al::IUseCollision const* a1,
                                        sead::Vector3<float> const& x1_0,
