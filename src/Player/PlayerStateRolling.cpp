@@ -275,7 +275,7 @@ f32 PlayerStateRolling::getInverseKinematicsRate() const {
 void PlayerStateRolling::exeBoostStart() {
     if (al::isFirstStep(this)) {
         mAnimator->startAnim("Rolling");
-        sub_710047B228(mActor, mCollider, mConst, mActionSlopeSlideControl->_2c,
+        sub_710047B228(mActor, mCollider, mConst, mActionSlopeSlideControl->mGroundNormal,
                        mConst->getSlopeRollingSpeedBoost());
         al::startHitReaction(mActor, "転がり再加速[2回目以降]");
     }
@@ -309,7 +309,7 @@ void PlayerStateRolling::updateRollingAnimFrameRate() {
 void PlayerStateRolling::exeStart() {
     if (al::isFirstStep(this)) {
         mAnimator->startAnim("RollingStart");
-        sub_710047B228(mActor, mCollider, mConst, mActionSlopeSlideControl->_2c,
+        sub_710047B228(mActor, mCollider, mConst, mActionSlopeSlideControl->mGroundNormal,
                        mConst->getSlopeRollingStartSlideSpeed());
         sead::Vector3f v17 = {0.0f, 0.0f, 0.0f};
         rs::calcGroundNormalOrGravityDir(&v17, mActor, mCollider);
@@ -332,7 +332,7 @@ void PlayerStateRolling::exeStart() {
 
 bool PlayerStateRolling::isStartRollingBrake() const {
     return rs::isOnGroundSlopeSlideEnd(mActor, mCollider, mConst) &&
-           mActionSlopeSlideControl->_38.length() <= mConst->getSlopeRollingSpeedEnd() &&
+           mActionSlopeSlideControl->mHorizontalVelocity.length() <= mConst->getSlopeRollingSpeedEnd() &&
            _98 >= mConst->getSlopeRollingFrameMin() && !_B0;
 }
 
@@ -433,7 +433,7 @@ void PlayerStateRolling::exeJump() {
         else
             mAnimator->startAnim(mContinuousLongJump->getLongJumpAnimName());
         mContinuousLongJump->countUp();
-        sub_710047B228(mActor, mCollider, mConst, mActionSlopeSlideControl->_2c, 0.0f);
+        sub_710047B228(mActor, mCollider, mConst, mActionSlopeSlideControl->mGroundNormal, 0.0f);
         rs::setupLongJumpVelocity(mActor, mCollider, mConst->getJumpInertiaRate(),
                                   mConst->getLongJumpMovePow(), mConst->getLongJumpSpeedMin(),
                                   mConst->getLongJumpInitSpeed(), mConst->getLongJumpJumpPow());
