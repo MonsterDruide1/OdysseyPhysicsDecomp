@@ -2,7 +2,7 @@
 #include "Library/Collision/KCollisionServer.h"
 #include "Library/Collision/KTriangle.h"
 #include "Library/Collision/TriangleFilter.h"
-#include "Library/Math/MathAngleUtil.h"
+#include "Library/Math/MathUtil.h"
 #include "Library/Matrix/MatrixUtil.h"
 #include "container/seadRingBuffer.h"
 #include "math/seadMatrix.h"

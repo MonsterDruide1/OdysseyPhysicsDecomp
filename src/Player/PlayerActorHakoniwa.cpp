@@ -11,9 +11,9 @@
 #include "Library/LiveActor/ActorSensorMsgFunction.h"
 #include "Library/LiveActor/LiveActor.h"
 #include "Library/LiveActor/SubActorKeeper.h"
-#include "Library/Math/MathAngleUtil.h"
 #include "Library/Math/MathUtil.h"
-#include "Library/Math/VectorUtil.h"
+#include "Library/Math/MathUtil.h"
+#include "Library/Math/MathUtil.h"
 #include "Library/Nerve/NerveSetupUtil.h"
 #include "Library/Nerve/NerveStateCtrl.h"
 #include "Library/Nerve/NerveUtil.h"
@@ -1009,7 +1009,7 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
     rs::resetCollision(mPlayerColliderHakoniwa);
     mGaugeAir = new GaugeAir("酸素タイマー", al::getLayoutInitInfo(actorInfo));
     mWaterSurfaceShadow = new WaterSurfaceShadow(actorInfo, "WaterSurfaceShadow");
-    mWaterSurfaceShadow->_10 = {1500.0f, 0.25f, 0.75f};
+    mWaterSurfaceShadow->mScale = {1500.0f, 0.25f, 0.75f};
     mWaterSurfaceShadow->setScale(0.5f);
 }
 

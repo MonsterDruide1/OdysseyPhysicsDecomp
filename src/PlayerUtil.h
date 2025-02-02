@@ -1085,16 +1085,7 @@ private:
     void* size[0x8 / 8];
 };
 
-class WaterSurfaceShadow {
-public:
-    WaterSurfaceShadow(al::ActorInitInfo const&, char const*);
-    void setScale(f32);
-
-public:
-    al::LiveActor* _0;
-    al::WaterSurfaceFinder* _8;
-    sead::Vector3f _10;
-};
+#include "Util/WaterSurfaceShadow.h"
 
 class PlayerInitInfo {
 public:

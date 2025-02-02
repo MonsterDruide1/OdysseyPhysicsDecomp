@@ -12,16 +12,17 @@
 #include "Library/Execute/ExecuteTableHolderUpdate.h"
 #include "Library/LiveActor/ActorCollisionFunction.h"
 #include "Library/LiveActor/ActorMovementFunction.h"
+#include "Library/LiveActor/ActorInitFunction.h"
 #include "Library/LiveActor/ActorPoseKeeper.h"
 #include "Library/LiveActor/ActorSceneInfo.h"
 #include "Library/LiveActor/LiveActor.h"
 #include "Library/LiveActor/LiveActorUtil.h"
 #include "Library/LiveActor/SubActorKeeper.h"
-#include "Library/Math/MathAngleUtil.h"
-#include "Library/Math/MathLengthUtil.h"
+#include "Library/Math/MathUtil.h"
+#include "Library/Math/MathUtil.h"
 #include "Library/Math/MathUtil.h"
 #include "Library/Math/SegmentUtil.h"
-#include "Library/Math/VectorUtil.h"
+#include "Library/Math/MathUtil.h"
 #include "Library/Matrix/MatrixUtil.h"
 #include "Library/Nerve/NerveKeeper.h"
 #include "Library/Nerve/NerveUtil.h"
@@ -1833,10 +1834,9 @@ void alKCollisionFunc::calcSphereHitPos(sead::Vector3<float>* a1, const al::KCol
     }
 }
 
-bool al::normalize(sead::Vector2<float>* out, sead::Vector2<float> const& in) {
+void al::normalize(sead::Vector2<float>* out, sead::Vector2<float> const& in) {
     *out = in;
     out->normalize();
-    return true;
 }
 
 f32 al::calcAngleDegree(sead::Vector2<float> const& a, sead::Vector2<float> const& b) {

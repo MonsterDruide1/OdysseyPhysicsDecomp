@@ -94,7 +94,7 @@ void controlDirectionalVelocity(sead::Vector3<float>*, al::LiveActor const*,
 bool calcExistCollisionBorderWallCatch(al::IUseCollision const*, sead::Vector3<float> const&,
                                        sead::Vector3<float> const&, sead::Vector3<float> const&);
 
-void sendMsgPlayerStartWallJump(al::HitSensor*, al::HitSensor*);
+bool sendMsgPlayerStartWallJump(al::HitSensor*, al::HitSensor*);
 
 void resetCollisionExpandCheck(IUsePlayerCollision*);
 

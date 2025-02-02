@@ -1,5 +1,5 @@
-#include "Library/Math/MathAngleUtil.h"
-#include "Library/Math/MathLengthUtil.h"
+#include "Library/Math/MathUtil.h"
+#include "Library/Math/MathUtil.h"
 #include "Library/Math/MathUtil.h"
 #include "Library/Matrix/MatrixUtil.h"
 #include "math/seadVector.h"
@@ -10,10 +10,9 @@ void normalize(sead::Vector3f* vec) {
     vec->normalize();
 }
 
-bool normalize(sead::Vector3f* out, const sead::Vector3f& vec) {
+void normalize(sead::Vector3f* out, const sead::Vector3f& vec) {
     *out = vec;
     out->normalize();
-    return true;
 }
 
 void makeQuatFrontUp(sead::Quatf* quat, const sead::Vector3f& front, const sead::Vector3f& up) {
