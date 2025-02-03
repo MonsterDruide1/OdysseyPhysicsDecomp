@@ -1009,7 +1009,9 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
     rs::resetCollision(mPlayerColliderHakoniwa);
     mGaugeAir = new GaugeAir("酸素タイマー", al::getLayoutInitInfo(actorInfo));
     mWaterSurfaceShadow = new WaterSurfaceShadow(actorInfo, "WaterSurfaceShadow");
-    mWaterSurfaceShadow->mScale = {1500.0f, 0.25f, 0.75f};
+    mWaterSurfaceShadow->mMaxDistance = 1500.0f;
+    mWaterSurfaceShadow->mEndFrame = 0.25f;
+    mWaterSurfaceShadow->mStartFrame = 0.75f;
     mWaterSurfaceShadow->setScale(0.5f);
 }
 
