@@ -8,11 +8,9 @@
 #include "math/seadQuat.h"
 
 PlayerActionTurnControl::PlayerActionTurnControl(al::LiveActor* actor) : mActor(actor) {
-    _48 = 0;
-    arr = new f32[5];
-    arr_size = 5;
-    _44 = 0;
+    ringbuf.allocBuffer(5, nullptr);
 }
+
 
 void PlayerActionTurnControl::setup(f32 turnAngleStart, f32 turnAngleFast, f32 turnAngleLimit,
                                     f32 turnAngleFastLimit, s32 turnAccelFrame,
@@ -27,8 +25,7 @@ void PlayerActionTurnControl::setup(f32 turnAngleStart, f32 turnAngleFast, f32 t
 }
 
 void PlayerActionTurnControl::reset() {
-    _44 = 0;
-    _48 = 0;
+    ringbuf.clear();
     _30 = 0.0;
     _8 = 0.0;
     _c = {0.0f, 0.0f, 0.0f};
@@ -46,27 +43,7 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
     bool v18;
     float v19;
     float v20;
-    int _48;
-    int arr_size;
-    int _44;
-    int v24;
-    int v25;
-    int v26;
-    int v27;
-    int v28;
-    int v29;
-    float* arr;
-    int v31;
-    int v32;
-    bool v33;
-    int v34;
-    int v35;
-    int v36;
-    float* v37;
     float v38;
-    int v39;
-    int v40;
-    int v41;
     bool v42;
     bool v43;
     bool v44;
@@ -85,19 +62,9 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
     float v60;
     float v61;
     float lTurnAngleLimit;
-    float v63;
-    float v64;
     float lTurnAngleFastLimit;
     int lTurnAccelFrame;
-    float v72;
-    float v73;
-    float v74;
-    float v75;
-    float cosAngle;
-    float sinAngle;
-    float v78;
-    float v79;
-    float v80;
+    f32 v73, v74, v75;
     float v81;
     float v82;
     float v83;
@@ -109,7 +76,6 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
     float v89;
     float v90;
     float v91;
-    float lTurnAngleStart;
     const sead::Vector3f* v94;
     sead::Vector3f v67v;
     sead::Quatf v95q;
@@ -136,117 +102,60 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
     }
 
     v94 = &a3;
-    sead::Vector3f gravity = al::getGravity(this->mActor);
+    sead::Vector3f neggravity = -al::getGravity(this->mActor);
     a3a = {0.0f, 0.0f, 0.0f};
     v12 = al::tryNormalizeOrZero(&a3a, a2);
-    v13 = 0;
-    if (up.dot(-gravity) < 0.087156)
+    v13 = false;
+    if (up.dot(neggravity) < 0.087156f)
         v13 = this->_89;
 
-    v14 = al::isNearZero(front, 0.001);
+    v14 = al::isNearZero(front, 0.001f);
     v15 = v13 || v14;
-    v16 = al::isNearZero(a1, 0.001);
+    v16 = al::isNearZero(a1, 0.001f);
     v17 = v12 && !v16;
     v18 = v16 || !v12;
     v103 = (sead::Vector3f*)&a2;
-    if (v18 || a3a.dot(a1) < 0.34202) {
-        this->_44 = 0;
-        this->_48 = 0;
+    if (v18 || a3a.dot(a1) < 0.34202f) {
+        this->ringbuf.clear();
         v19 = 0.0;
         this->_30 = 0.0;
     } else {
-        if (v12 && !v16)
+        if (v17)
             v20 = sead::Mathf::abs(al::calcAngleDegree(a1, a3a));
         else
             v20 = 0.0;
 
-        _48 = this->_48;
-        arr_size = this->arr_size;
-        _44 = this->_44;
-        if (_48 < arr_size)
-            goto LABEL_21;
+        ringbuf.forcePushBack(v20);
 
-        v24 = _48 - 1;
-        if (_48 >= 1) {
-            v25 = this->_44;
-            if (v25 + 1 < arr_size)
-                v26 = v25 + 1;
-            else
-                v26 = 0;
-
-            _48 = v24;
-            this->_44 = v26;
-            this->_48 = v24;
-            arr_size = this->arr_size;
-            _44 = this->_44;
+        this->_30 = 0.0f;
+        v38 = 0.0f;
+        for (int i = 0; i < ringbuf.size(); i++) {
+            v38 += ringbuf[i];
+            this->_30 = v38;
         }
 
-        if (_48 < arr_size) {
-        LABEL_21:
-            v27 = _48 + 1;
-            v28 = _44 + _48;
-            if (v28 < arr_size)
-                arr_size = 0;
-
-            v29 = v28 - arr_size;
-            arr = this->arr;
-            this->_48 = v27;
-            arr[v29] = v20;
-        }
-
-        v31 = this->_48;
-        this->_30 = 0.0;
-        if (v31 <= 5)
-            v32 = v31;
-        else
-            v32 = 5;
-
-        v33 = v31 - 1;  //__OFSUB__
-        v34 = v31 - 1;
-        if (v34 < 0 != v33) {
-            v38 = 0.0;
-        } else {
-            v35 = this->arr_size;
-            v36 = this->_44;
-            v37 = this->arr;
-            v38 = 0.0;
-            v39 = 0;
-            do {
-                if (v34 + v36 >= v35)
-                    v40 = v35;
-                else
-                    v40 = 0;
-
-                v41 = v34 + v36 - v40;
-                --v34;
-                v38 = v37[v41] + v38;
-                ++v39;
-                this->_30 = v38;
-            } while (v39 < v32);
-        }
-
-        v19 = v38 / 5.0;
-        this->_30 = v38 / 5.0;
+        v19 = v38 / 5.0f;
+        this->_30 = v38 / 5.0f;
     }
 
-    if (((v13 | v14 | v12 ^ 1) & 1) != 0) {
+    if (v15 || !v12) {
         v42 = 0;
         v43 = 0;
         v44 = v12;
     } else {
         isOppositeDir = PlayerActionFunction::isOppositeDir(a3a, front);
-        v42 = 0;
-        if (v18 || v17 && v19 <= 1.0) {
+        v42 = false;
+        if (v18 || (v17 && v19 <= 1.0)) {
             v44 = v12;
-            v43 = 0;
+            v43 = false;
             if (isOppositeDir) {
                 v43 = this->_88;
                 v42 = !this->_88;
-                v44 = v12 & v43;
+                v44 = v12 && v43;
             }
         } else {
             v44 = v12;
-            v43 = 0;
+            v43 = false;
         }
     }
 
@@ -254,17 +163,20 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
     this->_68 = v42;
     this->_6a = v13;
     v98 = {0.0f, 0.0f, 0.0f};
-    if ((v44 & (v15 ^ 1) & 1) == 0) {
+    if ((v44 && !v15) == 0) {
         if (v12) {
             if (v42) {
                 v98 = front;
                 this->_8 = 0.0;
-                goto LABEL_101;
+                this->_5c = v98;
+                return;
             }
 
             v98 = a3a;
-            if (!v13)
-                goto LABEL_101;
+            if (!v13) {
+                this->_5c = v98;
+                return;
+            }
         } else {
             if (!v13) {
                 if (v15)
@@ -272,37 +184,27 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
                 else
                     v98 = front;
 
-                this->_18.x = 0.0;
-                this->_18.y = 0.0;
-                this->_18.z = 0.0;
-                this->_24.x = 0.0;
-                this->_24.y = 0.0;
-                this->_24.z = 0.0;
-                this->_c.x = 0.0;
-                this->_c.y = 0.0;
-                this->_c.z = 0.0;
+                this->_18 = {0.0f, 0.0f, 0.0f};
+                this->_24 = {0.0f, 0.0f, 0.0f};
+                this->_c = {0.0f, 0.0f, 0.0f};
                 this->_8 = PlayerActionFunction::brake(this->_8, this->mTurnBrakeFrame,
                                                        this->mTurnAngleLimit);
-                goto LABEL_101;
+                this->_5c = v98;
+                return;
             }
 
             al::calcFrontDir(&v98, this->mActor);
-            if (up.dot(-gravity) < 0.0)
+            if (up.dot(neggravity) < 0.0)
                 v98 = -v98;
 
-            this->_24.z = 0.0;
-            this->_18.y = 0.0;
-            this->_18.z = 0.0;
-            this->_24.x = 0.0;
-            this->_24.y = 0.0;
-            this->_c.x = 0.0;
-            this->_c.y = 0.0;
-            this->_c.z = 0.0;
-            this->_18.x = 0.0;
+            this->_c = {0.0f, 0.0f, 0.0f};
+            this->_18 = {0.0f, 0.0f, 0.0f};
+            this->_24 = {0.0f, 0.0f, 0.0f};
         }
 
         this->_8 = this->mTurnAngleFastLimit;
-        goto LABEL_101;
+        this->_5c = v98;
+        return;
     }
 
     if (v17)
@@ -317,104 +219,86 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
     v54 = sead::Mathf::acos(v53);
     v97.setCross(a1, a3a);
     al::tryNormalizeOrZero(&v97);
-    if (!v17 || al::isNearZero(this->_18, 0.001))
+    if (!v17 || al::isNearZero(this->_18, 0.001f))
         goto LABEL_61;
 
     v55 = sead::Mathf::rad2deg(v50);
     if (v97.dot(this->_18) <= 0.0) {
-        lTurnAngleStart = this->mTurnAngleStart;
-        if (lTurnAngleStart <= this->_8)
-            lTurnAngleStart = this->_8;
-
-        if (v55 >= lTurnAngleStart) {
-            v57 = 0;
-            v58 = 0;
-            this->_8 = 0.0;
-        } else {
+        if (v55 < sead::Mathf::max(mTurnAngleStart, _8)) {
             this->_8 = al::converge(this->_8, 0.0, v55);
-            v57 = 0;
+            v57 = false;
             v58 = v55 < this->mTurnAngleStart;
+        } else {
+            v57 = false;
+            v58 = false;
+            this->_8 = 0.0;
         }
 
-        goto LABEL_62;
-    }
-
-    v95v.setCross(front, a3a);
-    if (!al::tryNormalizeOrZero(&v95v)) {
-    LABEL_61:
-        v57 = 0;
-        v58 = 0;
-
-    LABEL_62:
         v56 = v94;
-        goto LABEL_63;
-    }
-
-    v56 = &a3;
-    if (v95v.dot(v97) >= 0.0) {
-        v57 = 0;
-        v58 = 0;
     } else {
-        v57 = v19 > 10.0 || v55 > 3.0;
-        v58 = v19 <= 10.0 && v55 <= 3.0;
+        v95v.setCross(front, a3a);
+        if (!al::tryNormalizeOrZero(&v95v)) {
+        LABEL_61:
+            v57 = false;
+            v58 = false;
+            v56 = v94;
+        } else {
+            v56 = &a3;
+            if (v95v.dot(v97) >= 0.0) {
+                v57 = false;
+                v58 = false;
+            } else {
+                v57 = v19 > 10.0f || v55 > 3.0f;
+                v58 = v19 <= 10.0f && v55 <= 3.0f;
+            }
+        }
     }
 
-LABEL_63:
     v59 = sead::Mathf::rad2deg(v54);
-    v60 = al::calcRate01(v51->length(), 0.0, 0.8);
-    v61 = sead::Mathf::clamp(v60, 0.25, 1.0);
+    v60 = al::calcRate01(v51->length(), 0.0f, 0.8f);
+    v61 = sead::Mathf::clamp(v60, 0.25f, 1.0f);
 
     lTurnAngleLimit = this->mTurnAngleLimit;
     if (v59 < this->mTurnAngleStart) {
-        v63 = this->_8;
-
-    LABEL_68:
-        v64 = PlayerActionFunction::brake(v63, this->mTurnBrakeFrame, lTurnAngleLimit);
-        goto LABEL_82;
-    }
-
-    v63 = this->_8;
-    if (v59 >= this->mTurnAngleFast) {
-        lTurnAngleFastLimit = this->mTurnAngleFastLimit;
-        lTurnAccelFrame = this->mTurnAccelFrameFast;
+        this->_8 = PlayerActionFunction::brake(this->_8, this->mTurnBrakeFrame, lTurnAngleLimit);
     } else {
-        lTurnAngleFastLimit = v61 * lTurnAngleLimit;
-        if (v63 >= lTurnAngleFastLimit) {
-            lTurnAngleLimit = this->mTurnAngleFastLimit;
-            goto LABEL_68;
+        if (v59 >= this->mTurnAngleFast) {
+            lTurnAngleFastLimit = this->mTurnAngleFastLimit;
+            lTurnAccelFrame = this->mTurnAccelFrameFast;
+            this->_8 = PlayerActionFunction::accel(this->_8, lTurnAngleFastLimit,
+                                            lTurnAngleFastLimit / lTurnAccelFrame);
+        } else {
+            lTurnAngleFastLimit = v61 * lTurnAngleLimit;
+            if (this->_8 >= lTurnAngleFastLimit) {
+                lTurnAngleLimit = this->mTurnAngleFastLimit;
+                this->_8 = PlayerActionFunction::brake(this->_8, this->mTurnBrakeFrame, lTurnAngleLimit);
+            } else {
+                lTurnAccelFrame = this->mTurnAccelFrame;
+                this->_8 = PlayerActionFunction::accel(this->_8, lTurnAngleFastLimit,
+                                                lTurnAngleFastLimit / lTurnAccelFrame);
+            }
         }
-
-        lTurnAccelFrame = this->mTurnAccelFrame;
     }
 
-    v64 = PlayerActionFunction::accel(v63, lTurnAngleFastLimit,
-                                      lTurnAngleFastLimit / lTurnAccelFrame);
-
-LABEL_82:
-    this->_8 = v64;
     v96 = {0.0f, 0.0f, 0.0f};
-    if (v57 || al::isReverseDirection(front, a3a, 0.01)) {
+    if (v57 || al::isReverseDirection(front, a3a, 0.01f)) {
         v67v = *v56;
         if (v97.dot(*v56) <= 0.0) {
             v67v = -v67v;
         }
 
-        v72 = sead::Mathf::deg2rad(this->_8) * 0.5;
+        sead::Quatf quat;
         v73 = v67v.x;
         v74 = v67v.y;
         v75 = v67v.z;
-        cosAngle = cosf(v72);
-        sinAngle = sinf(v72);
-        v78 = v67v.x * sinAngle;
-        v79 = v67v.y * sinAngle;
-        v80 = v67v.z * sinAngle;
-        v81 = ((v79 * front.z) - (v80 * front.y)) + (cosAngle * front.x);
-        v82 = (cosAngle * front.y) + ((v80 * front.x) - (front.z * v78));
-        v83 = (cosAngle * front.z) + ((v78 * front.y) - (v79 * front.x));
-        v84 = (-(v78 * front.x) - (v79 * front.y)) - (front.z * v80);
-        v98.x = ((v79 * v83) + ((cosAngle * v81) - (v80 * v82))) - (v78 * v84);
-        v98.y = (((v80 * v81) + (cosAngle * v82)) - (v78 * v83)) - (v79 * v84);
-        v98.z = ((cosAngle * v83) + ((v78 * v82) - (v79 * v81))) - (v80 * v84);
+        sead::QuatCalcCommon<f32>::setAxisAngle(quat, v67v, _8);
+        v81 = ((quat.y * front.z) - (quat.z * front.y)) + (quat.w * front.x);
+        v82 = (quat.w * front.y) + ((quat.z * front.x) - (front.z * quat.x));
+        v83 = (quat.w * front.z) + ((quat.x * front.y) - (quat.y * front.x));
+        v84 = (-(quat.x * front.x) - (quat.y * front.y)) - (front.z * quat.z);
+        v98.x = ((quat.y * v83) + ((quat.w * v81) - (quat.z * v82))) - (quat.x * v84);
+        v98.y = (((quat.z * v81) + (quat.w * v82)) - (quat.x * v83)) - (quat.y * v84);
+        v98.z = ((quat.w * v83) + ((quat.x * v82) - (quat.y * v81))) - (quat.x * v84);
         al::tryNormalizeOrZero(&v98);
         v96 = v67v;
     } else {
@@ -456,8 +340,6 @@ LABEL_82:
     this->_18.z = v75;
     this->_c = a3a;
     this->_24 = *v56;
-
-LABEL_101:
     this->_5c = v98;
 }
 

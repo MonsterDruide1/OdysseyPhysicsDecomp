@@ -2,6 +2,7 @@
 
 #include <container/seadRingBuffer.h>
 #include <math/seadVector.h>
+#include "container/seadRingBuffer.h"
 
 namespace al {
 class LiveActor;
