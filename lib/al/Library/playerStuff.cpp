@@ -2,6 +2,7 @@
 #include "Library/LiveActor/ActorPoseKeeper.h"
 #include "Library/LiveActor/ActorSensorFunction.h"
 #include "Library/LiveActor/LiveActor.h"
+#include "Library/Placement/PlacementInfo.h"
 #include "math/seadVectorFwd.h"
 #include "playerUtil.h"
 

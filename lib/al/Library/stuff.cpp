@@ -13,10 +13,10 @@
 #include "Library/LiveActor/ActorCollisionFunction.h"
 #include "Library/LiveActor/ActorMovementFunction.h"
 #include "Library/LiveActor/ActorInitFunction.h"
+#include "Library/LiveActor/ActorInitUtil.h"
 #include "Library/LiveActor/ActorPoseKeeper.h"
 #include "Library/LiveActor/ActorSceneInfo.h"
 #include "Library/LiveActor/LiveActor.h"
-#include "Library/LiveActor/LiveActorUtil.h"
 #include "Library/LiveActor/SubActorKeeper.h"
 #include "Library/Math/MathUtil.h"
 #include "Library/Math/MathUtil.h"
@@ -366,10 +366,6 @@ bool isWallPolygon(const sead::Vector3f& a1, const sead::Vector3f& a2) {
     if (al::isNearZero(a1, 0.001f))
         return false;
     return sead::Mathf::abs(a1.dot(a2)) < 0.34202f;
-}
-
-void registerExecutorUser(IUseExecutor*, ExecuteDirector*, const char*) {
-    WARN_UNIMPL;
 }
 
 CollisionPartsKeeperPtrArray::CollisionPartsKeeperPtrArray() {
@@ -2696,7 +2692,7 @@ s32 al::modi(s32 a, s32 b) {
     return a % b;
 }
 
-sead::Vector3f* al::getGravityPtr(LiveActor* actor) {
+sead::Vector3f* al::getGravityPtr(const LiveActor* actor) {
     return actor->mPoseKeeper->getGravityPtr();
 }
 
@@ -3242,5 +3238,3 @@ bool al::isInRange(f32 a2, f32 a3, f32 a4) {
 const sead::Quatf& al::getQuat(const al::LiveActor* actor) {
     return actor->getPoseKeeper()->getQuat();
 }
-
-al::ActorSceneInfo::ActorSceneInfo() = default;
