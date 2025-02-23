@@ -615,34 +615,8 @@ private:
 };
 
 #include "Player/PlayerSpinCapAttack.h"
-
-class PlayerJudgeDiveInWater : public IJudge {
-public:
-    PlayerJudgeDiveInWater(al::LiveActor const*, PlayerConst const*, IUsePlayerHeightCheck const*,
-                           IUsePlayerFallDistanceCheck const*);
-
-    void reset() override;
-    void update() override;
-    bool judge() const override;
-
-private:
-    void* size[0x28 / 8];
-};
-
-class PlayerActionDiveInWater {
-public:
-    PlayerActionDiveInWater(PlayerAnimator*, IPlayerModelChanger const*, PlayerCarryKeeper const*,
-                            PlayerJudgeDiveInWater const*);
-
-    bool isDiveInWaterAnim();
-    void tryChangeDiveInWaterAnim();
-
-    bool judgeEnableDiveInWater() const { return true; }
-
-private:
-    void* size[0x20 / 8];
-};
-
+#include "Player/PlayerJudgeDiveInWater.h"
+#include "Player/PlayerActionDiveInWater.h"
 #include "Player/PlayerJudgeForceLand.h"
 
 class PlayerJudgeOutInWater : public IJudge {
