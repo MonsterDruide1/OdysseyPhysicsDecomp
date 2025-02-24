@@ -255,15 +255,6 @@ void calcTransLocalOffsetByMtx(sead::Vector3f* out, const sead::Matrix34f& a2,
     out->z = v8 + v9;
 }
 
-void makeMtxRT(sead::Matrix34f* mtx, const al::LiveActor* actor) {
-    actor->mPoseKeeper->calcBaseMtx(mtx);
-}
-
-void makeMtxR(sead::Matrix34f* mtx, const al::LiveActor* actor) {
-    makeMtxRT(mtx, actor);
-    mtx->setTranslation(sead::Vector3f::zero);
-}
-
 void verticalizeVec(sead::Vector3f* out, const sead::Vector3f& vertical,
                     const sead::Vector3f& vec) {
     *out = vec - (vertical * vec.dot(vertical));
@@ -640,52 +631,12 @@ float calcAngleOnPlaneDegree(const sead::Vector3f& a1, const sead::Vector3f& a2,
     return v22 * 57.296;
 }
 
-void updatePoseMtx(LiveActor* actor, const sead::Matrix34f* mtx) {
-    actor->mPoseKeeper->updatePoseMtx(mtx);
-}
-
-void updatePoseTrans(LiveActor* actor, const sead::Vector3f& trans) {
-    actor->mPoseKeeper->updatePoseTrans(trans);
-}
-
-void updatePoseQuat(LiveActor* actor, const sead::Quatf& quat) {
-    actor->mPoseKeeper->updatePoseQuat(quat);
-}
-
-void updatePoseRotate(LiveActor* actor, const sead::Vector3f& rot) {
-    actor->mPoseKeeper->updatePoseRotate(rot);
-}
-
-const sead::Vector3f& getTrans(const LiveActor* actor) {
-    return actor->mPoseKeeper->getTrans();
-}
-
-const sead::Vector3f& getGravity(const LiveActor* actor) {
-    return actor->mPoseKeeper->getGravity();
-}
-
-sead::Vector3f* getTransPtr(LiveActor* actor) {
-    return actor->mPoseKeeper->getTransPtr();
-}
-
 void setVelocity(LiveActor* actor, const sead::Vector3f& vel) {
     *actor->mPoseKeeper->getVelocityPtr() = vel;
 }
 
 void setVelocityZero(LiveActor* actor) {
     *actor->mPoseKeeper->getVelocityPtr() = {0.0f, 0.0f, 0.0f};
-}
-
-void calcFrontDir(sead::Vector3f* front, const LiveActor* actor) {
-    sead::Matrix34f mtx;
-    actor->mPoseKeeper->calcBaseMtx(&mtx);
-    mtx.getBase(*front, 2);
-}
-
-void calcUpDir(sead::Vector3f* up, const LiveActor* actor) {
-    sead::Matrix34f mtx;
-    actor->mPoseKeeper->calcBaseMtx(&mtx);
-    mtx.getBase(*up, 1);
 }
 
 bool isNearZero(const sead::Vector2f& vec, float epsilon) {
@@ -885,12 +836,6 @@ f32 converge(f32 val, f32 goal, f32 step) {
         return sead::Mathf::clampMin(val - step, goal);
     else
         return sead::Mathf::clampMax(val + step, goal);
-}
-
-void calcSideDir(sead::Vector3<float>* side, al::LiveActor const* actor) {
-    sead::Matrix34f mtx;
-    actor->mPoseKeeper->calcBaseMtx(&mtx);
-    mtx.getBase(*side, 0);
 }
 
 bool isNearZeroOrLess(f32 value, f32 tolerance) {
@@ -1163,12 +1108,6 @@ f32 calcAngleDegree(const sead::Vector3f& a1, const sead::Vector3f& a2) {
                                                    (float)(v8 * v8))),
                   v6) *
            57.296;
-}
-
-void calcQuat(sead::Quatf* quat, const LiveActor* actor) {
-    sead::Matrix34f mtx;
-    actor->getPoseKeeper()->calcBaseMtx(&mtx);
-    mtx.toQuat(*quat);
 }
 
 void makeMtxUpFront(sead::Matrix34f* mtx, const sead::Vector3f& up, const sead::Vector3f& front) {
@@ -2692,10 +2631,6 @@ s32 al::modi(s32 a, s32 b) {
     return a % b;
 }
 
-sead::Vector3f* al::getGravityPtr(const LiveActor* actor) {
-    return actor->mPoseKeeper->getGravityPtr();
-}
-
 void al::addVelocityToGravityLimit(al::LiveActor* actor, float a3, float a4) {
     al::addVectorLimit(actor->getPoseKeeper()->getVelocityPtr(), al::getGravity(actor) * a3, a4);
 }
@@ -2944,10 +2879,6 @@ void al::turnRandomVector(sead::Vector3<float>* a1, sead::Vector3<float> const& 
     }
 }
 
-void al::setTrans(al::LiveActor* a1, sead::Vector3<float> const& a2) {
-    *a1->mPoseKeeper->getTransPtr() = a2;
-}
-
 void al::setVelocityZeroH(al::LiveActor* a1) {
     sead::Vector3f gravity = al::getGravity(a1);
     sead::Vector3f* velocityPtr = a1->mPoseKeeper->getVelocityPtr();
@@ -3105,11 +3036,6 @@ void al::syncCollisionMtx(al::LiveActor* a1, sead::Matrix34<float> const* a2) {
     }
 }
 
-void al::makeMtxSRT(sead::Matrix34<float>* mtx, al::LiveActor const* actor) {
-    actor->mPoseKeeper->calcBaseMtx(mtx);
-    al::preScaleMtx(mtx, actor->mPoseKeeper->getScale());
-}
-
 const al::CollisionParts* alCollisionUtil::getCollisionHitParts(const al::HitInfo* a1) {
     return a1->mTriangle.mCollisionParts;
 }
@@ -3233,8 +3159,4 @@ bool al::isInRange(f32 a2, f32 a3, f32 a4) {
         return (a2 >= a3) & (a4 >= a2);
     else
         return (a3 >= a2) & (a2 >= a4);
-}
-
-const sead::Quatf& al::getQuat(const al::LiveActor* actor) {
-    return actor->getPoseKeeper()->getQuat();
 }
