@@ -1611,7 +1611,7 @@ bool alCollisionUtil::getFirstPolyOnArrow(al::IUseCollision const* a1, al::Arrow
     al::ArrowHitInfo* StrikeArrowInfo;  // x25
     float v19;                          // s8
     al::CollisionDirector* v20;         // x0
-    float* v21;                         // x0
+    al::ArrowHitInfo* v21;              // x0
     float v22;                          // s0
     bool v23;                           // nf
     al::CollisionDirector* v24;         // x0
@@ -1644,11 +1644,11 @@ bool alCollisionUtil::getFirstPolyOnArrow(al::IUseCollision const* a1, al::Arrow
         int i = 0;
         do {
             v20 = (al::CollisionDirector*)a1->getCollisionDirector();
-            v21 = (float*)v20->getStrikeArrowInfo(i);
-            v22 = v21[28];
+            v21 = v20->getStrikeArrowInfo(i);
+            v22 = v21->unk;
             v23 = v22 < v19;
             if (v22 < v19)
-                v19 = v21[28];
+                v19 = v21->unk;
 
             if (v23)
                 v16 = i;

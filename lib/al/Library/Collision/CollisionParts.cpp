@@ -102,8 +102,9 @@ s32 CollisionParts::checkStrikeArrow(al::ArrowHitResultBuffer* results, sead::Ve
     buffer.clear();
     u32 v60 = 0;
     mKCollisionServer->checkArrow(v62, v61, &buffer, &v60, results->capacity() - results->size());
+    u32 v29 = 0;
     for (int i = 0; i < buffer.size(); i++) {
-        al::ArrowHitInfo info = {};
+        /*al::ArrowHitInfo info = {};
         results->pushBack(info);
 
         al::KCHitInfo hit = buffer[i];
@@ -115,11 +116,26 @@ s32 CollisionParts::checkStrikeArrow(al::ArrowHitResultBuffer* results, sead::Ve
 
         info.unk = v48 * hit.something;
         info.mCollisionHitPos.setMul(mBaseMtx, (hit.something * v61) + v62);
-        v60++;
+        v29++;
+        info.mCollisionLocation = hit.mCollisionLocation;*/
+
+        // EDITED:
+        al::ArrowHitInfo info = {};
+
+        al::KCHitInfo hit = buffer[i];
+        info.mTriangle.fillData(*this, hit.mData, hit.mHeader);
+        if (filter && !filter->isInvalidTriangle(info.mTriangle)) {
+            continue;
+        }
+
+        info.unk = v48 * hit.something;
+        info.mCollisionHitPos.setMul(mBaseMtx, (hit.something * v61) + v62);
+        v29++;
         info.mCollisionLocation = hit.mCollisionLocation;
+        results->pushBack(info);
     }
 
-    return v60;
+    return v29;
 }
 
 void CollisionParts::syncMtx() {

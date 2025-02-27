@@ -29,11 +29,11 @@ public:
     void endInit();
     void setPartsFilter(const CollisionPartsFilterBase*);
     void setTriFilter(const TriangleFilterBase*);
-    bool checkStrikePoint(const sead::Vector3f&, HitInfo*);
-    bool checkStrikeSphere(const sead::Vector3f&, f32, bool, const sead::Vector3f&);
-    bool checkStrikeArrow(const sead::Vector3f&, const sead::Vector3f&);
-    bool checkStrikeSphereForPlayer(const sead::Vector3f&, f32);
-    bool checkStrikeDisk(const sead::Vector3f&, f32, f32, const sead::Vector3f&);
+    s32 checkStrikePoint(const sead::Vector3f&, HitInfo*);
+    s32 checkStrikeSphere(const sead::Vector3f&, f32, bool, const sead::Vector3f&);
+    s32 checkStrikeArrow(const sead::Vector3f&, const sead::Vector3f&);
+    s32 checkStrikeSphereForPlayer(const sead::Vector3f&, f32);
+    s32 checkStrikeDisk(const sead::Vector3f&, f32, f32, const sead::Vector3f&);
     ArrowHitInfo* getStrikeArrowInfo(u32 index);
     u32 getStrikeArrowInfoNum() const;
     SphereHitInfo* getStrikeSphereInfo(u32 index);

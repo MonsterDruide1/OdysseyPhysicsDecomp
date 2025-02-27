@@ -49,7 +49,7 @@ void CollisionDirector::setTriFilter(const TriangleFilterBase* filter) {
 }
 
 // NON_MATCHING: additional "AND 1" at the end
-bool CollisionDirector::checkStrikePoint(const sead::Vector3f& point, HitInfo* info) {
+s32 CollisionDirector::checkStrikePoint(const sead::Vector3f& point, HitInfo* info) {
     auto checkInfo = CollisionCheckInfoBase{point, mCollisionPartsFilterBase, mTriangleFilterBase};
     u32 result = mActivePartsKeeper->checkStrikePoint(info, checkInfo);
     mCollisionPartsFilterBase = nullptr;
@@ -58,7 +58,7 @@ bool CollisionDirector::checkStrikePoint(const sead::Vector3f& point, HitInfo* i
 }
 
 // NON_MATCHING: additional "AND 1" at the end
-bool CollisionDirector::checkStrikeSphere(const sead::Vector3f& pos, f32 radius, bool unk3,
+s32 CollisionDirector::checkStrikeSphere(const sead::Vector3f& pos, f32 radius, bool unk3,
                                           const sead::Vector3f& unk4) {
     mStrikeSphereHitInfos->clear();
 
@@ -67,7 +67,7 @@ bool CollisionDirector::checkStrikeSphere(const sead::Vector3f& pos, f32 radius,
     checkInfo.mTriFilterBase = mTriangleFilterBase;
 
     auto* infos = mStrikeSphereHitInfos;
-    bool result = mActivePartsKeeper->checkStrikeSphere(infos, checkInfo, unk3, unk4);
+    s32 result = mActivePartsKeeper->checkStrikeSphere(infos, checkInfo, unk3, unk4);
 
     mCollisionPartsFilterBase = nullptr;
     mTriangleFilterBase = nullptr;
@@ -75,7 +75,7 @@ bool CollisionDirector::checkStrikeSphere(const sead::Vector3f& pos, f32 radius,
 }
 
 // NON_MATCHING: Incremental BoundBox for ArrowCheckInfo, additional "AND 1" at the end
-bool CollisionDirector::checkStrikeArrow(const sead::Vector3f& pos, const sead::Vector3f& unk2) {
+s32 CollisionDirector::checkStrikeArrow(const sead::Vector3f& pos, const sead::Vector3f& unk2) {
     mStrikeArrowHitInfos->clear();
 
     auto checkInfo = ArrowCheckInfo{pos, unk2};
@@ -83,7 +83,7 @@ bool CollisionDirector::checkStrikeArrow(const sead::Vector3f& pos, const sead::
     checkInfo.mTriFilterBase = mTriangleFilterBase;
 
     auto* infos = mStrikeArrowHitInfos;
-    bool result = mActivePartsKeeper->checkStrikeArrow(infos, checkInfo);
+    s32 result = mActivePartsKeeper->checkStrikeArrow(infos, checkInfo);
 
     mCollisionPartsFilterBase = nullptr;
     mTriangleFilterBase = nullptr;
@@ -91,7 +91,7 @@ bool CollisionDirector::checkStrikeArrow(const sead::Vector3f& pos, const sead::
 }
 
 // NON_MATCHING: additional "AND 1" at the end
-bool CollisionDirector::checkStrikeSphereForPlayer(const sead::Vector3f& pos, f32 radius) {
+s32 CollisionDirector::checkStrikeSphereForPlayer(const sead::Vector3f& pos, f32 radius) {
     mStrikeSphereHitInfos->clear();
 
     auto checkInfo = SphereCheckInfo{pos, radius};
@@ -99,7 +99,7 @@ bool CollisionDirector::checkStrikeSphereForPlayer(const sead::Vector3f& pos, f3
     checkInfo.mTriFilterBase = mTriangleFilterBase;
 
     auto* infos = mStrikeSphereHitInfos;
-    bool result = mActivePartsKeeper->checkStrikeSphereForPlayer(infos, checkInfo);
+    s32 result = mActivePartsKeeper->checkStrikeSphereForPlayer(infos, checkInfo);
 
     mCollisionPartsFilterBase = nullptr;
     mTriangleFilterBase = nullptr;
@@ -107,7 +107,7 @@ bool CollisionDirector::checkStrikeSphereForPlayer(const sead::Vector3f& pos, f3
 }
 
 // NON_MATCHING: inlined constructor of DiskCheckInfo instead of explicit call
-bool CollisionDirector::checkStrikeDisk(const sead::Vector3f& unk1, f32 unk2, f32 unk3,
+s32 CollisionDirector::checkStrikeDisk(const sead::Vector3f& unk1, f32 unk2, f32 unk3,
                                         const sead::Vector3f& unk4) {
     mStrikeDiskHitInfos->clear();
 
@@ -116,7 +116,7 @@ bool CollisionDirector::checkStrikeDisk(const sead::Vector3f& unk1, f32 unk2, f3
     checkInfo.mTriFilterBase = mTriangleFilterBase;
 
     auto* infos = mStrikeDiskHitInfos;
-    bool result = mActivePartsKeeper->checkStrikeDisk(infos, checkInfo);
+    s32 result = mActivePartsKeeper->checkStrikeDisk(infos, checkInfo);
 
     mCollisionPartsFilterBase = nullptr;
     mTriangleFilterBase = nullptr;
