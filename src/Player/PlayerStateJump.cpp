@@ -118,8 +118,8 @@ void PlayerStateJump::appear() {
         al::setVelocity(mActor, newVel);
     }
 
-    if (mJumpMessageRequest->mJumpType == PlayerJumpType::val_0F &&
-        !mJumpMessageRequest->mIsEnableStandUp)
+    if (mJumpMessageRequest->jumpType == PlayerJumpType::val_0F &&
+        !mJumpMessageRequest->isEnableStandUp)
         CRASH
 
     // BUG: seems to have swapped normal and 2d speed?
@@ -127,8 +127,8 @@ void PlayerStateJump::appear() {
                                     mModelChanger->is2DModel() ? mConst->getNormalMaxSpeed() :
                                                                  mConst->getNormalMaxSpeed2D());
 
-    bool v37 = ((unsigned int)((u32)this->mJumpMessageRequest->mJumpType - 1) < 0x10) &
-               (0x9001u >> ((u32)this->mJumpMessageRequest->mJumpType - 1));
+    bool v37 = ((unsigned int)((u32)this->mJumpMessageRequest->jumpType - 1) < 0x10) &
+               (0x9001u >> ((u32)this->mJumpMessageRequest->jumpType - 1));
     mContinuousJumpCount = 0;
     if (!v37 && !mModelChanger->isMini()) {
         if (mContinuousJump->mCount < 2) {
@@ -173,14 +173,14 @@ void PlayerStateJump::appear() {
     mJumpAnimName = nullptr;
     mMoveSpeedMax =
         sead::Mathf::max(mConst->getJumpMoveSpeedMax(), mActionAirMoveControl->mJumpSpeedMax);
-    switch (mJumpMessageRequest->mJumpType) {
+    switch (mJumpMessageRequest->jumpType) {
     case PlayerJumpType::val_0C:
         rs::noticePlayerJumpStart(mTrigger, mActor);
         mJumpPower = mConst->getSpinJumpPower();
         mMoveSpeedMax = mConst->getSpinJumpMoveSpeedMax();
         mJumpGravity = mConst->getSpinJumpGravity();
         mExtendFrame = 0;
-        _C8 = mJumpMessageRequest->mIsSpinClockwise ? "SpinJumpR" : "SpinJumpL";
+        _C8 = mJumpMessageRequest->isSpinClockwise ? "SpinJumpR" : "SpinJumpL";
         _B8 = true;
         al::setNerve(this, &JumpSpinGround);
         return;
@@ -199,7 +199,7 @@ void PlayerStateJump::appear() {
         rs::noticePlayerJumpStart(mTrigger, mActor);
         mJumpPower = mConst->getTurnJumpPower();
         mJumpGravity = mConst->getTurnJumpGravity();
-        mTurnJumpAngle = mJumpMessageRequest->mTurnJumpAngle;
+        mTurnJumpAngle = mJumpMessageRequest->turnJumpAngle;
         _B8 = true;
         al::setNerve(this, &JumpTurn);
         return;
@@ -210,7 +210,7 @@ void PlayerStateJump::appear() {
     default:
         bool isMove = mInput->isMove();
         f32 dot = al::getVelocity(mActor).dot(al::getGravity(mActor));
-        switch (mJumpMessageRequest->mJumpType) {
+        switch (mJumpMessageRequest->jumpType) {
         case PlayerJumpType::val_01:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
                        mJumpMessageRequest->mJumpType);
@@ -324,9 +324,9 @@ void PlayerStateJump::appear() {
             if (_B7)
                 mJointControlKeeper->calcGroundPoseUp(&_BC);
 
-            if (mJumpMessageRequest->mJumpType == PlayerJumpType::val_0F)
+            if (mJumpMessageRequest->jumpType == PlayerJumpType::val_0F)
                 mJumpAnimName = "JumpSquat";
-            else if (mJumpMessageRequest->mJumpType == PlayerJumpType::val_03 &&
+            else if (mJumpMessageRequest->jumpType == PlayerJumpType::val_03 &&
                      !mContinuousJumpCount)
                 _C8 = "JumpDashFast";
 

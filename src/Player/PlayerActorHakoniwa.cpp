@@ -1428,7 +1428,7 @@ void PlayerActorHakoniwa::exeWait() {
 
     if (mPlayerStateWait->isEnableCancelHipDropJump()) {
         if (rs::judgeAndResetReturnTrue(mPlayerJudgePreInputJump)) {
-            mPlayerJumpMessageRequest->mJumpType = PlayerJumpType::HipDropJump;
+            mPlayerJumpMessageRequest->jumpType = PlayerJumpType::HipDropJump;
             al::setNerve(this, &Jump);
             return;
         }
@@ -1463,7 +1463,7 @@ void PlayerActorHakoniwa::exeWait() {
         mHackCap->isEnableSpinAttack() && rs::isJudge(mHackCapJudgePreInputHoveringJump)) {
         rs::resetJudge(mHackCapJudgePreInputHoveringJump);
         *(((u8*)mHackCapJudgePreInputHoveringJump) + 44) = 1;
-        mPlayerJumpMessageRequest->mJumpType = PlayerJumpType::val_12;
+        mPlayerJumpMessageRequest->jumpType = PlayerJumpType::val_12;
         al::setNerve(this, &Jump);
         return;
     }
@@ -1565,8 +1565,8 @@ void PlayerActorHakoniwa::exeSquat() {
 
     if (rs::updateJudgeAndResult(mPlayerJudgePreInputJump)) {
         if (mPlayerModelChangerHakoniwa->is2DModel()) {
-            mPlayerJumpMessageRequest->mJumpType = PlayerJumpType::val_0F;
-            mPlayerJumpMessageRequest->mIsEnableStandUp =
+            mPlayerJumpMessageRequest->jumpType = PlayerJumpType::val_0F;
+            mPlayerJumpMessageRequest->isEnableStandUp =
                 rs::updateJudgeAndResult(mPlayerJudgeEnableStandUp);
             al::setNerve(this, &Jump);
             return;
@@ -1576,7 +1576,7 @@ void PlayerActorHakoniwa::exeSquat() {
                 al::setNerve(this, &LongJump);
                 return;
             }
-            mPlayerJumpMessageRequest->mJumpType = PlayerJumpType::val_0E;
+            mPlayerJumpMessageRequest->jumpType = PlayerJumpType::val_0E;
             al::setNerve(this, &Jump);
             return;
         }
@@ -1729,8 +1729,8 @@ void PlayerActorHakoniwa::exeRun() {
         rs::resetJudge(mPlayerJudgePreInputJump);
         mPlayerExternalVelocity->cancelAndFeedbackLastGroundInertia(
             this, mPlayerConst->getJumpInertiaRate(), true);
-        mPlayerJumpMessageRequest->mJumpType = PlayerJumpType::TurnJump;
-        mPlayerJumpMessageRequest->mTurnJumpAngle = v43;
+        mPlayerJumpMessageRequest->jumpType = PlayerJumpType::TurnJump;
+        mPlayerJumpMessageRequest->turnJumpAngle = v43;
         al::setNerve(this, &Jump);
         return;
     }
@@ -1739,11 +1739,11 @@ void PlayerActorHakoniwa::exeRun() {
         mPlayerExternalVelocity->cancelAndFeedbackLastGroundInertia(
             this, mPlayerConst->getJumpInertiaRate(), true);
         if (mPlayerStateRunHakoniwa2D3D->isGroundSpin()) {
-            mPlayerJumpMessageRequest->mJumpType = PlayerJumpType::val_0C;
-            mPlayerJumpMessageRequest->mIsSpinClockwise =
+            mPlayerJumpMessageRequest->jumpType = PlayerJumpType::val_0C;
+            mPlayerJumpMessageRequest->isSpinClockwise =
                 mPlayerStateRunHakoniwa2D3D->isSpinClockwise();
         } else if (mPlayerStateRunHakoniwa2D3D->isRunDashFast()) {
-            mPlayerJumpMessageRequest->mJumpType = PlayerJumpType::val_03;
+            mPlayerJumpMessageRequest->jumpType = PlayerJumpType::val_03;
         } else {
             mPlayerTrigger->set(PlayerTrigger::EActionTrigger_val21);
         }
@@ -2146,8 +2146,8 @@ void PlayerActorHakoniwa::exeJump() {
                 return;
             }
             if (al::isNerve(this, &Jump)) {
-                mPlayerJumpMessageRequest->mJumpType = PlayerJumpType::val_0F;
-                mPlayerJumpMessageRequest->mIsEnableStandUp =
+                mPlayerJumpMessageRequest->jumpType = PlayerJumpType::val_0F;
+                mPlayerJumpMessageRequest->isEnableStandUp =
                     rs::updateJudgeAndResult(mPlayerJudgeEnableStandUp);
             }
         }
@@ -2372,7 +2372,7 @@ void PlayerActorHakoniwa::exeHipDrop() {
 
     if (mPlayerStateHipDrop->isEnableLandCancel()) {
         if (rs::judgeAndResetReturnTrue(mPlayerJudgePreInputJump)) {
-            mPlayerJumpMessageRequest->mJumpType = PlayerJumpType::HipDropJump;
+            mPlayerJumpMessageRequest->jumpType = PlayerJumpType::HipDropJump;
             al::setNerve(this, &Jump);
             return;
         }

@@ -1695,7 +1695,7 @@ void alKCollisionFunc::calcSphereHitPos(sead::Vector3<float>* a1, const al::KCol
         case 3u:
         case 4u:
             a2->calcPosLocal(&v29, &a4, 0, a5);
-            Normal = a2->getNormal(a4.mFaceNormalIndex, a5);
+            Normal = a2->getNormal(a4.faceNormalIndex, a5);
             v14 = (float)((float)((float)(a3.x - v29.x) * Normal.x) +
                           (float)((float)(a3.y - v29.y) * Normal.y)) +
                   (float)((float)(a3.z - v29.z) * Normal.z);
@@ -1709,19 +1709,19 @@ void alKCollisionFunc::calcSphereHitPos(sead::Vector3<float>* a1, const al::KCol
             y = a3.y;
             z = a3.z;
             if (a6 == 4) {
-                v6_12 = a2->getNormal(a4.mEdgeNormalIndex[2], a5);
+                v6_12 = a2->getNormal(a4.edgeNormalIndex[2], a5);
                 a2->calcPosLocal(&v28, &a4, 1, a5);
                 x = x - v28.x;
                 y = y - v28.y;
                 v24 = v28.z;
             } else {
                 if (a6 == 3) {
-                    v18 = a4.mEdgeNormalIndex[1];
+                    v18 = a4.edgeNormalIndex[1];
                 } else {
                     if (a6 != 2)
                         goto LABEL_17;
 
-                    v18 = a4.mEdgeNormalIndex[0];
+                    v18 = a4.edgeNormalIndex[0];
                 }
 
                 v6_12 = a2->getNormal(v18, a5);
@@ -1819,8 +1819,8 @@ al::LiveActor* al::getSubActor(al::LiveActor const* actor, char const* name) {
     if (!keeper || keeper->mCurActorCount < 1)
         return nullptr;
     for (s32 i = 0; i < keeper->mCurActorCount; i++)
-        if (al::isEqualString(keeper->mBuffer[i]->mSubActor->getName(), name))
-            return keeper->mBuffer[i]->mSubActor;
+        if (al::isEqualString(keeper->mBuffer[i]->subActor->getName(), name))
+            return keeper->mBuffer[i]->subActor;
     return nullptr;
 }
 
@@ -1835,8 +1835,8 @@ al::LiveActor* al::tryGetSubActor(al::LiveActor const* actor, char const* name) 
     if (!keeper || keeper->mCurActorCount < 1)
         return nullptr;
     for (s32 i = 0; i < keeper->mCurActorCount; i++)
-        if (al::isEqualString(keeper->mBuffer[i]->mSubActor->getName(), name))
-            return keeper->mBuffer[i]->mSubActor;
+        if (al::isEqualString(keeper->mBuffer[i]->subActor->getName(), name))
+            return keeper->mBuffer[i]->subActor;
     return nullptr;
 }
 
@@ -3151,7 +3151,7 @@ bool al::tryCalcAngleOnPlaneDegree(float* a1, const sead::Vector3f& a2, const se
 }
 
 al::LiveActor* al::getPlayerActor(al::LiveActor const* a1, int a2) {
-    return a1->getSceneInfo()->mPlayerHolder->tryGetPlayer(a2);
+    return a1->getSceneInfo()->playerHolder->tryGetPlayer(a2);
 }
 
 bool al::isInRange(f32 a2, f32 a3, f32 a4) {

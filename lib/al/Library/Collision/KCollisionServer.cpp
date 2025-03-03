@@ -206,15 +206,15 @@ bool KCollisionServer::calcFarthestVertexDistance() {
         for (int j = 0; j < numTriangles; j++) {
             const KCPrismData& data = getPrismData(j, header);
             if (isNearParallelNormal(&data, header)) {
-                const_cast<KCPrismData&>(data).mLength = -sead::Mathf::abs(data.mLength);
+                const_cast<KCPrismData&>(data).length = -sead::Mathf::abs(data.length);
                 break;
             }
             if (isNanPrism(&data, header)) {
-                f32 v16 = sead::Mathf::abs(data.mLength);
-                if (!isnan(data.mLength))
-                    const_cast<KCPrismData&>(data).mLength = 0.0f;
+                f32 v16 = sead::Mathf::abs(data.length);
+                if (!isnan(data.length))
+                    const_cast<KCPrismData&>(data).length = 0.0f;
                 else
-                    const_cast<KCPrismData&>(data).mLength = -v16;
+                    const_cast<KCPrismData&>(data).length = -v16;
                 break;
             }
 
@@ -256,14 +256,14 @@ bool KCollisionServer::isNearParallelNormal(const KCPrismData* data,
 
 // NON_MATCHING: Major differences, especially using ccmp vs. b.hi/and/orr/cmp
 bool KCollisionServer::isNanPrism(const KCPrismData* data, const KCPrismHeader* header) const {
-    if (isnan(data->mLength))
+    if (isnan(data->length))
         return true;
 
     sead::Vector3f normalFace = getFaceNormal(data, header);
     sead::Vector3f normalA = getEdgeNormal1(data, header);
     sead::Vector3f normalB = getEdgeNormal2(data, header);
     sead::Vector3f normalC = getEdgeNormal3(data, header);
-    sead::Vector3f pos = getVertexData(data->mPosIndex, header);
+    sead::Vector3f pos = getVertexData(data->posIndex, header);
 
     sead::Vector3f firstResult;
     calcPosLocal(&firstResult, data, 1, header);
@@ -285,7 +285,7 @@ bool KCollisionServer::isNanPrism(const KCPrismData* data, const KCPrismHeader* 
 void KCollisionServer::calcPosLocal(sead::Vector3f* pos, const KCPrismData* data, s32 vIndex,
                                     const KCPrismHeader* header) const {
     if (vIndex == 0) {
-        sead::Vector3f vertex = getVertexData(data->mPosIndex, header);
+        sead::Vector3f vertex = getVertexData(data->posIndex, header);
         *pos = vertex;
         return;
     } else if (vIndex == 1) {
@@ -296,15 +296,15 @@ void KCollisionServer::calcPosLocal(sead::Vector3f* pos, const KCPrismData* data
         /*/
         const sead::Vector3f* normals =
             reinterpret_cast<const sead::Vector3f*>(uintptr_t(header) + header->mNormalsOffset);
-        sead::Vector3f normalB = normals[data->mEdgeNormalIndex[1]];
-        sead::Vector3f normalFace = normals[data->mFaceNormalIndex];
-        const sead::Vector3f& normalC = normals[data->mEdgeNormalIndex[2]];
+        sead::Vector3f normalB = normals[data->edgeNormalIndex[1]];
+        sead::Vector3f normalFace = normals[data->faceNormalIndex];
+        const sead::Vector3f& normalC = normals[data->edgeNormalIndex[2]];
         /**/
-        const sead::Vector3f& vertex = getVertexData(data->mPosIndex, header);
+        const sead::Vector3f& vertex = getVertexData(data->posIndex, header);
         sead::Vector3f cross;
         calXvec(&normalB, &normalFace, &cross);
         f32 factor =
-            data->mLength / cross.dot(normalC);  // fmaxf(cross.dot(normalC), 0.00000011921f);
+            data->length / cross.dot(normalC);  // fmaxf(cross.dot(normalC), 0.00000011921f);
 
         pos->x = vertex.x + cross.x * factor;
         pos->y = vertex.y + cross.y * factor;
@@ -317,16 +317,16 @@ void KCollisionServer::calcPosLocal(sead::Vector3f* pos, const KCPrismData* data
         /*/
         const sead::Vector3f* normals =
             reinterpret_cast<const sead::Vector3f*>(uintptr_t(header) + header->mNormalsOffset);
-        sead::Vector3f normalA = normals[data->mEdgeNormalIndex[0]];
-        sead::Vector3f normalFace = normals[data->mFaceNormalIndex];
-        const sead::Vector3f& normalC = normals[data->mEdgeNormalIndex[2]];
+        sead::Vector3f normalA = normals[data->edgeNormalIndex[0]];
+        sead::Vector3f normalFace = normals[data->faceNormalIndex];
+        const sead::Vector3f& normalC = normals[data->edgeNormalIndex[2]];
         /**/
 
-        const sead::Vector3f& vertex = getVertexData(data->mPosIndex, header);
+        const sead::Vector3f& vertex = getVertexData(data->posIndex, header);
         sead::Vector3f cross;
         calXvec(&normalA, &normalFace, &cross);
         f32 factor =
-            data->mLength / cross.dot(normalC);  // fmaxf(cross.dot(normalC), 0.00000011921f);
+            data->length / cross.dot(normalC);  // fmaxf(cross.dot(normalC), 0.00000011921f);
 
         pos->x = vertex.x + cross.x * factor;
         pos->y = vertex.y + cross.y * factor;
@@ -380,15 +380,15 @@ const KCPrismData* KCollisionServer::checkPoint(sead::Vector3f* point, f32 a3, f
             u16* data3 = (u16*)(data + 2);
             u16 data2;
             while ((data2 = *data3++) != 0xFFFF) {
-                if (getPrismData(data2, header).mLength <= 0.0)
+                if (getPrismData(data2, header).length <= 0.0)
                     continue;
 
                 const KCPrismData& prismData = getPrismData(data2, header);
-                const sead::Vector3f& prismPos = getVertexData(prismData.mPosIndex, header);
+                const sead::Vector3f& prismPos = getVertexData(prismData.posIndex, header);
                 sead::Vector3f something = *point - prismPos;
                 if (something.dot(getEdgeNormal1(&prismData, header)) <= 0.0f &&
                     something.dot(getEdgeNormal2(&prismData, header)) <= 0.0f &&
-                    something.dot(getEdgeNormal3(&prismData, header)) <= prismData.mLength) {
+                    something.dot(getEdgeNormal3(&prismData, header)) <= prismData.length) {
                     f32 dp = -something.dot(getFaceNormal(&prismData, header));
                     if (dp >= 0.0 && header->mThickness * a3 >= dp) {
                         v41 = 1;
@@ -719,7 +719,7 @@ const KCPrismData* KCollisionServer::checkArrow(const sead::Vector3f& unk1,
 
                     v58 = (const al::KCPrismData*)((char*)v13 + 20 * v56 + v13->mTrianglesOffset);
                     hitInfo.mData = v58;
-                    if (v58->mLength > 0.0) {
+                    if (v58->length > 0.0) {
                         v10 = KCHitArrow(v58, v13, unk1, *v85, &hitInfo.something,
                                          &hitInfo.mCollisionLocation);
                         if (v10) {
@@ -768,7 +768,7 @@ const KCPrismData* KCollisionServer::checkArrow(const sead::Vector3f& unk1,
 
                     v69 = (al::KCPrismData*)((char*)v13 + 20 * v70 + v13->mTrianglesOffset);
                     hitInfo.mData = v69;
-                    if (v69->mLength > 0.0) {
+                    if (v69->length > 0.0) {
                         v10 = al::KCollisionServer::KCHitArrow(
                             v69, v13, unk1, *v85, &hitInfo.something, &hitInfo.mCollisionLocation);
                         if (v10 && hitInfo.something < v68) {
@@ -876,7 +876,7 @@ bool KCollisionServer::KCHitArrow(const KCPrismData* data, const KCPrismHeader* 
     bool result;                // x0
     u8 v34;                     // w8
 
-    const sead::Vector3f* position = &getVertexData(data->mPosIndex, header);
+    const sead::Vector3f* position = &getVertexData(data->posIndex, header);
     x = position->x;
     v10 = start.y - position->y;
     z = position->z;
@@ -907,7 +907,7 @@ bool KCollisionServer::KCHitArrow(const KCPrismData* data, const KCPrismHeader* 
          v30 > 0.01) ||
         (v31 = &getEdgeNormal3(data, header),
          v32 = (float)((float)(v23 * v31->x) + (float)(v24 * v31->y)) + (float)(v25 * v31->z),
-         (float)(data->mLength + 0.01) < v32)) {
+         (float)(data->length + 0.01) < v32)) {
     LABEL_6:
         result = 0LL;
         *type = 0;
@@ -979,7 +979,7 @@ bool KCollisionServer::KCHitSphereForPlayer(const KCPrismData* data, const KCPri
 
     mThickness = header->mThickness;
     *a8 = 0;
-    const sead::Vector3f& pos = getVertexData(data->mPosIndex, header);
+    const sead::Vector3f& pos = getVertexData(data->posIndex, header);
     sead::Vector3f finalPos = *position - pos;
 
     const sead::Vector3f& edge1 = getEdgeNormal1(data, header);
@@ -993,7 +993,7 @@ bool KCollisionServer::KCHitSphereForPlayer(const KCPrismData* data, const KCPri
         return false;
 
     const sead::Vector3f& edge3 = getEdgeNormal3(data, header);
-    fxe3 = finalPos.dot(edge3) - data->mLength;
+    fxe3 = finalPos.dot(edge3) - data->length;
     if (fxe3 >= a5)
         return false;
 
@@ -1183,7 +1183,7 @@ void KCollisionServer::searchPrismMinMax(
                         int v39 = *innerData++;
                         while (v39 != 0xFFFF) {
                             const KCPrismData& data = getPrismData(v39, header);
-                            if (data.mLength > 0.0f)
+                            if (data.length > 0.0f)
                                 a4.invoke(&data, header);
 
                             v39 = *innerData++;
@@ -1216,7 +1216,7 @@ void KCollisionServer::searchPrismMinMax(
                         int v39 = *innerData++;
                         while (v39 != 0xFFFF) {
                             const KCPrismData& data = getPrismData(v39, header);
-                            if (!(0.0f >= data.mLength))
+                            if (!(0.0f >= data.length))
                                 a4.invoke(&data, header);
 
                             v39 = *innerData++;
@@ -1328,22 +1328,22 @@ bool KCollisionServer::isParallelNormal(const KCPrismData* data,
 
 const sead::Vector3f& KCollisionServer::getFaceNormal(const KCPrismData* data,
                                                       const KCPrismHeader* header) const {
-    return getNormal(data->mFaceNormalIndex, header);
+    return getNormal(data->faceNormalIndex, header);
 }
 
 const sead::Vector3f& KCollisionServer::getEdgeNormal1(const KCPrismData* data,
                                                        const KCPrismHeader* header) const {
-    return getNormal(data->mEdgeNormalIndex[0], header);
+    return getNormal(data->edgeNormalIndex[0], header);
 }
 
 const sead::Vector3f& KCollisionServer::getEdgeNormal2(const KCPrismData* data,
                                                        const KCPrismHeader* header) const {
-    return getNormal(data->mEdgeNormalIndex[1], header);
+    return getNormal(data->edgeNormalIndex[1], header);
 }
 
 const sead::Vector3f& KCollisionServer::getEdgeNormal3(const KCPrismData* data,
                                                        const KCPrismHeader* header) const {
-    return getNormal(data->mEdgeNormalIndex[2], header);
+    return getNormal(data->edgeNormalIndex[2], header);
 }
 
 bool KCollisionServer::KCHitDisc(const KCPrismData* data, const KCPrismHeader* header,
@@ -1390,11 +1390,11 @@ s32 KCollisionServer::getAttributeElementNum() const {
 
 bool KCollisionServer::getAttributes(ByamlIter* iter, u32 prismIndex,
                                      const KCPrismHeader* header) const {
-    return mIter->tryGetIterByIndex(iter, getPrismData(prismIndex, header).mCollisionType);
+    return mIter->tryGetIterByIndex(iter, getPrismData(prismIndex, header).collisionType);
 }
 
 bool KCollisionServer::getAttributes(ByamlIter* iter, const KCPrismData* data) const {
-    return mIter->tryGetIterByIndex(iter, data->mCollisionType);
+    return mIter->tryGetIterByIndex(iter, data->collisionType);
 }
 
 void KCollisionServer::objectSpaceToAreaOffsetSpace(sead::Vector3u* areaOffSpace,
