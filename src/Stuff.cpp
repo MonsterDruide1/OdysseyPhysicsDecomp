@@ -845,9 +845,9 @@ bool calcGroundHeight(float* a1, sead::Vector3<float>* a2, al::IUseCollision con
     v21 = 0;
     do {
         StrikeArrowInfo = (al::ArrowHitInfo*)alCollisionUtil::getStrikeArrowInfo(a3, v21);
-        FaceNormal = &StrikeArrowInfo->mTriangle.getFaceNormal();
+        FaceNormal = &StrikeArrowInfo->mHitInfo->mTriangle.getFaceNormal();
         if (FaceNormal->dot(a5) >= 0.5) {
-            v26 = (StrikeArrowInfo->mCollisionHitPos - a4).length();
+            v26 = (StrikeArrowInfo->mHitInfo->mCollisionHitPos - a4).length();
             if (v26 < v8) {
                 *a2 = *FaceNormal;
                 v8 = v26;
@@ -2059,8 +2059,8 @@ void sub_71005631DC(sead::Vector3f* a1, const al::IUseCollision* a2, const sead:
         (v26.x = -v30.x, v27.x = v16 + v30.x, v27.y = v15 + v30.y, v27.z = v18 + v30.z,
          v26.y = -v30.y, v26.z = -v30.z,
          (alCollisionUtil::getFirstPolyOnArrow(v19, &v29, v27, v26, 0LL, 0LL) & 1) != 0)) {
-        CollisionHitPos = &alCollisionUtil::getCollisionHitPos(v29);
-        CollisionHitNormal = &alCollisionUtil::getCollisionHitNormal(v29);
+        CollisionHitPos = &alCollisionUtil::getCollisionHitPos(**v29);
+        CollisionHitNormal = &alCollisionUtil::getCollisionHitNormal(**v29);
         v22 = (float)((float)((float)(v16 - CollisionHitPos->x) * v31.x) +
                       (float)((float)(v15 - CollisionHitPos->y) * v31.y)) +
               (float)((float)(v18 - CollisionHitPos->z) * v31.z);
@@ -2112,9 +2112,9 @@ bool sub_71005630B0(sead::Vector3f* a1, const al::CollisionParts** a2, sead::Vec
     if ((alCollisionUtil::getLastPolyOnArrow(v17, &v22, v20, v21, 0LL, 0LL) & 1) == 0)
         return 0LL;
 
-    *a2 = alCollisionUtil::getCollisionHitParts(v22);
-    *a3 = alCollisionUtil::getCollisionHitPos(v22);
-    *a4 = alCollisionUtil::getCollisionHitNormal(v22);
+    *a2 = alCollisionUtil::getCollisionHitParts(**v22);
+    *a3 = alCollisionUtil::getCollisionHitPos(**v22);
+    *a4 = alCollisionUtil::getCollisionHitNormal(**v22);
     v18 = (float)((float)((float)(a3->x - a6.x) * a4->x) + (float)((float)(a3->y - a6.y) * a4->y)) +
           (float)((float)(a3->z - a6.z) * a4->z);
     if (v18 <= 0.0)
@@ -2209,11 +2209,11 @@ bool sub_710056365C(sead::Vector3f* a1, sead::Vector3f* a2, const al::LiveActor*
         return 0LL;
 
     a8 = a10;
-    CollisionHitPos = &alCollisionUtil::getCollisionHitPos(v66);
+    CollisionHitPos = &alCollisionUtil::getCollisionHitPos(**v66);
     v61 = CollisionHitPos->x;
     v33 = CollisionHitPos->y;
     v32 = CollisionHitPos->z;
-    CollisionHitNormal = &alCollisionUtil::getCollisionHitNormal(v66);
+    CollisionHitNormal = &alCollisionUtil::getCollisionHitNormal(**v66);
     v35 = CollisionHitNormal->y;
     v36 = CollisionHitNormal->z;
     v37 =
@@ -2237,11 +2237,11 @@ bool sub_710056365C(sead::Vector3f* a1, sead::Vector3f* a2, const al::LiveActor*
     if ((alCollisionUtil::getLastPolyOnArrow(v21, &v64, v65, a3, 0LL, 0LL) & 1) == 0)
         return 0LL;
 
-    v38 = &alCollisionUtil::getCollisionHitPos(v64);
+    v38 = &alCollisionUtil::getCollisionHitPos(**v64);
     v39 = v38->x;
     v40 = v38->y;
     v41 = v38->z;
-    v42 = &alCollisionUtil::getCollisionHitNormal(v64);
+    v42 = &alCollisionUtil::getCollisionHitNormal(**v64);
     v43 = (float)((float)(v60 * a5.x) + (float)(v59 * a5.y)) + (float)(v58 * a5.z);
     if (v43 <= 0.0)
         v43 = -v43;
@@ -2322,15 +2322,15 @@ bool findGrabCeilPosWallHit(const al::CollisionParts** a1, sead::Vector3f* a2, s
     if (!alCollisionUtil::getFirstPolyOnArrow(a5, &v39, v40, a3a, 0LL, 0LL))
         return false;
 
-    if (!rs::isCollisionCodeGrabCeil(*v39))
+    if (!rs::isCollisionCodeGrabCeil(***v39))
         return false;
 
-    if (!al::isCeilingPolygon(alCollisionUtil::getCollisionHitNormal(v39), al::getGravity(a5)))
+    if (!al::isCeilingPolygon(alCollisionUtil::getCollisionHitNormal(**v39), al::getGravity(a5)))
         return false;
 
-    CollisionHitParts = alCollisionUtil::getCollisionHitParts(v39);
-    a3a = alCollisionUtil::getCollisionHitPos(v39);
-    a4a = alCollisionUtil::getCollisionHitNormal(v39);
+    CollisionHitParts = alCollisionUtil::getCollisionHitParts(**v39);
+    a3a = alCollisionUtil::getCollisionHitPos(**v39);
+    a4a = alCollisionUtil::getCollisionHitNormal(**v39);
     v36.x = 0.0;
     v36.y = 0.0;
     v36.z = 0.0;

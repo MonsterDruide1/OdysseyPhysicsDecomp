@@ -1,6 +1,6 @@
 
 #include "Player/PlayerFormSensorCollisionArranger.h"
-#include "Library/LiveActor/ActorSensorFunction.h"
+#include "Library/LiveActor/ActorSensorUtil.h"
 #include "Library/Math/MathUtil.h"
 #include "Player/IPlayerModelChanger.h"
 #include "Player/PlayerColliderHakoniwa.h"
