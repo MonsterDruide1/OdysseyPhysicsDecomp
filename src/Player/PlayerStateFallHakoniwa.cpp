@@ -85,7 +85,7 @@ void PlayerStateFallHakoniwa::updateFallTargetArea() {
     if (!mInvalidateInputFallArea) {
         if (!rs::updateJudgeAndResult(mJudgeInvalidateInputFall))
             return;
-        mInvalidateInputFallArea = mJudgeInvalidateInputFall->mInvalidateInputFallArea;
+        mInvalidateInputFallArea = mJudgeInvalidateInputFall->getInvalidateInputFallArea();
     }
     CRASH
 }

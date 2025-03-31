@@ -43,6 +43,6 @@ public:
     sead::Vector3f unk = {0.0f, 0.0f, 0.0f};
     bool flag1 = false;
     bool flag2 = false;
-    al::AreaObj* mInvalidateInputFallArea = nullptr;
+    const al::AreaObj* mInvalidateInputFallArea = nullptr;
     float mMaxMoveSpeed = 0.0f;
 };

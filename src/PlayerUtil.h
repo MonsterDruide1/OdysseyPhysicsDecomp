@@ -164,15 +164,7 @@ class CollisionPartsFilterOnlySpecialPurpose : public CollisionPartsFilterBase {
 
 class PlayerCounterAfterCapCatch;
 #include "Player/PlayerCapActionHistory.h"
-
-class PlayerAreaChecker {
-public:
-    PlayerAreaChecker(al::LiveActor const*, PlayerModelHolder const*);
-    al::AreaObj* tryFindInvalidateInputFall(const sead::Vector3f&) const;
-
-private:
-    void* size[0x10 / 8];
-};
+#include "Player/PlayerAreaChecker.h"
 
 namespace al {
 class AreaObj;
