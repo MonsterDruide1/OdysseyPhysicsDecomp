@@ -79,8 +79,6 @@ PlayerStateNormalWallSlide::PlayerStateNormalWallSlide(al::LiveActor* player,
     initNerve(&Keep, 0);
 }
 
-PlayerStateNormalWallSlide::~PlayerStateNormalWallSlide() = default;
-
 void PlayerStateNormalWallSlide::appear() {
     mIsDead = false;
     mNormalStart = rs::getCollidedWallNormal(mCollision);

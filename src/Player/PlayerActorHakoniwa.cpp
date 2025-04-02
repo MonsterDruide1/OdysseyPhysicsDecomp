@@ -519,7 +519,7 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
         GameDataFunction::disableCapByPlacement(this);
 
     al::registerExecutorFunctor(
-        "プレイヤー後処理", actorInfo.getExecuteDirector(),
+        "プレイヤー後処理", actorInfo.executeDirector,
         al::FunctorV0M<PlayerActorHakoniwa*, void (PlayerActorHakoniwa::*)(void)>(
             this, &PlayerActorHakoniwa::initAfterPlacement));
     mBodyHitSensor = al::getHitSensor(this, "Body");
@@ -639,7 +639,7 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
                     mHackCapJudgePreInputSeparateJump);
     mHackCap->init(actorInfo);
     al::registerExecutorFunctor(
-        "帽子装着位置更新", actorInfo.getExecuteDirector(),
+        "帽子装着位置更新", actorInfo.executeDirector,
         al::FunctorV0M<PlayerActorHakoniwa*, void (PlayerActorHakoniwa::*)(void)>(
             this, &PlayerActorHakoniwa::executeAfterCapTarget));
     PlayerCounterAfterCapCatch* counterAfterCapCatch =

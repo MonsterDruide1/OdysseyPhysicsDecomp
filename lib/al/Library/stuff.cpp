@@ -44,43 +44,6 @@
 
 namespace al {
 
-void makeMtxRotateTrans(sead::Matrix34f* out, const sead::Vector3f& rotate,
-                        const sead::Vector3f& trans) {
-    out->makeRT(sead::Vector3f(sead::Mathf::deg2rad(rotate.x), sead::Mathf::deg2rad(rotate.y),
-                               sead::Mathf::deg2rad(rotate.z)),
-                trans);
-}
-
-void makeMtxFrontUpPos(sead::Matrix34f* out, const sead::Vector3f& front, const sead::Vector3f& up,
-                       const sead::Vector3f& pos) {
-    sead::Vector3f frontNorm = front;
-    al::normalize(&frontNorm);
-
-    sead::Vector3f v18;
-    v18.setCross(up, frontNorm);
-    al::normalize(&v18);
-
-    sead::Vector3f unk;
-    unk.setCross(frontNorm, v18);
-
-    out->m[0][0] = v18.x;
-    out->m[0][1] = unk.x;
-    out->m[1][0] = v18.y;
-    out->m[1][1] = unk.y;
-    out->m[0][2] = frontNorm.x;
-    out->m[1][2] = frontNorm.y;
-    out->m[2][0] = v18.z;
-    out->m[2][1] = unk.z;
-    out->m[2][2] = frontNorm.z;
-
-    out->setTranslation(pos);
-}
-
-void makeMtxUpFrontPos(sead::Matrix34f* out, const sead::Vector3f& up, const sead::Vector3f& front,
-                       const sead::Vector3f& pos) {
-    makeMtxFrontUpPos(out, front, up, pos);
-}
-
 void calcQuatUp(sead::Vector3f* out, const sead::Quatf& quat) {
     out->x = 2.0f * (quat.x * quat.y - quat.w * quat.z);
     out->y = (1 - (quat.x * quat.x)) - 2.0f * (quat.z * quat.z);
@@ -206,21 +169,6 @@ bool tryNormalizeOrZero(sead::Vector2f* vec) {
 
     vec->normalize();
     return true;
-}
-
-void preScaleMtx(sead::Matrix34f* mtx, const sead::Vector3f& vec) {
-    mtx->scaleBases(vec.x, vec.y, vec.z);
-}
-
-void calcMtxScale(sead::Vector3f* scale, const sead::Matrix34f& mtx) {
-    sead::Vector3f x, y, z;
-    mtx.getBase(x, 0);
-    mtx.getBase(y, 1);
-    mtx.getBase(z, 2);
-
-    scale->x = x.length();
-    scale->y = y.length();
-    scale->z = z.length();
 }
 
 void calcMtxLocalTrans(sead::Vector3f* out, const sead::Matrix34f& mtx, const sead::Vector3f& in) {
@@ -1108,38 +1056,6 @@ f32 calcAngleDegree(const sead::Vector3f& a1, const sead::Vector3f& a2) {
                                                    (float)(v8 * v8))),
                   v6) *
            57.296;
-}
-
-void makeMtxUpFront(sead::Matrix34f* mtx, const sead::Vector3f& up, const sead::Vector3f& front) {
-    sead::Vector3f upn = up;
-    al::normalize(&upn);
-
-    sead::Vector3f cross_up_front;
-    cross_up_front.setCross(up, front);
-    al::normalize(&cross_up_front);
-
-    sead::Vector3f cross_cross;
-    cross_cross.setCross(cross_up_front, upn);
-
-    mtx->setBase(0, cross_up_front);
-    mtx->setBase(1, upn);
-    mtx->setBase(2, cross_cross);
-}
-
-void makeMtxFrontUp(sead::Matrix34f* mtx, const sead::Vector3f& front, const sead::Vector3f& up) {
-    sead::Vector3f frontn = front;
-    al::normalize(&frontn);
-
-    sead::Vector3f cross_up_front;
-    cross_up_front.setCross(up, frontn);
-    al::normalize(&cross_up_front);
-
-    sead::Vector3f cross_cross;
-    cross_cross.setCross(frontn, cross_up_front);
-
-    mtx->setBase(0, cross_up_front);
-    mtx->setBase(1, cross_cross);
-    mtx->setBase(2, frontn);
 }
 
 void separateVectorHV(sead::Vector3f* h, sead::Vector3f* v, const sead::Vector3f& vertical,
