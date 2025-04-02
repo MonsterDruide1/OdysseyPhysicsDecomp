@@ -66,6 +66,10 @@ public:
 
     void set1b0(f32 value) { unk11 = value; }
 
+    f32 get_70() const { return val1; }
+
+    const sead::Vector3f& getCollidedGroundNormal() const { return mCollidedGroundNormal; }
+
 public:
     al::CollisionDirector* mCollisionDirector;
     const sead::Matrix34f* mMtxPtr;

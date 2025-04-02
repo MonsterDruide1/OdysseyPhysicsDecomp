@@ -45,7 +45,7 @@ struct SphereMoveHitInfo {
 };
 
 bool isFarAway(const al::CollisionParts&, const sead::Vector3f&, f32);
-bool checkStrikeArrow(al::IUseCollision const*, sead::Vector3<float> const&,
+s32 checkStrikeArrow(al::IUseCollision const*, sead::Vector3<float> const&,
                       sead::Vector3<float> const&, al::CollisionPartsFilterBase const*,
                       al::TriangleFilterBase const*);
 bool isCollisionMoving(const al::HitInfo*);

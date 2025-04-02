@@ -1502,7 +1502,7 @@ bool alCollisionUtil::getHitPosAndNormalOnArrow(const al::IUseCollision* a1, sea
     return true;
 }
 
-bool alCollisionUtil::checkStrikeArrow(const al::IUseCollision* collider,
+s32 alCollisionUtil::checkStrikeArrow(const al::IUseCollision* collider,
                                        const sead::Vector3<float>& a2,
                                        const sead::Vector3<float>& a3,
                                        const al::CollisionPartsFilterBase* collFilter,
