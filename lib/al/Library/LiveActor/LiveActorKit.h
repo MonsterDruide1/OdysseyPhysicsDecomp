@@ -131,7 +131,7 @@ public:
 
     void setEffectSystem(EffectSystem* effectSystem) { mEffectSystem = effectSystem; }
 
-private:
+public:
     s32 mMaxActors;
     ActorResourceHolder* mActorResourceHolder = nullptr;
     AreaObjDirector* mAreaObjDirector = nullptr;
