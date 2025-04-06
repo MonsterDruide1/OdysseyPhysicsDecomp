@@ -35,7 +35,6 @@ public:
     static bool isNeedHairControl(const PlayerBodyCostumeInfo*, const char*);
     static bool isInvisibleCap(const PlayerCostumeInfo*);
     static void hideHairVisibility(al::LiveActor*);
-    static const sead::Matrix34f* getPlayerViewMtx(al::LiveActor const*);
     static PlayerConst* createMarioConst(char const*);
     static al::ActorDitherAnimator* createPlayerDitherAnimator(al::LiveActor *,float);
 

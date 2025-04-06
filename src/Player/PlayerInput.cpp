@@ -1294,7 +1294,7 @@ LABEL_11:
         this->someFlags[1] = 0;
         memset(&this->someVector2, 0, 0x70uLL);
     } else {
-        PlayerViewMtx = PlayerFunction::getPlayerViewMtx(this->mLiveActor);
+        PlayerViewMtx = &PlayerFunction::getPlayerViewMtx(this->mLiveActor);
         this->someFlags[1] = 1;
         this->someVector2.x = x;
         this->someVector2.y = y;
@@ -1675,7 +1675,7 @@ void PlayerInput::updateInput3D() {
     v16 = this->mLiveActor;
 
     if ((al::isActiveCameraInterpole(v16, 0) & 1) != 0) {
-        PlayerViewMtx = PlayerFunction::getPlayerViewMtx(this->mLiveActor);
+        PlayerViewMtx = &PlayerFunction::getPlayerViewMtx(this->mLiveActor);
         this->somethingFromUpdate = 1;
         this->someVectorUsedInUpdate.x = x;
         this->someVectorUsedInUpdate.y = y;

@@ -167,7 +167,7 @@ void PlayerInput::calcMoveInputImpl(sead::Vector3f* out, const sead::Vector3f& i
 
     v51 =
         PlayerInputFunction::getMoveInputStick(this->mLiveActor, PlayerInputPort, somethingAboutP1);
-    v21 = PlayerFunction::getPlayerViewMtx(this->mLiveActor);
+    v21 = &PlayerFunction::getPlayerViewMtx(this->mLiveActor);
     if (this->mDimension && rs::is2D(this->mDimension) && rs::isIn2DArea(this->mDimension)) {
         CRASH
         // do not do 2d sections
