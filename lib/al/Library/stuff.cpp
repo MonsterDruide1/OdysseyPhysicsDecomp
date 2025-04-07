@@ -87,12 +87,6 @@ s32 getPadAccelerationDeviceNum(s32) {
     return 2;
 }
 
-f32 calcSpeedExceptDir(const al::LiveActor* a1, const sead::Vector3f& a2) {
-    sead::Vector3f v5 = {0.0f, 0.0f, 0.0f};
-    al::verticalizeVec(&v5, a2, a1->mPoseKeeper->getVelocity());
-    return v5.length();
-}
-
 f32 calcCylinderRadiusDot(const sead::Vector3f& a1, const sead::Vector3f& a2, f32 a3) {
     float v6;  // s0
     float v7;  // s1
@@ -579,77 +573,8 @@ float calcAngleOnPlaneDegree(const sead::Vector3f& a1, const sead::Vector3f& a2,
     return v22 * 57.296;
 }
 
-void setVelocity(LiveActor* actor, const sead::Vector3f& vel) {
-    *actor->mPoseKeeper->getVelocityPtr() = vel;
-}
-
-void setVelocityZero(LiveActor* actor) {
-    *actor->mPoseKeeper->getVelocityPtr() = {0.0f, 0.0f, 0.0f};
-}
-
 bool isNearZero(const sead::Vector2f& vec, float epsilon) {
     return vec.squaredLength() < epsilon * epsilon;
-}
-
-void limitVelocityDir(LiveActor* actor, const sead::Vector3f& dir, f32 mag) {
-    const sead::Vector3f* v6;  // x0
-    float x;                   // s1
-    float y;                   // s2
-    float z;                   // s3
-    float v10;                 // s0
-    float v11;                 // s1
-    float v12;                 // s0
-    float v13;                 // s8
-    float v14;                 // s9
-    float v15;                 // s10
-    sead::Vector3f* result;    // x0
-    sead::Vector3f v17;        // [xsp+0h] [xbp-50h] BYREF
-    sead::Vector3f v18;        // [xsp+10h] [xbp-40h] BYREF
-
-    v18.x = 0.0;
-    v18.y = 0.0;
-    v18.z = 0.0;
-    v17.x = 0.0;
-    v17.y = 0.0;
-    v17.z = 0.0;
-    v6 = &actor->mPoseKeeper->getVelocity();
-    al::separateVectorParallelVertical(&v18, &v17, dir, *v6);
-    y = v18.y;
-    x = v18.x;
-    z = v18.z;
-    v10 = (float)((float)(v18.x * v18.x) + (float)(v18.y * v18.y)) + (float)(z * z);
-    if (v10 > (float)(mag * mag)) {
-        v11 = sqrtf(v10);
-        if (v11 <= 0.0) {
-            y = v18.y;
-            x = v18.x;
-            z = v18.z;
-        } else {
-            v12 = mag / v11;
-            x = (float)(mag / v11) * v18.x;
-            y = v12 * v18.y;
-            z = v12 * v18.z;
-            v18.x = x;
-            v18.y = v12 * v18.y;
-            v18.z = v12 * v18.z;
-        }
-    }
-
-    v13 = x + v17.x;
-    v14 = y + v17.y;
-    v15 = z + v17.z;
-    result = actor->mPoseKeeper->getVelocityPtr();
-    result->x = v13;
-    result->y = v14;
-    result->z = v15;
-}
-
-void addVelocityToGravity(LiveActor* actor, f32 velocity) {
-    *actor->getPoseKeeper()->getVelocityPtr() += actor->getPoseKeeper()->getGravity() * velocity;
-}
-
-void separateVelocityHV(sead::Vector3f*, sead::Vector3f*, const LiveActor* actor) {
-    CRASH
 }
 
 void alongVectorNormalH(sead::Vector3f* a1, const sead::Vector3f& a2, const sead::Vector3f& a3,
@@ -1067,15 +992,6 @@ void separateVectorHV(sead::Vector3f* h, sead::Vector3f* v, const sead::Vector3f
 
 void separateVelocityHV(sead::Vector3f* h, sead::Vector3f* v, al::LiveActor* actor) {
     separateVectorHV(h, v, al::getGravity(actor), actor->getPoseKeeper()->getVelocity());
-}
-
-void separateVelocityDirHV(sead::Vector3f* a1, sead::Vector3f* a2, const LiveActor* actor,
-                           const sead::Vector3f& a3) {
-    return al::separateVectorHV(a1, a2, a3, actor->mPoseKeeper->getVelocity());
-}
-
-void setVelocityToGravity(al::LiveActor* actor, float factor) {
-    *actor->mPoseKeeper->getVelocityPtr() = al::getGravity(actor) * factor;
 }
 
 bool isFloorPolygonCos(const sead::Vector3f& a1, const sead::Vector3f& a2, float a3) {
@@ -2090,12 +2006,6 @@ bool al::turnVecToVecCos(sead::Vector3<float>* a1, sead::Vector3<float> const& a
     return 1;
 }
 
-void al::tryAddVelocityLimit(al::LiveActor* a1, sead::Vector3<float> const& a2, float a3) {
-    sead::Vector3f newVel = a1->mPoseKeeper->getVelocity();
-    al::addVectorLimit(&newVel, a2, a3);
-    *a1->mPoseKeeper->getVelocityPtr() = newVel;
-}
-
 bool al::addVectorLimit(sead::Vector3<float>* a1, sead::Vector3<float> const& a2, float a3) {
     float v5;   // s9
     float x;    // s10
@@ -2523,10 +2433,6 @@ s32 al::modi(s32 a, s32 b) {
     return a % b;
 }
 
-void al::addVelocityToGravityLimit(al::LiveActor* actor, float a3, float a4) {
-    al::addVectorLimit(actor->getPoseKeeper()->getVelocityPtr(), al::getGravity(actor) * a3, a4);
-}
-
 bool al::turnQuatYDirRadian(sead::Quat<float>* a1, sead::Quat<float> const& a2,
                             sead::Vector3<float> const& a3, float a4) {
     float y;             // s2
@@ -2771,12 +2677,6 @@ void al::turnRandomVector(sead::Vector3<float>* a1, sead::Vector3<float> const& 
     }
 }
 
-void al::setVelocityZeroH(al::LiveActor* a1) {
-    sead::Vector3f gravity = al::getGravity(a1);
-    sead::Vector3f* velocityPtr = a1->mPoseKeeper->getVelocityPtr();
-    al::parallelizeVec(velocityPtr, gravity, *velocityPtr);
-}
-
 void al::limitVectorOppositeDir(sead::Vector3<float>* out, sead::Vector3<float> const& a2,
                                 sead::Vector3<float> const& a3, float a4) {
     float v4;  // s0
@@ -2870,30 +2770,9 @@ void al::calcDirSlide(sead::Vector3<float>* a1, sead::Vector3<float> const& a2,
     }
 }
 
-void al::addVelocityToDirection(al::LiveActor* actor, sead::Vector3<float> const& dir,
-                                float speed) {
-    sead::Vector3f normDir;
-    al::tryNormalizeOrZero(&normDir, dir);
-    *actor->mPoseKeeper->getVelocityPtr() += normDir * speed;
-}
-
 bool al::turnVecToVecCosOnPlane(sead::Vector3<float>* a1, sead::Vector3<float> const& a2,
                                 sead::Vector3<float> const& a3, float a4) {
     return al::turnVecToVecCosOnPlane(a1, *a1, a2, a3, a4);
-}
-
-void al::faceToDirectionSupportUp(al::LiveActor* x0_0, sead::Vector3<float> const& a2) {
-    sead::Quatf v4;     // [xsp+0h] [xbp-30h] BYREF
-    sead::Vector3f a1;  // [xsp+10h] [xbp-20h] BYREF
-
-    a1.x = 0.0;
-    a1.y = 0.0;
-    a1.z = 0.0;
-    al::calcUpDir(&a1, x0_0);
-    if (!al::isParallelDirection(a2, a1, 0.01f)) {
-        al::makeQuatFrontUp(&v4, a2, a1);
-        al::updatePoseQuat(x0_0, v4);
-    }
 }
 
 bool al::limitLength(sead::Vector3<float>* a1, sead::Vector3<float> const& a2, float a3) {
