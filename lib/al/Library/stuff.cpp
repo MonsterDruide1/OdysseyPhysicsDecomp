@@ -1386,11 +1386,6 @@ bool al::isReverseDirection(const sead::Vector3f& a1, const sead::Vector3f& a2, 
     return true;
 }
 
-void al::initNerve(LiveActor* actor, const Nerve* nerve, s32 maxNumNerves) {
-    al::NerveKeeper* keeper = new al::NerveKeeper(actor, nerve, maxNumNerves);
-    actor->initNerveKeeper(keeper);
-}
-
 const sead::Vector3f& alCollisionUtil::getCollisionMovingReaction(const al::HitInfo* info) {
     return info->mCollisionMovingReaction;
 }
