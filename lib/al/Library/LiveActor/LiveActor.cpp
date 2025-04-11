@@ -313,8 +313,7 @@ ActorSceneInfo* LiveActor::getSceneInfo() const {
 }
 
 void LiveActor::initHitSensor(s32 amount) {
-    CRASH
-    //mHitSensorKeeper = new HitSensorKeeper(amount);
+    mHitSensorKeeper = new HitSensorKeeper(amount);
 }
 
 void LiveActor::initCollider(f32 radius, f32 offsetY, u32 allocatedHitInfo) {

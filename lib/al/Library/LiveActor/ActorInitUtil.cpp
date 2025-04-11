@@ -264,8 +264,12 @@ ALWAYS_INLINE void initActorExecutor(LiveActor* actor, const ActorInitInfo& init
 ALWAYS_INLINE void initActorSensor(LiveActor* actor, const ActorInitInfo& initInfo,
                                    Resource* modelRes, const char* suffix) {
     ByamlIter initSensor;
-    if (!tryGetActorInitFileIter(&initSensor, modelRes, "InitSensor", suffix))
+    if (!tryGetActorInitFileIter(&initSensor, modelRes, "InitSensor", suffix)) {
+        // PATCH
+        actor->initHitSensor(0);
+        // END PATCH
         return;
+    }
 
     s32 numSensors = initSensor.getSize();
     if (numSensors <= 0)
