@@ -135,36 +135,6 @@ bool isParallelDirection(const sead::Vector3f& a1, const sead::Vector3f& a2, f32
     return v10 <= a3;
 }
 
-bool isNearZero(f32 val, f32 epsilon) {
-    return sead::Mathf::abs(val) < epsilon;
-}
-
-bool isNearZero(const sead::Vector3f& vec, f32 epsilon) {
-    return vec.squaredLength() < epsilon * epsilon;
-}
-
-bool tryNormalizeOrZero(sead::Vector3f* vec) {
-    f32 squaredLength = vec->squaredLength();
-    if (squaredLength < 0.000001f) {
-        *vec = sead::Vector3f::zero;
-        return false;
-    }
-
-    vec->normalize();
-    return true;
-}
-
-bool tryNormalizeOrZero(sead::Vector2f* vec) {
-    f32 squaredLength = vec->squaredLength();
-    if (squaredLength < 0.000001f) {
-        *vec = sead::Vector2f::zero;
-        return false;
-    }
-
-    vec->normalize();
-    return true;
-}
-
 void calcMtxLocalTrans(sead::Vector3f* out, const sead::Matrix34f& mtx, const sead::Vector3f& in) {
     sead::Vector3f trans;
     mtx.getTranslation(trans);
@@ -195,23 +165,6 @@ void calcTransLocalOffsetByMtx(sead::Vector3f* out, const sead::Matrix34f& a2,
     out->x = a2.m[0][3] + (float)((float)(v7 + (float)(a2.m[0][2] * z)) + 0.0);
     out->y = v10;
     out->z = v8 + v9;
-}
-
-void verticalizeVec(sead::Vector3f* out, const sead::Vector3f& vertical,
-                    const sead::Vector3f& vec) {
-    *out = vec - (vertical * vec.dot(vertical));
-}
-
-bool tryNormalizeOrZero(sead::Vector3f* out, const sead::Vector3f& vec) {
-    f32 squaredLength = vec.squaredLength();
-    if (squaredLength < 0.000001f) {
-        *out = sead::Vector3f::zero;
-        return false;
-    }
-
-    *out = vec;
-    out->normalize();
-    return true;
 }
 
 void makeQuatAxisRotation(sead::Quat<float>* q, const sead::Vector3<float>& a2,
@@ -287,12 +240,6 @@ bool isNearCollideSphereAabb(const sead::Vector3f& vec, f32 dist, const sead::Bo
     return vec.x >= box.getMin().x - dist && vec.x <= box.getMax().x + dist &&
            vec.y >= box.getMin().y - dist && vec.y <= box.getMax().y + dist &&
            vec.z >= box.getMin().z - dist && vec.z <= box.getMax().z + dist;
-}
-
-bool isNearZeroOrGreater(f32 value, f32 tolerance) {
-    if (value >= 0.0f)
-        return true;
-    return sead::Mathf::abs(value) < tolerance;
 }
 
 bool isWallPolygon(const sead::Vector3f& a1, const sead::Vector3f& a2) {
@@ -524,59 +471,6 @@ bool checkHitSegmentSphere(sead::Vector3f const& a1, sead::Vector3f const& a2,
     return 1LL;
 }
 
-float calcAngleOnPlaneDegree(const sead::Vector3f& a1, const sead::Vector3f& a2,
-                             const sead::Vector3f& a3) {
-    float y;    // s1
-    float v5;   // s3
-    float z;    // s5
-    float v7;   // s6
-    float v8;   // s4
-    float v9;   // s16
-    float v10;  // s3
-    float v11;  // s4
-    float v12;  // s2
-    float v13;  // s7
-    float v14;  // s17
-    float v15;  // s16
-    float v16;  // s0
-    float v17;  // s1
-    float v18;  // s5
-    float v19;  // s10
-    float v20;  // s9
-    float v21;  // s11
-    float v22;  // s0
-
-    y = a3.y;
-    v5 = a1.y;
-    z = a3.z;
-    v7 = a1.z;
-    v8 = (float)((float)(a3.x * a1.x) + (float)(y * v5)) + (float)(z * v7);
-    v9 = a3.x * v8;
-    v10 = v5 - (float)(y * v8);
-    v11 = v7 - (float)(z * v8);
-    v12 = a1.x - v9;
-    v13 = a2.y;
-    v14 = a2.z;
-    v15 = (float)((float)(a3.x * a2.x) + (float)(y * v13)) + (float)(z * v14);
-    v16 = a2.x - (float)(a3.x * v15);
-    v17 = v13 - (float)(y * v15);
-    v18 = v14 - (float)(z * v15);
-    v19 = (float)(v11 * v16) - (float)(v12 * v18);
-    v20 = (float)(v10 * v18) - (float)(v11 * v17);
-    v21 = (float)(v12 * v17) - (float)(v10 * v16);
-    v22 = sead::Mathf::atan2(
-        sqrtf((float)(v21 * v21) + (float)((float)(v20 * v20) + (float)(v19 * v19))),
-        (float)(v11 * v18) + (float)((float)(v12 * v16) + (float)(v10 * v17)));
-    if ((float)((float)(a3.z * v21) + (float)((float)(a3.x * v20) + (float)(a3.y * v19))) < 0.0)
-        v22 = -v22;
-
-    return v22 * 57.296;
-}
-
-bool isNearZero(const sead::Vector2f& vec, float epsilon) {
-    return vec.squaredLength() < epsilon * epsilon;
-}
-
 void alongVectorNormalH(sead::Vector3f* a1, const sead::Vector3f& a2, const sead::Vector3f& a3,
                         const sead::Vector3f& a4) {
     float a2z;   // s9
@@ -709,14 +603,6 @@ f32 converge(f32 val, f32 goal, f32 step) {
         return sead::Mathf::clampMin(val - step, goal);
     else
         return sead::Mathf::clampMax(val + step, goal);
-}
-
-bool isNearZeroOrLess(f32 value, f32 tolerance) {
-    return value <= 0.0f || value <= tolerance;
-}
-
-bool isNormalize(sead::Vector3<float> const& vec, float tolerance) {
-    return sead::Mathf::abs(1.0f - vec.length()) <= tolerance;
 }
 
 bool sub_7100926C0C(sead::Vector3f* a1, float* a2, const sead::Vector3f* a3,
@@ -956,31 +842,6 @@ void calcDirVerticalAny(sead::Vector3f* a1, const sead::Vector3f& a2) {
         a1->y = 0.0;
         a1->z = 0.0;
     }
-}
-
-f32 calcAngleDegree(const sead::Vector3f& a1, const sead::Vector3f& a2) {
-    float y;   // s1
-    float z;   // s6
-    float v4;  // s3
-    float v5;  // s5
-    float v6;  // s8
-    float v7;  // s7
-    float v8;  // s5
-    float v9;  // s0
-
-    y = a1.y;
-    z = a2.z;
-    v4 = a2.y;
-    v5 = a1.z;
-    v6 = (float)((float)(a1.x * a2.x) + (float)(y * v4)) + (float)(v5 * z);
-    v7 = v4 * v5;
-    v8 = (float)(a2.x * v5) - (float)(a1.x * z);
-    v9 = (float)(a1.x * v4) - (float)(a2.x * y);
-    return atan2f(sqrtf((float)(v9 * v9) + (float)((float)((float)((float)(y * z) - v7) *
-                                                           (float)((float)(y * z) - v7)) +
-                                                   (float)(v8 * v8))),
-                  v6) *
-           57.296;
 }
 
 void separateVectorHV(sead::Vector3f* h, sead::Vector3f* v, const sead::Vector3f& vertical,
@@ -1593,18 +1454,6 @@ void alKCollisionFunc::calcSphereHitPos(sead::Vector3<float>* a1, const al::KCol
         default:
             return;
         }
-    }
-}
-
-void al::normalize(sead::Vector2<float>* out, sead::Vector2<float> const& in) {
-    *out = in;
-    out->normalize();
-}
-
-f32 al::calcAngleDegree(sead::Vector2<float> const& a, sead::Vector2<float> const& b) {
-    if (a.squaredLength() >= 0.000001f && b.squaredLength() >= 0.000001f) {
-        return sead::Mathf::rad2deg(
-            sead::Mathf::atan2((a.x * b.y - a.y * b.x), (a.x * b.x + a.y * b.y)));
     }
 }
 
@@ -2770,23 +2619,6 @@ bool al::turnVecToVecCosOnPlane(sead::Vector3<float>* a1, sead::Vector3<float> c
     return al::turnVecToVecCosOnPlane(a1, *a1, a2, a3, a4);
 }
 
-bool al::limitLength(sead::Vector3<float>* a1, sead::Vector3<float> const& a2, float a3) {
-    float v4;  // s0
-    float v5;  // s0
-
-    v4 = sqrtf((float)((float)(a2.x * a2.x) + (float)(a2.y * a2.y)) + (float)(a2.z * a2.z));
-    if (v4 <= a3) {
-        *a1 = a2;
-        return 0LL;
-    } else {
-        v5 = a3 / v4;
-        a1->x = v5 * a2.x;
-        a1->y = v5 * a2.y;
-        a1->z = v5 * a2.z;
-        return 1LL;
-    }
-}
-
 void al::syncCollisionMtx(al::LiveActor* a1, sead::Matrix34<float> const* a2) {
     if (!a1->mCollisionParts->isValidatedBySystem || !a1->mCollisionParts->isValidatedByUser)
         return;
@@ -2918,11 +2750,4 @@ bool al::tryCalcAngleOnPlaneDegree(float* a1, const sead::Vector3f& a2, const se
 
 al::LiveActor* al::getPlayerActor(al::LiveActor const* a1, int a2) {
     return a1->getSceneInfo()->playerHolder->tryGetPlayer(a2);
-}
-
-bool al::isInRange(f32 a2, f32 a3, f32 a4) {
-    if (a4 >= a3)
-        return (a2 >= a3) & (a4 >= a2);
-    else
-        return (a3 >= a2) & (a2 >= a4);
 }
