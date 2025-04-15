@@ -186,7 +186,7 @@ void PlayerStateJump::appear() {
         return;
     case PlayerJumpType::val_0D:
         dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                   mJumpMessageRequest->mJumpType);
+                   mJumpMessageRequest->jumpType);
         CRASH
     case PlayerJumpType::val_0E:
         rs::noticePlayerJumpStart(mTrigger, mActor);
@@ -205,7 +205,7 @@ void PlayerStateJump::appear() {
         return;
     case PlayerJumpType::val_12:
         dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                   mJumpMessageRequest->mJumpType);
+                   mJumpMessageRequest->jumpType);
         CRASH
     default:
         bool isMove = mInput->isMove();
@@ -213,40 +213,40 @@ void PlayerStateJump::appear() {
         switch (mJumpMessageRequest->jumpType) {
         case PlayerJumpType::val_01:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                       mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->jumpType);
             CRASH
         case PlayerJumpType::val_02:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                       mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->jumpType);
             CRASH
         case PlayerJumpType::val_04:
         case PlayerJumpType::val_0B:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                       mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->jumpType);
             CRASH
         case PlayerJumpType::val_05:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                       mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->jumpType);
             CRASH
         case PlayerJumpType::val_06:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                       mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->jumpType);
             CRASH
         case PlayerJumpType::val_07:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                       mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->jumpType);
             CRASH
         case PlayerJumpType::val_08:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                       mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->jumpType);
             CRASH
         case PlayerJumpType::val_09:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                       mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->jumpType);
             CRASH
         case PlayerJumpType::val_0A:
             dbg_printf("PlayerStateJump::appear: unknown jump type %x\n",
-                       mJumpMessageRequest->mJumpType);
+                       mJumpMessageRequest->jumpType);
             CRASH
         case PlayerJumpType::HipDropJump:
             rs::noticePlayerJumpStart(mTrigger, mActor);
