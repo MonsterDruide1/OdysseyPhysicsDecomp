@@ -845,9 +845,9 @@ bool calcGroundHeight(float* a1, sead::Vector3<float>* a2, al::IUseCollision con
     v21 = 0;
     do {
         StrikeArrowInfo = (al::ArrowHitInfo*)alCollisionUtil::getStrikeArrowInfo(a3, v21);
-        FaceNormal = &StrikeArrowInfo->mHitInfo->mTriangle.getFaceNormal();
+        FaceNormal = &StrikeArrowInfo->hitInfo->mTriangle.getFaceNormal();
         if (FaceNormal->dot(a5) >= 0.5) {
-            v26 = (StrikeArrowInfo->mHitInfo->mCollisionHitPos - a4).length();
+            v26 = (StrikeArrowInfo->hitInfo->mCollisionHitPos - a4).length();
             if (v26 < v8) {
                 *a2 = *FaceNormal;
                 v8 = v26;

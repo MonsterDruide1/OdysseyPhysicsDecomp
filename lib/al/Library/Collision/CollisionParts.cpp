@@ -123,15 +123,15 @@ s32 CollisionParts::checkStrikeArrow(al::ArrowHitResultBuffer* results, sead::Ve
         al::ArrowHitInfo info = {};
 
         al::KCHitInfo hit = buffer[i];
-        info.mHitInfo->mTriangle.fillData(*this, hit.mData, hit.mHeader);
-        if (filter && !filter->isInvalidTriangle(info.mHitInfo->mTriangle)) {
+        info.hitInfo->mTriangle.fillData(*this, hit.mData, hit.mHeader);
+        if (filter && !filter->isInvalidTriangle(info.hitInfo->mTriangle)) {
             continue;
         }
 
-        info.mHitInfo->unk = v48 * hit.something;
-        info.mHitInfo->mCollisionHitPos.setMul(mBaseMtx, (hit.something * v61) + v62);
+        info.hitInfo->unk = v48 * hit.something;
+        info.hitInfo->mCollisionHitPos.setMul(mBaseMtx, (hit.something * v61) + v62);
         v29++;
-        info.mHitInfo->mCollisionLocation = (al::CollisionLocation)hit.mCollisionLocation;
+        info.hitInfo->mCollisionLocation = (al::CollisionLocation)hit.mCollisionLocation;
         results->pushBack(info);
     }
 
