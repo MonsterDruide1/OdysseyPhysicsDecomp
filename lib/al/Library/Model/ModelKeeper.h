@@ -40,6 +40,7 @@ public:
     void updateLast();
     void calc(const sead::Matrix34f&, const sead::Vector3f&);
     const sead::Matrix34f* getBaseMtx() const;
+    sead::Matrix34f* getBaseMtx();
     sead::Matrix34f* getWorldMtxPtrByIndex(s32 index) const;
     Resource* getAnimResource() const;
     Resource* getModelResource() const;
