@@ -94,30 +94,12 @@ struct HitInfo {
     bool isCollisionAtCorner() const;
     const sead::Vector3f& tryGetHitEdgeNormal() const;
 
-    union {
-        Triangle triangle;
-        Triangle mTriangle;
-    };
-    union {
-        f32 _70 = 0.0f;
-        f32 unk;
-    };
-    union {
-        sead::Vector3f collisionHitPos = {0.0f, 0.0f, 0.0f};
-        sead::Vector3f mCollisionHitPos;
-    };
-    union {
-        sead::Vector3f _80 = {0.0f, 0.0f, 0.0f};
-        sead::Vector3f unk3;
-    };
-    union {
-        sead::Vector3f collisionMovingReaction = {0.0f, 0.0f, 0.0f};
-        sead::Vector3f mCollisionMovingReaction;
-    };
-    union {
-        CollisionLocation collisionLocation = CollisionLocation::None;
-        CollisionLocation mCollisionLocation;
-    };
+    Triangle triangle;
+    f32 _70 = 0.0f;
+    sead::Vector3f collisionHitPos = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f _80 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f collisionMovingReaction = {0.0f, 0.0f, 0.0f};
+    CollisionLocation collisionLocation = CollisionLocation::None;
 
     /*
     al::Triangle mTriangle;

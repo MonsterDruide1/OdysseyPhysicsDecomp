@@ -129,11 +129,11 @@ const sead::Vector3f& getCollidedGroundPos(const IUsePlayerCollision* collision)
 }
 
 const sead::Vector3f& getCollidedWallPos(const IUsePlayerCollision* collision) {
-    return collision->getPlayerCollider()->info2->mCollisionHitPos;
+    return collision->getPlayerCollider()->info2->collisionHitPos;
 }
 
 const sead::Vector3f& getCollidedCeilingPos(const IUsePlayerCollision* collision) {
-    return collision->getPlayerCollider()->info3->mCollisionHitPos;
+    return collision->getPlayerCollider()->info3->collisionHitPos;
 }
 
 bool isCollidedWall(const IUsePlayerCollision* collision) {
@@ -485,7 +485,7 @@ bool isCollidedNoScaleVelocityWall(const IUsePlayerCollision* collision) {
 }
 
 const sead::Vector3f& getCollidedWallNormal(const IUsePlayerCollision* collision) {
-    return collision->getPlayerCollider()->info2->mTriangle.getFaceNormal();
+    return collision->getPlayerCollider()->info2->triangle.getFaceNormal();
 }
 
 void noticePlayerJumpStart(PlayerTrigger* trig, al::LiveActor const* actor) {
@@ -720,12 +720,12 @@ bool reboundVelocityFromCollision(al::LiveActor* a1, IUsePlayerCollision const* 
             }
 
             if (*(float*)(a2->getPlayerCollider() + 128) >= 0.0) {
-                v10 |= sub_7100568E3C(a1, a2->getPlayerCollider()->info2->mTriangle.getFaceNormal(),
+                v10 |= sub_7100568E3C(a1, a2->getPlayerCollider()->info2->triangle.getFaceNormal(),
                                       a3, a4, a5);
             }
 
             if (*(float*)(a2->getPlayerCollider() + 144) >= 0.0) {
-                v10 |= sub_7100568E3C(a1, a2->getPlayerCollider()->info3->mTriangle.getFaceNormal(),
+                v10 |= sub_7100568E3C(a1, a2->getPlayerCollider()->info3->triangle.getFaceNormal(),
                                       a3, a4, a5);
             }
         } else {
@@ -763,7 +763,7 @@ void calcCollidedNormalSum(sead::Vector3<float>* a1, IUsePlayerCollision const* 
     }
 
     if (a2->getPlayerCollider()->val2 >= 0.0) {
-        FaceNormal = &a2->getPlayerCollider()->info2->mTriangle.getFaceNormal();
+        FaceNormal = &a2->getPlayerCollider()->info2->triangle.getFaceNormal();
         v8 = a1->y;
         a1->x = a1->x + FaceNormal->x;
         a1->y = v8 + FaceNormal->y;
@@ -771,7 +771,7 @@ void calcCollidedNormalSum(sead::Vector3<float>* a1, IUsePlayerCollision const* 
     }
 
     if (a2->getPlayerCollider()->val3 >= 0.0) {
-        v13 = &a2->getPlayerCollider()->info3->mTriangle.getFaceNormal();
+        v13 = &a2->getPlayerCollider()->info3->triangle.getFaceNormal();
         v14 = a1->y;
         x = a1->x + v13->x;
         a1->x = x;
@@ -794,13 +794,13 @@ void calcCollidedNormalSum(sead::Vector3<float>* a1, IUsePlayerCollision const* 
 al::HitSensor* tryGetCollidedGroundSensor(IUsePlayerCollision const* collider) {
     if (collider->getPlayerCollider()->val1 < 0.0f)
         return nullptr;
-    return collider->getPlayerCollider()->info1->mTriangle.mCollisionParts->mConnectedSensor;
+    return collider->getPlayerCollider()->info1->triangle.mCollisionParts->mConnectedSensor;
 }
 
 al::HitSensor* tryGetCollidedWallSensor(IUsePlayerCollision const* collider) {
     if (collider->getPlayerCollider()->val2 < 0.0f)
         return nullptr;
-    return collider->getPlayerCollider()->info2->mTriangle.mCollisionParts->mConnectedSensor;
+    return collider->getPlayerCollider()->info2->triangle.mCollisionParts->mConnectedSensor;
 }
 
 bool calcGroundHeight(float* a1, sead::Vector3<float>* a2, al::IUseCollision const* a3,
@@ -845,9 +845,9 @@ bool calcGroundHeight(float* a1, sead::Vector3<float>* a2, al::IUseCollision con
     v21 = 0;
     do {
         StrikeArrowInfo = (al::ArrowHitInfo*)alCollisionUtil::getStrikeArrowInfo(a3, v21);
-        FaceNormal = &StrikeArrowInfo->hitInfo->mTriangle.getFaceNormal();
+        FaceNormal = &StrikeArrowInfo->hitInfo->triangle.getFaceNormal();
         if (FaceNormal->dot(a5) >= 0.5) {
-            v26 = (StrikeArrowInfo->hitInfo->mCollisionHitPos - a4).length();
+            v26 = (StrikeArrowInfo->hitInfo->collisionHitPos - a4).length();
             if (v26 < v8) {
                 *a2 = *FaceNormal;
                 v8 = v26;
@@ -1474,15 +1474,15 @@ bool isActionCodeNoWallGrab(IUsePlayerCollision const* a1) {
 bool isActionCodeNoWallGrab(al::HitInfo const* a1) {
     return al::isWallCode(a1, "NoAction") || al::isWallCode(a1, "NoWallGrab") ||
            al::isWallCode(a1, "ReflectStickNoWallGrab") || al::isWallCode(a1, "OnlyWallHitDown") ||
-           al::isFloorCode(a1, "GrabCeil") || al::isFloorCode(a1->mTriangle, "Pole") ||
-           al::isFloorCode(a1->mTriangle, "Needle") || al::isFloorCode(a1->mTriangle, "DamageFire");
+           al::isFloorCode(a1, "GrabCeil") || al::isFloorCode(a1->triangle, "Pole") ||
+           al::isFloorCode(a1->triangle, "Needle") || al::isFloorCode(a1->triangle, "DamageFire");
 }
 
 bool isActionCodeNoWallPopUp(al::HitInfo const* a1) {
     return al::isWallCode(a1, "NoAction") || al::isWallCode(a1, "NoWallGrab") ||
            al::isWallCode(a1, "ReflectStickNoWallGrab") || al::isWallCode(a1, "OnlyWallHitDown") ||
-           al::isFloorCode(a1, "GrabCeil") || al::isFloorCode(a1->mTriangle, "Needle") ||
-           al::isFloorCode(a1->mTriangle, "DamageFire") || al::isFloorCode(a1->mTriangle, "Poison");
+           al::isFloorCode(a1, "GrabCeil") || al::isFloorCode(a1->triangle, "Needle") ||
+           al::isFloorCode(a1->triangle, "DamageFire") || al::isFloorCode(a1->triangle, "Poison");
 }
 
 bool isActionCodeNoWallKeepWall(IUsePlayerCollision const* a1) {
@@ -1530,7 +1530,7 @@ bool isCollisionCodeGrabCeilAny(IUsePlayerCollision const* a1) {
 }
 
 bool isCollisionCodeGrabCeil(al::HitInfo const& a1) {
-    return isFloorCode(a1.mTriangle, "GrabCeil");
+    return isFloorCode(a1.triangle, "GrabCeil");
 }
 
 bool isCollisionCodePoisonTouch(IUsePlayerCollision const* a1) {
