@@ -9,6 +9,7 @@ namespace al {
 class ShaderHolder : public HioNode {
     SEAD_SINGLETON_DISPOSER(ShaderHolder)
 public:
+    ShaderHolder();
     // incomplete
 private:
     // missing

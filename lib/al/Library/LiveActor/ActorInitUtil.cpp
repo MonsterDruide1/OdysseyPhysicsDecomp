@@ -87,6 +87,11 @@ ALWAYS_INLINE bool initActorPoseKeeper(const char* pose, LiveActor* actor) {
 
 ALWAYS_INLINE void initActorPose(LiveActor* actor, const ActorInitInfo& initInfo,
                                  Resource* modelRes, const char* suffix) {
+    // EDIT:
+    initActorPoseKeeper("TQGMSV", actor);
+    return;
+    // END EDIT
+    
     ByamlIter initPose;
     if (!tryGetActorInitFileIter(&initPose, modelRes, "InitPose", suffix))
         return;
