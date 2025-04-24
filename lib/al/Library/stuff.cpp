@@ -1472,38 +1472,6 @@ void al::normalize(sead::Matrix34<float>* mtx) {
     mtx->setBase(2, z);
 }
 
-al::LiveActor* al::getSubActor(al::LiveActor const* actor, char const* name) {
-    // CUSTOM ADDITION:
-    if (!actor) {
-        printf("getSubActor: actor is nullptr\n");
-        return nullptr;
-    }
-
-    al::SubActorKeeper* keeper = actor->getSubActorKeeper();
-    if (!keeper || keeper->mCurActorCount < 1)
-        return nullptr;
-    for (s32 i = 0; i < keeper->mCurActorCount; i++)
-        if (al::isEqualString(keeper->mBuffer[i]->subActor->getName(), name))
-            return keeper->mBuffer[i]->subActor;
-    return nullptr;
-}
-
-al::LiveActor* al::tryGetSubActor(al::LiveActor const* actor, char const* name) {
-    // CUSTOM ADDITION:
-    if (!actor) {
-        printf("getSubActor: actor is nullptr\n");
-        return nullptr;
-    }
-
-    al::SubActorKeeper* keeper = actor->getSubActorKeeper();
-    if (!keeper || keeper->mCurActorCount < 1)
-        return nullptr;
-    for (s32 i = 0; i < keeper->mCurActorCount; i++)
-        if (al::isEqualString(keeper->mBuffer[i]->subActor->getName(), name))
-            return keeper->mBuffer[i]->subActor;
-    return nullptr;
-}
-
 bool al::checkHitLinePlane(sead::Vector3f* a1, const sead::Vector3f& a2, const sead::Vector3f& a3,
                            const sead::Vector3f& a4, const sead::Vector3f& a5) {
     float y;    // s2

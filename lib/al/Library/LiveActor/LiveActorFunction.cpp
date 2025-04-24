@@ -98,6 +98,12 @@ bool isExistSubActorKeeper(const LiveActor* actor) {
 }
 
 LiveActor* getSubActor(const LiveActor* actor, const char* subActorName) {
+    // PATCH:
+    if (!actor) {
+        printf("getSubActor: actor is nullptr\n");
+        return nullptr;
+    }
+
     if (isExistSubActorKeeper(actor))
         return alSubActorFunction::findSubActor(actor->getSubActorKeeper(), subActorName);
     return nullptr;
