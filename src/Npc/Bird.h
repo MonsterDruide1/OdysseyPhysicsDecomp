@@ -5,6 +5,7 @@
 class Bird : public al::LiveActor {
 public:
     Bird(const char* name);
+    void init(const al::ActorInitInfo& info) override;
     void initGlideOff(const sead::Matrix34f*, const sead::Vector3f&, bool);
     static Bird* createBirdGlideDownUfo(const char*, const al::ActorInitInfo&);
     void tryStartGlideDown();

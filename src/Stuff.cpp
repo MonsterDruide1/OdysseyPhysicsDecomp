@@ -4,12 +4,11 @@
 #include "Library/Collision/CollisionParts.h"
 #include "Library/Collision/CollisionUtil.h"
 #include "Library/Collision/TriangleFilter.h"
+#include "Library/LiveActor/ActorInitUtil.h"
 #include "Library/LiveActor/ActorMovementFunction.h"
 #include "Library/LiveActor/ActorPoseKeeper.h"
 #include "Library/Math/MathUtil.h"
-#include "Library/Math/MathUtil.h"
-#include "Library/Math/MathUtil.h"
-#include "Library/Math/MathUtil.h"
+#include "Library/Placement/PlacementFunction.h"
 #include "Library/Player/PlayerUtil.h"
 #include "Library/stuff.h"
 #include "Player/CollisionShapeKeeper.h"
@@ -20,10 +19,10 @@
 #include "Player/PlayerInput.h"
 #include "Player/PlayerTrigger.h"
 #include "PlayerUtil.h"
+#include "System/SaveObjInfo.h"
 #include "Util/CollisionShapeFunction.h"
 #include "math/seadMatrix.h"
 #include "math/seadQuat.h"
-#include "math/seadVectorFwd.h"
 
 namespace rs {
 
@@ -2422,6 +2421,10 @@ bool findGrabCeilPosNoWallHit(const al::CollisionParts** x0_0, sead::Vector3f* x
     }
 
     return false;
+}
+
+SaveObjInfo* createSaveObjInfoNoWriteSaveDataInSameWorldResetMiniGame(al::ActorInitInfo const& info) {
+    return SaveObjInfo::createSaveObjInfoNoWriteSaveDataInSameWorldResetMiniGame(info, al::createPlacementId(al::getPlacementInfo(info)));
 }
 
 }  // namespace rs

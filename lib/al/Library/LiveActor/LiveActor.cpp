@@ -332,8 +332,7 @@ void LiveActor::initExecuteInfo(ActorExecuteInfo* executeInfo) {
 }
 
 void LiveActor::initRailKeeper(const ActorInitInfo& info, const char* linkName) {
-    CRASH
-    //mRailKeeper = tryCreateRailKeeper(*info.placementInfo, linkName);
+    mRailKeeper = tryCreateRailKeeper(*info.placementInfo, linkName);
 }
 
 void LiveActor::initModelKeeper(ModelKeeper* modelKeeper) {

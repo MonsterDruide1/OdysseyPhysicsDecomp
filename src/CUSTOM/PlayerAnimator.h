@@ -1042,6 +1042,8 @@ public:
             maxFrame = 92;
         else if (al::isEqualString(name, "Move"))
             maxFrame = 60;  // starts all of Walk, Run, Dash, DashFast, RunStart at once, so just use the longest (walk = 60)
+        else if (al::isEqualString(name, "MoveMoon"))
+            maxFrame = 60;  // starts all of Walk, Run, Dash, DashFast, RunStart at once, so just use the longest (walk = 60)
         else {
             printf("unknown animation: %s\n", name);
             CRASH
