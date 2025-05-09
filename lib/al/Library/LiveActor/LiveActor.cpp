@@ -295,6 +295,10 @@ void LiveActor::endClipped() {
 }
 
 const sead::Matrix34f* LiveActor::getBaseMtx() const {
+    // PATCH:
+    return mPoseKeeper->getMtxPtr();
+    // END PATCH
+    
     if (mModelKeeper)
         return mModelKeeper->getBaseMtx();
     if (mPoseKeeper)

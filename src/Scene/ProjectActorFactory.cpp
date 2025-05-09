@@ -33,6 +33,7 @@
 #include "Enemy/Gamane.h"
 #include "Enemy/KaronWing.h"
 #include "Enemy/Kuribo2D.h"
+#include "Enemy/Megane.h"
 #include "Enemy/Mummy.h"
 #include "Enemy/Nokonoko2D.h"
 #include "Enemy/Pecho.h"
@@ -367,7 +368,7 @@ const al::NameToCreator<al::ActorCreatorFunction> sProjectActorFactoryEntries[] 
     {"LongGenerator", nullptr},
     {"MarchingCubeBlock", nullptr},
     {"MapPartsRoulette", nullptr},
-    {"Megane", nullptr},
+    {"Megane", al::createActorFunction<Megane>},
     {"MeganeLiftExLift", nullptr},
     {"MeganeKeyMoveMapParts", nullptr},
     {"MeganeMapParts", al::createActorFunction<MeganeMapParts>},

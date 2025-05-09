@@ -230,6 +230,10 @@ ALWAYS_INLINE void initActorExecutor(LiveActor* actor, const ActorInitInfo& init
     ByamlIter initExecutor;
     if (!tryGetActorInitFileIter(&initExecutor, modelRes, "InitExecutor", suffix)) {
         ModelKeeper* modelKeeper = actor->getModelKeeper();
+        // PATCH:
+        return;
+        // END PATCH
+        
         if (modelKeeper && modelKeeper->getModelCtrl()->getModelObj()->GetNumShapes())
             initExecutorModelUpdate(actor, initInfo);
         return;

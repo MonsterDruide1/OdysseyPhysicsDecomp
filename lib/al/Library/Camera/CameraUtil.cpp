@@ -90,6 +90,10 @@ const Projection& getProjection(const SceneCameraInfo* info, s32 viewIdx) {
 }
 
 const sead::Vector3f& getCameraPos(const IUseCamera* user, s32 viewIdx) {
+    // PATCH:
+    return sead::Vector3f::zero;
+    // END PATCH
+
     return getCameraPos(getSceneCameraInfo(user), viewIdx);
 }
 
@@ -98,6 +102,10 @@ const sead::Vector3f& getCameraPos(const SceneCameraInfo* info, s32 viewIdx) {
 }
 
 const sead::Vector3f& getCameraAt(const IUseCamera* user, s32 viewIdx) {
+    // PATCH:
+    return sead::Vector3f::zero;
+    // END PATCH
+    
     return getCameraAt(getSceneCameraInfo(user), viewIdx);
 }
 

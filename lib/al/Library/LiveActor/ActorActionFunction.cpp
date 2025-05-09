@@ -16,9 +16,6 @@
 namespace al {
 
 void startAction(LiveActor* actor, const char* actionName) {
-    // PATCH:
-    return;
-    // END PATCH
     if (!actor->getActorActionKeeper() || !actor->getActorActionKeeper()->startAction(actionName)) {
         tryStartSklAnimIfExist(actor, actionName);
         tryStartMtpAnimIfExist(actor, actionName);
@@ -36,9 +33,6 @@ s32 startActionAtRandomFrame(LiveActor* actor, const char* actionName) {
 }
 
 bool tryStartAction(LiveActor* actor, const char* actionName) {
-    // PATCH:
-    return false;
-    // END PATCH
     if (actor->getActorActionKeeper() && actor->getActorActionKeeper()->getAnimCtrl() &&
         actor->getActorActionKeeper()->getAnimCtrl()->isExistAction(actionName)) {
         actor->getActorActionKeeper()->startAction(actionName);
@@ -97,10 +91,6 @@ bool isExistAction(const LiveActor* actor) {
 }
 
 bool isExistAction(const LiveActor* actor, const char* actionName) {
-    // PATCH:
-    return false;
-    // END PATCH
-
     const ActorActionKeeper* keeper = actor->getActorActionKeeper();
     if (keeper && keeper->getAnimCtrl() && keeper->getAnimCtrl()->isExistAction(actionName))
         return true;

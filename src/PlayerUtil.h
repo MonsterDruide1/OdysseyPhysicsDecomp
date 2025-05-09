@@ -218,16 +218,7 @@ private:
     void* size[0x48 / 8];
 };
 
-class PlayerPushReceiver {
-public:
-    PlayerPushReceiver(al::LiveActor* const);
-    void clear();
-    void calcPushedVelocityWithCollide(sead::Vector3<float>*, sead::Vector3<float> const&,
-                                       IUsePlayerCollision const*, float);
-
-private:
-    void* size[0x38 / 8];
-};
+#include "Player/PlayerPushReceiver.h"
 
 class PlayerHitPush {
 public:

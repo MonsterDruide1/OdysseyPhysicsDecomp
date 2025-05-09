@@ -123,8 +123,12 @@ void Megane::init(const al::ActorInitInfo& info) {
     al::setColliderFilterCollisionParts(this, mCollisionPartsFilterMoveLimit);
 
     al::LiveActor* subActor = al::getSubActor(this, "メガネ");
+    // PATCH:
+    if (false) {
     al::startAction(subActor, "SpectaclesOn");
     al::setActionFrame(subActor, al::getActionFrameMax(subActor, "SpectaclesOn") - 1.0f);
+    }
+    // PATCH END
 
     mTestFilterGlasses =
         new TestFilterGlasses("メガネーレイアウト", al::getLayoutInitInfo(info), nullptr);
