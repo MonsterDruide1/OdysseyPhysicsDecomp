@@ -609,8 +609,7 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
     mPlayerExternalVelocity =
         new PlayerExternalVelocity(this, mPlayerColliderHakoniwa, al::getTransPtr(this));
 
-    al::LiveActor* currentActor = nullptr;
-    // al::LiveActor* currentActor = mPlayerModelHolder->currentModel->mLiveActor;
+    al::LiveActor* currentActor = mPlayerModelHolder->mCurrentModel->actor;
     al::FootPrintHolder* footPrintHolder =
         new al::FootPrintHolder(currentActor ? currentActor : nullptr, "FootPrint", mBodyHitSensor,
                                 (al::FootPrintServer*)al::getSceneObj(currentActor, 15));
