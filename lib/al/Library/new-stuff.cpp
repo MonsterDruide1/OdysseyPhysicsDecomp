@@ -62,6 +62,6 @@ void al::initActorInitInfo(al::ActorInitInfo* a1, const al::Scene* a2, const al:
         mLiveActorKit->mScreenPointDirector, (al::ShadowDirector*)mLiveActorKit->mShadowDirector,
         mLiveActorKit->mStageSwitchDirector, mLiveActorKit->mModelGroup,
         mLiveActorKit->mGraphicsSystemInfo,
-        (al::ModelDrawBufferCounter*)mLiveActorKit->mDrawBufferDirector,
+        mLiveActorKit->mModelDrawBufferCounter,
         mLiveActorKit->mDynamicDrawActorGroup);
 }
