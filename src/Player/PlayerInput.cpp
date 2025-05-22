@@ -568,7 +568,7 @@ void PlayerInput::update() {
         y = 0.0;
     } else {
         PlayerInputPort = PlayerFunction::getPlayerInputPort(this->mLiveActor);
-        if (rs::isSeparatePlay(mLiveActor)) {
+        if (rs::isSeparatePlay(this->mLiveActor)) {
             PlayerControllerPort = al::getPlayerControllerPort(0);
             somethingAboutP0 = this->somethingAboutP0;
             PlayerInputPort = PlayerControllerPort;
