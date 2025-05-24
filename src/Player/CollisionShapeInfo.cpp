@@ -121,3 +121,59 @@ CollisionShapeInfoDisk::CollisionShapeInfoDisk(char const* name, float a1,
     mCheckStepRange = sead::Mathf::min(_28, 2 * _48);
     calcWorldShapeInfo(sead::Matrix34f::ident, 1.0f);
 }
+
+void CollisionShapeInfoDisk::updateDiskShape(f32 a1, const sead::Vector3f& a2, f32 a3) {
+    _28 = a1;
+    _3C = a2;
+    _48 = a3;
+    mBoundingRadius = sqrtf((float)(a3 * a3) + (float)(a1 * a1));
+    mCheckStepRange = sead::Mathf::min(_28, 2 * _48);
+}
+
+const sead::Vector3f& CollisionShapeInfoDisk::getBoundingCenter() const {
+    return mBoundingCenter;
+}
+
+const sead::Vector3f& CollisionShapeInfoDisk::getBoundingCenterWorld() const {
+    return mBoundingCenterWorld;
+}
+
+f32 CollisionShapeInfoDisk::getBoundingRadius() const {
+    return mBoundingRadius;
+}
+
+f32 CollisionShapeInfoDisk::getBoundingRadiusWorld() const {
+    return mBoundingRadiusWorld;
+}
+
+f32 CollisionShapeInfoDisk::getCheckStepRange() const {
+    return mCheckStepRange;
+}
+
+f32 CollisionShapeInfoDisk::getCheckStepRangeWorld() const {
+    return mCheckStepRangeWorld;
+}
+
+void CollisionShapeInfoDisk::updateShapeOffset(const sead::Vector3f& a1) {
+    mBoundingCenter = a1;
+}
+
+void CollisionShapeInfoDisk::calcWorldShapeInfo(const sead::Matrix34f& a2, f32 a3) {
+    mBoundingCenterWorld.setMul(a2, mBoundingCenter * a3);
+    _5C.setRotated(a2, _3C);
+    al::tryNormalizeOrZero(&_5C);
+    _2C = _28 * a3;
+    _4C = _48 * a3;
+    f32 v12 = mBoundingRadius * a3;
+    mCheckStepRangeWorld = mCheckStepRange * a3;
+    f32 more = unk1;
+    mBoundingRadiusWorld = v12;
+    _88 = more * a3;
+    _98.setRotated(a2, mUp);
+}
+
+void CollisionShapeInfoDisk::calcRelativeShapeInfo(const sead::Matrix34f& a2) {
+    _68.setMul(a2, mBoundingCenterWorld);
+    _74.setRotated(a2, _5C);
+    al::tryNormalizeOrZero(&_74);
+}
