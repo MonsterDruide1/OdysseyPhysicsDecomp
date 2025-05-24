@@ -846,6 +846,7 @@ public:
     PlayerStateHack(al::LiveActor*, PlayerHackKeeper*, IPlayerModelChanger*, PlayerAnimator*,
                     HackCap*);
     bool isEnableModelSyncShowHide();
+    void prepareStageStartHack();
 
 private:
     void* size[0xD0 / 8];

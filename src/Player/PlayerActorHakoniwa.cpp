@@ -195,7 +195,6 @@ s32 getStateBitMap<PlayerActorHakoniwa>(u128* state, int startOffset, PlayerActo
 }
 
 
-// NON_MATCHING: slightly different when stopping/restarting memset
 PlayerActorHakoniwa::PlayerActorHakoniwa(const char* name)
     : PlayerActorBase(name), mComboCounter(new al::ComboCounter()) {}
 
@@ -212,30 +211,28 @@ void PlayerActorHakoniwa::initAfterPlacement() {
     al::setVelocityZero(this);
 
     if (mHackKeeper->executeForceHackStageStart(mBodyHitSensor, this)) {
-        CRASH
-        /*mStateHack->prepareStageStartHack();
+        mStateHack->prepareStageStartHack();
         mModelChangerHakoniwa->syncHost(1);
         al::setNerve(this, &Hack);
-        return;*/
-    }
-
-    if (!al::isNerve(this, &Fall))
-        return;
-
-    if (rs::isCollidedGround(mColliderHakoniwa) ||
-        (mColliderHakoniwa->isAboveGround() &&
-         mColliderHakoniwa->getGroundHeight() < 10.0f)) {
-        mTrigger->set(PlayerTrigger::ECollisionTrigger_val8);
-        mStateWait->initSceneStartAnim();
-        mModelChangerHakoniwa->resetPosition();
-        al::setNerve(this, &Wait);
         return;
     }
 
-    mTrigger->set(PlayerTrigger::ECollisionTrigger_val7);
-    mInput->convergedInUpdateToDisableInput = 1;
-    mInput->mIsDisableInput = 1;
-    mInput->usedInUpdate = 0;
+    if (al::isNerve(this, &Fall)) {
+        if (rs::isCollidedGround(mColliderHakoniwa) ||
+            (mColliderHakoniwa->isAboveGround() &&
+            mColliderHakoniwa->getGroundHeight() < 10.0f)) {
+            mTrigger->set(PlayerTrigger::ECollisionTrigger_val8);
+            mStateWait->initSceneStartAnim();
+            mModelChangerHakoniwa->resetPosition();
+            al::setNerve(this, &Wait);
+            return;
+        }
+
+        mTrigger->set(PlayerTrigger::ECollisionTrigger_val7);
+        mInput->convergedInUpdateToDisableInput = 1;
+        mInput->mIsDisableInput = 1;
+        mInput->usedInUpdate = 0;
+    }
 }
 
 void PlayerActorHakoniwa::movement() {

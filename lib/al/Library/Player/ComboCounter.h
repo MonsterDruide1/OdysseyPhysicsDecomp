@@ -13,7 +13,7 @@ public:
     void reset() { mCombo = 0; }
 
 private:
-    s32 mCombo;
+    s32 mCombo = 0;
 };
 
 static_assert(sizeof(ComboCounter) == 0x10);
