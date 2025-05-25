@@ -1,4 +1,8 @@
+#include "Library/LiveActor/ActorMovementFunction.h"
 #include "Library/LiveActor/ActorPoseKeeper.h"
+#include "Library/LiveActor/ActorPoseUtil.h"
+#include "Library/Math/MathUtil.h"
+#include "Library/stuff.h"
 #include "Player/PlayerActorBase.h"
 #include "Player/PlayerCollider.h"
 #include "PlayerUtil.h"
@@ -49,4 +53,16 @@ rs::getCollidedCeilingCollisionParts(IUsePlayerCollision const* collider) {
 
 const sead::Vector3f& rs::getCollidedCeilingNormal(IUsePlayerCollision const* collider) {
     return collider->getPlayerCollider()->info3->triangle.getFaceNormal();
+}
+
+bool rs::isOnGroundSlopeSlideStart(al::LiveActor const* player, IUsePlayerCollision const* collision, PlayerConst const* pConst) {
+    if (collision->getPlayerCollider()->val1 >= 0.0f) {
+        sead::Vector3f velocity = al::getVelocity(player);
+        al::tryNormalizeOrZero(&velocity);
+        f32 dot = velocity.dot(collision->getPlayerCollider()->mCollidedGroundNormal);
+        if (dot <= 0.0f || al::isNearZero(dot)) {
+            return !al::isFloorPolygonCos(collision->getPlayerCollider()->mCollidedGroundNormal, al::getGravity(player), sead::Mathf::cos(sead::Mathf::deg2rad(pConst->getSlopeSlideAngleStart())));
+        }
+    }
+    return false;
 }
