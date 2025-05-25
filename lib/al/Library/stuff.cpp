@@ -58,29 +58,6 @@ void calcQuatFront(sead::Vector3f* out, const sead::Quatf& quat) {
     out->z = (1 - (quat.x * quat.x)) - 2.0f * (quat.y * quat.y);
 }
 
-f32 calcRate01(f32 a2, f32 a3, f32 a4) {
-    float v3;      // s2
-    float v4;      // s3
-    float result;  // s0
-
-    v3 = a4 - a3;
-    v4 = -v3;
-    if (v3 > 0.0)
-        v4 = v3;
-
-    if (v4 < 0.001)
-        return 1.0;
-
-    result = (float)(a2 - a3) / v3;
-    if (result < 0.0)
-        return 0.0;
-
-    if (result > 1.0)
-        return 1.0;
-
-    return result;
-}
-
 void slerpQuat(sead::Quatf* out, const sead::Quatf& a, const sead::Quatf& b, float val) {
     sead::QuatCalcCommon<f32>::slerpTo(*out, a, b, val);
 }
@@ -109,32 +86,6 @@ f32 calcCylinderRadiusDot(const sead::Vector3f& a1, const sead::Vector3f& a2, f3
 
     v9 = sead::Mathf::cos(v8);
     return sead::Mathf::sin(v9) * a3;
-}
-
-bool isParallelDirection(const sead::Vector3f& a1, const sead::Vector3f& a2, f32 a3) {
-    float v7;   // s3
-    float v9;   // s4
-    float v10;  // s1
-
-    v7 = (float)(a1.y * a2.z) - (float)(a1.z * a2.y);
-    if (v7 <= 0.0)
-        v7 = -v7;
-
-    if (v7 > a3)
-        return 0LL;
-
-    v9 = (float)(a1.z * a2.x) - (float)(a2.z * a1.x);
-    if (v9 <= 0.0)
-        v9 = -v9;
-
-    if (v9 > a3)
-        return 0LL;
-
-    v10 = (float)(a2.y * a1.x) - (float)(a1.y * a2.x);
-    if (v10 <= 0.0)
-        v10 = -v10;
-
-    return v10 <= a3;
 }
 
 void calcMtxLocalTrans(sead::Vector3f* out, const sead::Matrix34f& mtx, const sead::Vector3f& in) {
@@ -1459,19 +1410,6 @@ void alKCollisionFunc::calcSphereHitPos(sead::Vector3<float>* a1, const al::KCol
     }
 }
 
-void al::normalize(sead::Matrix34<float>* mtx) {
-    sead::Vector3f x, y, z;
-    mtx->getBase(x, 0);
-    mtx->getBase(y, 1);
-    mtx->getBase(z, 2);
-    x.normalize();
-    y.normalize();
-    z.normalize();
-    mtx->setBase(0, x);
-    mtx->setBase(1, y);
-    mtx->setBase(2, z);
-}
-
 bool al::checkHitLinePlane(sead::Vector3f* a1, const sead::Vector3f& a2, const sead::Vector3f& a3,
                            const sead::Vector3f& a4, const sead::Vector3f& a5) {
     float y;    // s2
@@ -2243,10 +2181,6 @@ LABEL_51:
     return (unsigned int)v14;
 }
 
-s32 al::modi(s32 a, s32 b) {
-    return a % b;
-}
-
 bool al::turnQuatYDirRadian(sead::Quat<float>* a1, sead::Quat<float> const& a2,
                             sead::Vector3<float> const& a3, float a4) {
     float y;             // s2
@@ -2489,22 +2423,6 @@ void al::turnRandomVector(sead::Vector3<float>* a1, sead::Vector3<float> const& 
     } else {
         *a1 = a2;
     }
-}
-
-void al::limitVectorOppositeDir(sead::Vector3<float>* out, sead::Vector3<float> const& a2,
-                                sead::Vector3<float> const& a3, float a4) {
-    float v4;  // s0
-    float v5;  // s3
-
-    v4 = -a4;
-    v5 = a3.dot(a2);
-    if (v5 >= v4) {
-        v4 = a3.dot(a2);
-        if (v5 > 0.0)
-            v4 = 0.0;
-    }
-
-    *out = a3 - (a2 * v4);
 }
 
 void al::calcDirSlide(sead::Vector3<float>* a1, sead::Vector3<float> const& a2,
