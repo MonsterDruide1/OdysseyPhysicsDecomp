@@ -9,6 +9,7 @@
 #include "Library/Nerve/NerveSetupUtil.h"
 #include "Library/Nerve/NerveUtil.h"
 #include "Library/stuff.h"
+#include "Player/PlayerInput.h"
 #include "Stuff.h"
 #include "Util/PlayerCollisionUtil.h"
 #include "math/seadQuat.h"

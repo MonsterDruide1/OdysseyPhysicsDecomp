@@ -9,11 +9,6 @@
 
 #include "Area/In2DAreaMoveControl.h"
 #include "Util/IUseDimension.h"
-#include "Util/In2DAreaMoveControl.h"
-
-ActorDimensionKeeper::ActorDimensionKeeper(const al::LiveActor* actor) : mLiveActor(actor) {
-    mIn2DAreaMoveControl = new In2DAreaMoveControl();
-}
 
 ActorDimensionKeeper::ActorDimensionKeeper(const al::LiveActor* actor) : mActor(actor) {
     mIn2DAreaMoveControl = new In2DAreaMoveControl();

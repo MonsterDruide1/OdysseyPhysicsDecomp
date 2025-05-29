@@ -43,6 +43,7 @@
 #include "Stuff.h"
 #include "System/GameDataFunction.h"
 #include "Util/ActorDimensionKeeper.h"
+#include "Util/ActorDimensionUtil.h"
 #include "Util/JudgeUtil.h"
 #include "math/seadQuat.h"
 #include "playerUtil.h"

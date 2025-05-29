@@ -7,7 +7,7 @@
 #include "Player/CollisionShapeKeeper.h"
 #include "Player/PlayerCeilingCheck.h"
 #include "Player/PlayerCollider.h"
-#include "Util/ActorDimensionKeeper.h"
+#include "Util/ActorDimensionUtil.h"
 #include "Stuff.h"
 #include "PlayerUtil.h"
 #include "math/seadVectorFwd.h"
@@ -62,8 +62,8 @@ void helperFunc2(CollisionShapeKeeper* keeper);
 
 void PlayerColliderHakoniwa::init() {
     mShapeKeeperNormal = new CollisionShapeKeeper(5, 64, 32);
-    mShapeKeeperNormal->unk3 = 25.0f;
-    mShapeKeeperNormal->unk4 = 25.0f;
+    mShapeKeeperNormal->_54 = 25.0f;
+    mShapeKeeperNormal->_58 = 25.0f;
     helperFunc(mShapeKeeperNormal, sead::Vector3f::zero);
     mShapeKeeperNormal->createShapeSphereSupportGround("Body", 55.0f, sead::Vector3f::ey * 65.0f,
                                                        sead::Vector3f::ey, 14.5f);
@@ -74,11 +74,11 @@ void PlayerColliderHakoniwa::init() {
     helperFunc(mShapeKeeperMini, sead::Vector3f::zero);
     mShapeKeeperMini->createShapeSphereSupportGround("Body", 55.0f, sead::Vector3f::ey * 55.0f,
                                                      sead::Vector3f::ey, 14.5f);
-    mShapeKeeperMini->unk4 = 25.0f;
+    mShapeKeeperMini->_58 = 25.0f;
     mShapeKeeperMini->updateShape();
 
     mShapeKeeperSwim = new CollisionShapeKeeper(5, 64, 32);
-    mShapeKeeperSwim->unk3 = 25.0f;
+    mShapeKeeperSwim->_54 = 25.0f;
     helperFunc(mShapeKeeperSwim, sead::Vector3f::zero);
     mShapeKeeperSwim->createShapeSphereIgnoreGround("Body", 55.0f, sead::Vector3f::ey * 55.0f);
     mShapeKeeperSwim->createShapeSphere("Head", 55.0f, sead::Vector3f::ey * 105.0f);

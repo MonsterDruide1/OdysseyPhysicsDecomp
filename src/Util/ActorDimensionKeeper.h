@@ -2,6 +2,8 @@
 
 #include <basis/seadTypes.h>
 
+#include "ActorDimensionUtil.h"
+
 namespace al {
 class CollisionPartsFilterOnlySpecialPurpose;
 class LiveActor;

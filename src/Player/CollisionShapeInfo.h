@@ -103,7 +103,7 @@ public:
 
     void set48(f32 value) { _48 = value; }
 
-private:
+public:
     float mBoundingRadius;
     sead::Vector3f mBoundingCenter;
     sead::Vector3f mBoundingCenterWorld;

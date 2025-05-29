@@ -9,6 +9,8 @@
 #include "Player/PlayerConst.h"
 #include "Player/PlayerTrigger.h"
 
+class IUseDimension;
+
 namespace rs {
 
 bool isCollisionCodePress(al::HitInfo*);

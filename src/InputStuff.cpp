@@ -10,7 +10,7 @@
 #include "Player/PlayerFunction.h"
 #include "Player/PlayerInput.h"
 #include "Player/PlayerInputFunction.h"
-#include "Util/ActorDimensionKeeper.h"
+#include "Util/ActorDimensionUtil.h"
 #include "math/seadMathCalcCommon.h"
 
 bool PlayerInputFunction::isTriggerCancelWorldWarp(al::LiveActor const*, int) {
