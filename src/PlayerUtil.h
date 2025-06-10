@@ -539,45 +539,7 @@ namespace al {
 class CollisionPartsConnector;
 }
 
-class PlayerJudgeWallCatchInputDir : public al::HioNode, public IJudge {
-public:
-    PlayerJudgeWallCatchInputDir(al::LiveActor const*, PlayerConst const*, PlayerInput const*,
-                                 IUsePlayerCollision const*, IPlayerModelChanger const*,
-                                 PlayerCarryKeeper const*, PlayerExternalVelocity const*,
-                                 PlayerCounterForceRun const*, IUsePlayerHeightCheck const*);
-
-    void reset() override { WARN_UNIMPL; }
-
-    void update() override { WARN_UNIMPL; }
-
-    bool judge() const override {
-        WARN_UNIMPL;
-        return false;
-    }
-
-    void validateFallJudge();
-    void updateWallCatchEnviroment();
-
-public:
-    const al::LiveActor* mPlayer;
-    const PlayerConst* mConst;
-    const PlayerInput* mInput;
-    const IUsePlayerCollision* mCollision;
-    const IPlayerModelChanger* mModelChanger;
-    const PlayerCarryKeeper* mCarryKeeper;
-    const PlayerExternalVelocity* mExternalVelocity;
-    const PlayerCounterForceRun* mCounterForceRun;
-    const IUsePlayerHeightCheck* mHeightCheck;
-    bool mIsJudge;
-    const al::CollisionParts* _58;
-    sead::Vector3f _60[3];
-    int _84;
-    int pad[2];
-    al::CollisionPartsConnector* mCollisionPartsConnector;
-    sead::Vector3f _98;
-    int _A4;
-};
-
+#include "Player/PlayerJudgeWallCatchInputDir.h"
 #include "Player/PlayerJudgeWallHitDown.h"
 #include "Player/PlayerJudgeWallHitDownForceRun.h"
 #include "Player/PlayerJudgeWallHitDownRolling.h"

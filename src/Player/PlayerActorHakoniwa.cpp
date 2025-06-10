@@ -1350,8 +1350,8 @@ void PlayerActorHakoniwa::exeWait() {
 
     if (rs::updateJudgeAndResult(mJudgeWallCatchInputDir)) {
         mStateWallCatch->setup(
-            mJudgeWallCatchInputDir->_58, mJudgeWallCatchInputDir->_60[0],
-            -mJudgeWallCatchInputDir->_60[1], mJudgeWallCatchInputDir->_60[2]);
+            mJudgeWallCatchInputDir->mCollisionParts, mJudgeWallCatchInputDir->mHitPos,
+            -mJudgeWallCatchInputDir->mHitNormal2, mJudgeWallCatchInputDir->mHitNormal);
         al::setNerve(this, &WallCatch);
         return;
     }
@@ -1659,8 +1659,8 @@ void PlayerActorHakoniwa::exeRun() {
     mExternalVelocity->requestApplyLastGroundInertia();
     if (rs::updateJudgeAndResult(mJudgeWallCatchInputDir)) {
         mStateWallCatch->setup(
-            mJudgeWallCatchInputDir->_58, mJudgeWallCatchInputDir->_60[0],
-            -mJudgeWallCatchInputDir->_60[1], mJudgeWallCatchInputDir->_60[2]);
+            mJudgeWallCatchInputDir->mCollisionParts, mJudgeWallCatchInputDir->mHitPos,
+            -mJudgeWallCatchInputDir->mHitNormal2, mJudgeWallCatchInputDir->mHitNormal);
         al::setNerve(this, &WallCatch);
         return;
     }
@@ -1978,8 +1978,8 @@ void PlayerActorHakoniwa::exeSpinCap() {
 
     if (rs::updateJudgeAndResult(mJudgeWallCatchInputDir)) {
         mStateWallCatch->setup(
-            mJudgeWallCatchInputDir->_58, mJudgeWallCatchInputDir->_60[0],
-            -mJudgeWallCatchInputDir->_60[1], mJudgeWallCatchInputDir->_60[2]);
+            mJudgeWallCatchInputDir->mCollisionParts, mJudgeWallCatchInputDir->mHitPos,
+            -mJudgeWallCatchInputDir->mHitNormal2, mJudgeWallCatchInputDir->mHitNormal);
         al::setNerve(this, &WallCatch);
         return;
     }
@@ -2534,11 +2534,11 @@ void PlayerActorHakoniwa::exeFall() {
         return;
     }
     if (mStateFallHakoniwa->isValidWallCatch()) {
-        if (mJudgeWallCatchInputDir->_84 >= 1 &&
+        if (mJudgeWallCatchInputDir->mValidTimer >= 1 &&
             rs::updateJudgeAndResult(mJudgeWallCatchInputDir)) {
             mStateWallCatch->setup(
-                mJudgeWallCatchInputDir->_58, mJudgeWallCatchInputDir->_60[0],
-                -mJudgeWallCatchInputDir->_60[1], mJudgeWallCatchInputDir->_60[2]);
+                mJudgeWallCatchInputDir->mCollisionParts, mJudgeWallCatchInputDir->mHitPos,
+                -mJudgeWallCatchInputDir->mHitNormal2, mJudgeWallCatchInputDir->mHitNormal);
             al::setNerve(this, &WallCatch);
             return;
         }

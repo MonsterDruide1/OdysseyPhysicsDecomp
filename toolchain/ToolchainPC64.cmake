@@ -39,6 +39,7 @@ add_compile_options(-fPIC)
 add_compile_options(-fstandalone-debug)
 
 add_definitions(-D SWITCH)
+add_definitions(-D ODYSSEYPHYSICS)
 add_definitions(-D NNSDK)
 #add_definitions(-D MATCHING_HACK_NX_CLANG)
 

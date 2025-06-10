@@ -5,6 +5,8 @@
 #include "Library/HostIO/HioNode.h"
 #include "Player/IUsePlayerCeilingCheck.h"
 #include "Player/IUsePlayerCollision.h"
+#include "Player/IUsePlayerHeightCheck.h"
+#include "Player/IUsePlayerFallDistanceCheck.h"
 
 namespace al {
 class LiveActor;
@@ -14,17 +16,6 @@ class HitSensor;
 class PlayerConst;
 class PlayerCeilingCheck;
 class CollisionShapeKeeper;
-
-class IUsePlayerHeightCheck {
-public:
-    virtual bool isAboveGround() const = 0;
-    virtual f32 getGroundHeight() const = 0;
-    virtual f32 getShadowDropHeight() const = 0;
-};
-
-class IUsePlayerFallDistanceCheck {
-    virtual f32 getFallDistance() const = 0;
-};
 
 class PlayerColliderHakoniwa : public al::HioNode,
                                public IUsePlayerCollision,
