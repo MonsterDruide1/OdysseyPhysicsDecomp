@@ -236,12 +236,12 @@ bool KCollisionServer::calcFarthestVertexDistance() {
 }
 
 s32 KCollisionServer::getTriangleNum(const KCPrismHeader* header) const {
-    return (header->mOctreeOffset - (u64)header->mTrianglesOffset) / sizeof(KCPrismData);
+    return (header->octreeOffset - (u64)header->trianglesOffset) / sizeof(KCPrismData);
 }
 
 const KCPrismData& KCollisionServer::getPrismData(u32 index, const KCPrismHeader* header) const {
     return reinterpret_cast<const KCPrismData*>(uintptr_t(header) +
-                                                header->mTrianglesOffset)[(int)index];
+                                                header->trianglesOffset)[(int)index];
 }
 
 // NON_MATCHING: Major mismatch due to order of loads / first comparisons
@@ -295,7 +295,7 @@ void KCollisionServer::calcPosLocal(sead::Vector3f* pos, const KCPrismData* data
           const sead::Vector3f& normalC = getEdgeNormal3(data, header);
         /*/
         const sead::Vector3f* normals =
-            reinterpret_cast<const sead::Vector3f*>(uintptr_t(header) + header->mNormalsOffset);
+            reinterpret_cast<const sead::Vector3f*>(uintptr_t(header) + header->normalsOffset);
         sead::Vector3f normalB = normals[data->edgeNormalIndex[1]];
         sead::Vector3f normalFace = normals[data->faceNormalIndex];
         const sead::Vector3f& normalC = normals[data->edgeNormalIndex[2]];
@@ -316,7 +316,7 @@ void KCollisionServer::calcPosLocal(sead::Vector3f* pos, const KCPrismData* data
           const sead::Vector3f& normalC = getEdgeNormal3(data, header);
         /*/
         const sead::Vector3f* normals =
-            reinterpret_cast<const sead::Vector3f*>(uintptr_t(header) + header->mNormalsOffset);
+            reinterpret_cast<const sead::Vector3f*>(uintptr_t(header) + header->normalsOffset);
         sead::Vector3f normalA = normals[data->edgeNormalIndex[0]];
         sead::Vector3f normalFace = normals[data->faceNormalIndex];
         const sead::Vector3f& normalC = normals[data->edgeNormalIndex[2]];
@@ -345,23 +345,23 @@ void KCollisionServer::getMinMax(sead::Vector3f* min, sead::Vector3f* max) const
 }
 
 void KCollisionServer::getAreaSpaceSize(sead::Vector3f* vec, const KCPrismHeader* header) const {
-    float x = (s32) ~(header->mMask.x);
-    u32 headerMaskZ = header->mMask.z;
-    float y = (s32) ~(header->mMask.y);
+    float x = (s32) ~(header->widthMask.x);
+    u32 headerMaskZ = header->widthMask.z;
+    float y = (s32) ~(header->widthMask.y);
     float z = (s32) ~(headerMaskZ);
     *vec = {x, y, z};
 }
 
 void KCollisionServer::getAreaSpaceSize(s32* x, s32* y, s32* z, const KCPrismHeader* header) const {
-    *x = ~(header->mMask.x);
-    *y = ~(header->mMask.y);
-    *z = ~(header->mMask.z);
+    *x = ~(header->widthMask.x);
+    *y = ~(header->widthMask.y);
+    *z = ~(header->widthMask.z);
 }
 
 void KCollisionServer::getAreaSpaceSize(sead::Vector3u* vec, const KCPrismHeader* header) const {
-    vec->x = ~(header->mMask.x);
-    vec->y = ~(header->mMask.y);
-    vec->z = ~(header->mMask.z);
+    vec->x = ~(header->widthMask.x);
+    vec->y = ~(header->widthMask.y);
+    vec->z = ~(header->widthMask.z);
 }
 
 // NON_MATCHING: various, major stuff
@@ -390,7 +390,7 @@ const KCPrismData* KCollisionServer::checkPoint(sead::Vector3f* point, f32 a3, f
                     something.dot(getEdgeNormal2(&prismData, header)) <= 0.0f &&
                     something.dot(getEdgeNormal3(&prismData, header)) <= prismData.length) {
                     f32 dp = -something.dot(getFaceNormal(&prismData, header));
-                    if (dp >= 0.0 && header->mThickness * a3 >= dp) {
+                    if (dp >= 0.0 && header->thickness * a3 >= dp) {
                         v41 = 1;
                         v4 = &prismData;
                         *a4 = dp;
@@ -410,9 +410,9 @@ const KCPrismData* KCollisionServer::checkPoint(sead::Vector3f* point, f32 a3, f
 const u8* KCollisionServer::searchBlock(s32* coordShift, const sead::Vector3u& pos,
                                         const KCPrismHeader* header) const {
     s32 v5 = calcAreaBlockOffset(pos, header);
-    const u8* octreeData = reinterpret_cast<const u8*>(header) + header->mOctreeOffset;
-    *coordShift = header->mCoordShift.x;
-    if (header->mCoordShift.z == -1 && header->mCoordShift.y == -1)
+    const u8* octreeData = reinterpret_cast<const u8*>(header) + header->octreeOffset;
+    *coordShift = header->widthShift.x;
+    if (header->widthShift.z == -1 && header->widthShift.y == -1)
         v5 = 0;
 
     s32 v8 = getBlockData((u32*)octreeData, v5);
@@ -442,13 +442,13 @@ bool KCollisionServer::outCheckAndCalcArea(sead::Vector3u* posOut1, sead::Vector
     if (posOut1->z & 0x80000000)
         posOut1->z = 0;
 
-    s32 maskX = ~(header->mMask.x);
+    s32 maskX = ~(header->widthMask.x);
     if ((s32)posOut2->x > maskX)
         posOut2->x = maskX;
-    s32 maskY = ~(header->mMask.y);
+    s32 maskY = ~(header->widthMask.y);
     if ((s32)posOut2->y > maskY)
         posOut2->y = maskY;
-    s32 maskZ = ~(header->mMask.z);
+    s32 maskZ = ~(header->widthMask.z);
     if ((s32)posOut2->z > maskZ)
         posOut2->z = maskZ;
 
@@ -557,22 +557,22 @@ const KCPrismData* KCollisionServer::checkArrow(const sead::Vector3f& unk1,
         v79 = this;
         while (1) {
             v13 = this->mModelsData[v12];
-            mXMask = v13->mMask.x;
-            mYMask = v13->mMask.y;
-            v17 = unk1.x - v13->mOctreeOrigin.x;
-            v14 = unk1.y - v13->mOctreeOrigin.y;
-            v18 = unk1.z - v13->mOctreeOrigin.z;
+            mXMask = v13->widthMask.x;
+            mYMask = v13->widthMask.y;
+            v17 = unk1.x - v13->octreeOrigin.x;
+            v14 = unk1.y - v13->octreeOrigin.y;
+            v18 = unk1.z - v13->octreeOrigin.z;
             v19 = (int)v17;
             v20 = (int)v14;
             if (!(mXMask & (int)v17 | mYMask & (int)v14)) {
                 v21 = (int)v18;
-                p_mZMask = &v13->mMask.z;
-                if ((v13->mMask.z & (int)v18) == 0)
+                p_mZMask = &v13->widthMask.z;
+                if ((v13->widthMask.z & (int)v18) == 0)
                     break;
             }
 
-            p_mZMask = &v13->mMask.z;
-            mZMask = v13->mMask.z;
+            p_mZMask = &v13->widthMask.z;
+            mZMask = v13->widthMask.z;
             x = a2.x;
             if (a2.x != 0.0) {
                 v25 = (float)~mXMask;
@@ -717,8 +717,8 @@ const KCPrismData* KCollisionServer::checkArrow(const sead::Vector3f& unk1,
                     if (v57 == 0xFFFFLL)
                         break;
 
-                    v58 = (const al::KCPrismData*)((char*)v13 + 20 * v56 + v13->mTrianglesOffset);
-                    hitInfo.mData = v58;
+                    v58 = (const al::KCPrismData*)((char*)v13 + 20 * v56 + v13->trianglesOffset);
+                    hitInfo.data = v58;
                     if (v58->length > 0.0) {
                         v10 = KCHitArrow(v58, v13, unk1, *v85, &hitInfo.something,
                                          &hitInfo.mCollisionLocation);
@@ -728,7 +728,7 @@ const KCPrismData* KCollisionServer::checkArrow(const sead::Vector3f& unk1,
 
                             v66 = v86;
                             if (hitInfo.something < v55)
-                                v66 = hitInfo.mData;
+                                v66 = hitInfo.data;
 
                             if (hitInfo.something < v55)
                                 v55 = hitInfo.something;
@@ -766,14 +766,14 @@ const KCPrismData* KCollisionServer::checkArrow(const sead::Vector3f& unk1,
                     if (v71 == 0xFFFFLL)
                         break;
 
-                    v69 = (al::KCPrismData*)((char*)v13 + 20 * v70 + v13->mTrianglesOffset);
-                    hitInfo.mData = v69;
+                    v69 = (al::KCPrismData*)((char*)v13 + 20 * v70 + v13->trianglesOffset);
+                    hitInfo.data = v69;
                     if (v69->length > 0.0) {
                         v10 = al::KCollisionServer::KCHitArrow(
                             v69, v13, unk1, *v85, &hitInfo.something, &hitInfo.mCollisionLocation);
                         if (v10 && hitInfo.something < v68) {
                             v68 = hitInfo.something;
-                            v86 = hitInfo.mData;
+                            v86 = hitInfo.data;
                         }
                     }
                 }
@@ -808,18 +808,18 @@ const KCPrismData* KCollisionServer::checkArrow(const sead::Vector3f& unk1,
 
             v17 = v17 + (float)(v75 * a2.x);
             v19 = (int)v17;
-            if ((v13->mMask.x & (int)v17) != 0)
+            if ((v13->widthMask.x & (int)v17) != 0)
                 break;
 
             v14 = v14 + (float)(v75 * a2.y);
             v20 = (int)v14;
-            if ((v13->mMask.y & (int)v14) != 0)
+            if ((v13->widthMask.y & (int)v14) != 0)
                 break;
 
             v18 = v18 + (float)(v75 * a2.z);
             v21 = (int)v18;
             v26 = v26 + v75;
-        } while ((v13->mMask.z & (int)v18) == 0 && v26 < a1);
+        } while ((v13->widthMask.z & (int)v18) == 0 && v26 < a1);
 
         mData = (int*)v79->mData;
         goto LABEL_121;
@@ -838,12 +838,12 @@ LABEL_124:
 void KCollisionServer::objectSpaceToAreaOffsetSpaceV3f(sead::Vector3f* areaOffSpace,
                                                        const sead::Vector3f& objSpace,
                                                        const KCPrismHeader* header) const {
-    *areaOffSpace = objSpace - header->mOctreeOrigin;
+    *areaOffSpace = objSpace - header->octreeOrigin;
 }
 
 bool KCollisionServer::isInsideMinMaxInAreaOffsetSpace(const sead::Vector3u& pos,
                                                        const KCPrismHeader* header) const {
-    return !(pos.x & header->mMask.x) && !(pos.y & header->mMask.y) && !(pos.z & header->mMask.z);
+    return !(pos.x & header->widthMask.x) && !(pos.y & header->widthMask.y) && !(pos.z & header->widthMask.z);
 }
 
 bool KCollisionServer::KCHitArrow(const KCPrismData* data, const KCPrismHeader* header,
@@ -977,7 +977,7 @@ bool KCollisionServer::KCHitSphereForPlayer(const KCPrismData* data, const KCPri
     float v62;         // s0
     sead::Vector3f v53v;
 
-    mThickness = header->mThickness;
+    mThickness = header->thickness;
     *a8 = 0;
     const sead::Vector3f& pos = getVertexData(data->posIndex, header);
     sead::Vector3f finalPos = *position - pos;
@@ -1354,12 +1354,12 @@ bool KCollisionServer::KCHitDisc(const KCPrismData* data, const KCPrismHeader* h
 s32 KCollisionServer::toIndex(const KCPrismData* data, const KCPrismHeader* header) const {
     // return (reinterpret_cast<const u8*>(data) - reinterpret_cast<const u8*>(header) -
     // header->mTrianglesOffset) / sizeof(KCPrismData);
-    return 0xCCCCCCCD * ((uintptr_t(data) - uintptr_t(header) - header->mTrianglesOffset) >> 2);
+    return 0xCCCCCCCD * ((uintptr_t(data) - uintptr_t(header) - header->trianglesOffset) >> 2);
 }
 
 const sead::Vector3f& KCollisionServer::getNormal(u32 index, const KCPrismHeader* header) const {
     return reinterpret_cast<const sead::Vector3f*>(uintptr_t(header) +
-                                                   header->mNormalsOffset)[(int)index];
+                                                   header->normalsOffset)[(int)index];
 }
 
 void KCollisionServer::calXvec(const sead::Vector3f* a, const sead::Vector3f* b,
@@ -1372,16 +1372,16 @@ void KCollisionServer::calXvec(const sead::Vector3f* a, const sead::Vector3f* b,
 const sead::Vector3f& KCollisionServer::getVertexData(u32 index,
                                                       const KCPrismHeader* header) const {
     return reinterpret_cast<const sead::Vector3f*>(uintptr_t(header) +
-                                                   header->mPositionsOffset)[(int)index];
+                                                   header->positionsOffset)[(int)index];
 }
 
 u32 KCollisionServer::getVertexNum(const KCPrismHeader* header) const {
     // return (header->mNormalsOffset - (u64)header->mPositionsOffset) / sizeof(sead::Vector3f);
-    return 0xAAAAAAAB * ((uintptr_t(header->mNormalsOffset) - header->mPositionsOffset) >> 2);
+    return 0xAAAAAAAB * ((uintptr_t(header->normalsOffset) - header->positionsOffset) >> 2);
 }
 
 s32 KCollisionServer::getNormalNum(const KCPrismHeader* header) const {
-    return 4 * ((header->mOctreeOffset - (u64)header->mTrianglesOffset) / sizeof(KCPrismData));
+    return 4 * ((header->octreeOffset - (u64)header->trianglesOffset) / sizeof(KCPrismData));
 }
 
 s32 KCollisionServer::getAttributeElementNum() const {
@@ -1400,9 +1400,9 @@ bool KCollisionServer::getAttributes(ByamlIter* iter, const KCPrismData* data) c
 void KCollisionServer::objectSpaceToAreaOffsetSpace(sead::Vector3u* areaOffSpace,
                                                     const sead::Vector3f& objSpace,
                                                     const KCPrismHeader* header) const {
-    areaOffSpace->x = (s32)(objSpace.x - header->mOctreeOrigin.x);
-    areaOffSpace->y = (s32)(objSpace.y - header->mOctreeOrigin.y);
-    areaOffSpace->z = (s32)(objSpace.z - header->mOctreeOrigin.z);
+    areaOffSpace->x = (s32)(objSpace.x - header->octreeOrigin.x);
+    areaOffSpace->y = (s32)(objSpace.y - header->octreeOrigin.y);
+    areaOffSpace->z = (s32)(objSpace.z - header->octreeOrigin.z);
 }
 
 void KCollisionServer::areaOffsetSpaceToObjectSpace(sead::Vector3f* objSpace,
@@ -1410,7 +1410,7 @@ void KCollisionServer::areaOffsetSpaceToObjectSpace(sead::Vector3f* objSpace,
                                                     const KCPrismHeader* header) const {
     *objSpace =
         sead::Vector3f{(float)areaOffSpace.x, (float)areaOffSpace.y, (float)areaOffSpace.z} +
-        header->mOctreeOrigin;
+        header->octreeOrigin;
 }
 
 bool KCollisionServer::doBoxCheck(const sead::Vector3f* pos1, const sead::Vector3f* pos2,
@@ -1460,9 +1460,9 @@ bool KCollisionServer::doBoxCheck(const sead::Vector3f* pos1, const sead::Vector
 
 s32 KCollisionServer::calcAreaBlockOffset(const sead::Vector3u& pos,
                                           const KCPrismHeader* header) const {
-    return 4 * ((pos.z >> header->mCoordShift.x << header->mCoordShift.z) |
-                (pos.y >> header->mCoordShift.x << header->mCoordShift.y) |
-                (pos.x >> header->mCoordShift.x));
+    return 4 * ((pos.z >> header->widthShift.x << header->widthShift.z) |
+                (pos.y >> header->widthShift.x << header->widthShift.y) |
+                (pos.x >> header->widthShift.x));
 }
 
 s32 KCollisionServer::calcChildBlockOffset(const sead::Vector3u& position, s32 index) {

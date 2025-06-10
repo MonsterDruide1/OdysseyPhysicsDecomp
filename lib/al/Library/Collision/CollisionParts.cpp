@@ -115,7 +115,7 @@ s32 CollisionParts::checkStrikeArrow(al::ArrowHitResultBuffer* results, sead::Ve
         al::ArrowHitInfo info = {};
 
         al::KCHitInfo hit = buffer[i];
-        info.hitInfo->triangle.fillData(*this, hit.mData, hit.mHeader);
+        info.hitInfo->triangle.fillData(*this, hit.data, hit.header);
         if (filter && !filter->isInvalidTriangle(info.hitInfo->triangle)) {
             continue;
         }

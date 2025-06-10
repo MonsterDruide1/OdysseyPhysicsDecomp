@@ -2,6 +2,8 @@
 
 #include <basis/seadTypes.h>
 
+#include "Library/LiveActor/LiveActorKeeper.h"
+
 // TODO: bring this up to sanae
 // temp solution to figure out a solution to bitflag enums (stole this right from nvn headers)
 #define AL_BITS(CLASS)                                                                             \
@@ -101,25 +103,6 @@ public:
     LiveActor* subActor = nullptr;
     void* field_8 = nullptr;
     SubActorSync syncType = SubActorSync::cNone;
-};
-
-class SubActorKeeper {
-public:
-    SubActorKeeper(LiveActor*);
-    void registerSubActor(LiveActor*, u32);
-    void init(const ActorInitInfo&, const char*, s32);
-
-    static SubActorKeeper* create(LiveActor*);
-    static SubActorKeeper* tryCreate(LiveActor*, const char*, s32);
-
-protected:
-    friend class alSubActorFunction;
-
-public:
-    LiveActor* mRootActor;
-    s32 mMaxActorCount = 0;
-    s32 mCurActorCount = 0;
-    SubActorInfo** mBuffer = nullptr;
 };
 
 bool isExistSubActorKeeper(const LiveActor*);
