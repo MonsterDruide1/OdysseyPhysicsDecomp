@@ -1,5 +1,6 @@
 #include "Player/PlayerStateRunHakoniwa2D3D.h"
 
+#include "Library/Nerve/NerveSetupUtil.h"
 #include "Library/Nerve/NerveUtil.h"
 #include "Player/PlayerStateRunHakoniwa.h"
 #include "PlayerUtil.h"

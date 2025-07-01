@@ -36,7 +36,7 @@ public:
     f32 calcAccelRate(f32) const;
     void updatePoseUpFront(const sead::Vector3f&, const sead::Vector3f&, f32);
 
-    const sead::Vector3f& getGroundNormal() const { return mGravityDir; }
+    const sead::Vector3f& getGroundNormal() const { return mGroundNormal; }
 
     void set_c4(bool c4) { _C4 = c4; }
 

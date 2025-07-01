@@ -26,7 +26,7 @@ s32 getStateBitMap<PlayerStateGroundSpin>(u128* state, int startOffset, PlayerSt
     if(startOffset+size >= 128) CRASH;
     *state <<= size;
 
-    *state |= al::isNerve(player, &GroundSpin);
+    *state |= al::isNerve(player, &NrvPlayerStateGroundSpin.GroundSpin);
 
     int offset = startOffset+size;
     if(player->isDead()) {
