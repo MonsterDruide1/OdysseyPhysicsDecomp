@@ -108,6 +108,11 @@ bool tryGetSuffixIter(ByamlIter* iter, const Resource* resource, const char* nam
 bool tryGetInitFileIterAndName(ByamlIter* iter, sead::BufferedSafeString* fileName,
                                const Resource* resource, const char* suffixIterKey,
                                const char* suffixIterSuffix, const char* suffixIterName) {
+    // PATCH:
+    if (resource == nullptr)
+        return false;
+    // END PATCH
+
     StringTmp<128> tmpFileName;
     if (!tryMakeInitFileName(&tmpFileName, resource, suffixIterKey, suffixIterSuffix,
                              suffixIterName))
