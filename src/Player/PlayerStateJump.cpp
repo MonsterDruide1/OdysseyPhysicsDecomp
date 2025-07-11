@@ -146,9 +146,9 @@ void PlayerStateJump::appear() {
 
             if (mIsMoon)
                 normalMaxSpeed *= 0.5f;
-            if (frontSpeed > normalMaxSpeed) {
+            if (frontSpeed >= (normalMaxSpeed * 0.99f)) {
                 f32 dot = offsetFront.dot(mContinuousJump->mLastJumpDir);
-                if ((mIsMoon && dot >= 0.70711f) || (!mIsMoon && dot >= 6.123e-17f)) {
+                if ((!mIsMoon && dot >= 0.70711f) || (mIsMoon && dot >= 6.123e-17f)) {
                     mContinuousJumpCount = mContinuousJump->mCount;
                     _B4 = true;
                 }
