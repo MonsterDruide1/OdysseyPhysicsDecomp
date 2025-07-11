@@ -7,6 +7,7 @@
 #include "Library/LiveActor/ActorPoseKeeper.h"
 #include "Library/LiveActor/LiveActor.h"
 #include "Library/Math/MathUtil.h"
+#include "Project/Controller/PadRumbleKeeper.h"
 
 #include "Library/Player/PlayerHolder.h"
 #include "Library/stuff.h"

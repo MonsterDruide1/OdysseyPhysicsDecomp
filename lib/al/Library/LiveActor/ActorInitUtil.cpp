@@ -153,6 +153,10 @@ ALWAYS_INLINE ModelLodCtrl* initActorModelLodCtrl(LiveActor* actor, Resource* mo
 ALWAYS_INLINE void initActorModel(LiveActor* actor, const ActorInitInfo& initInfo,
                                   Resource* modelRes, ActorResource* actorResource,
                                   const char* suffix) {
+    // PATCH:
+    return;
+    // END PATCH
+    
     ByamlIter initModel;
     if (!tryGetActorInitFileIter(&initModel, modelRes, "InitModel", suffix))
         return;
