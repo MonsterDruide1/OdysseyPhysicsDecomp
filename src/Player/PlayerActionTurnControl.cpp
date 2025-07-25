@@ -7,8 +7,8 @@
 #include "Player/PlayerActionFunction.h"
 #include "math/seadQuat.h"
 
-PlayerActionTurnControl::PlayerActionTurnControl(al::LiveActor* actor) : mActor(actor) {
-    ringbuf.allocBuffer(5, nullptr);
+PlayerActionTurnControl::PlayerActionTurnControl(al::LiveActor* actor) : mPlayer(actor) {
+    _38.allocBuffer(5, nullptr);
 }
 
 
@@ -25,7 +25,7 @@ void PlayerActionTurnControl::setup(f32 turnAngleStart, f32 turnAngleFast, f32 t
 }
 
 void PlayerActionTurnControl::reset() {
-    ringbuf.clear();
+    _38.clear();
     _30 = 0.0;
     _8 = 0.0;
     _c = {0.0f, 0.0f, 0.0f};
@@ -88,9 +88,9 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
     sead::Vector3f* v103;
 
     sead::Vector3f front = {0.0f, 0.0f, 0.0f};
-    al::calcFrontDir(&front, this->mActor);
+    al::calcFrontDir(&front, this->mPlayer);
     sead::Vector3f up = {0.0f, 0.0f, 0.0f};
-    al::calcUpDir(&up, this->mActor);
+    al::calcUpDir(&up, this->mPlayer);
     al::alongVectorNormalH(&front, front, up, a3);
     al::tryNormalizeOrZero(&front);
     this->_50 = front;
@@ -102,7 +102,7 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
     }
 
     v94 = &a3;
-    sead::Vector3f neggravity = -al::getGravity(this->mActor);
+    sead::Vector3f neggravity = -al::getGravity(this->mPlayer);
     a3a = {0.0f, 0.0f, 0.0f};
     v12 = al::tryNormalizeOrZero(&a3a, a2);
     v13 = false;
@@ -116,7 +116,7 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
     v18 = v16 || !v12;
     v103 = (sead::Vector3f*)&a2;
     if (v18 || a3a.dot(a1) < 0.34202f) {
-        this->ringbuf.clear();
+        this->_38.clear();
         v19 = 0.0;
         this->_30 = 0.0;
     } else {
@@ -125,12 +125,12 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
         else
             v20 = 0.0;
 
-        ringbuf.forcePushBack(v20);
+        _38.forcePushBack(v20);
 
         this->_30 = 0.0f;
         v38 = 0.0f;
-        for (int i = 0; i < ringbuf.size(); i++) {
-            v38 += ringbuf[i];
+        for (int i = 0; i < _38.size(); i++) {
+            v38 += _38[i];
             this->_30 = v38;
         }
 
@@ -180,7 +180,7 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
         } else {
             if (!v13) {
                 if (v15)
-                    al::calcFrontDir(&v98, this->mActor);
+                    al::calcFrontDir(&v98, this->mPlayer);
                 else
                     v98 = front;
 
@@ -193,7 +193,7 @@ void PlayerActionTurnControl::update(const sead::Vector3f& a2, const sead::Vecto
                 return;
             }
 
-            al::calcFrontDir(&v98, this->mActor);
+            al::calcFrontDir(&v98, this->mPlayer);
             if (up.dot(neggravity) < 0.0)
                 v98 = -v98;
 
