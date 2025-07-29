@@ -11,6 +11,7 @@
 #include "Player/PlayerActionAirMoveControl.h"
 #include "Player/PlayerActionGroundMoveControl.h"
 #include "Player/PlayerConst.h"
+#include "Player/PlayerInput.h"
 #include "PlayerUtil.h"
 #include "Stuff.h"
 #include "Util/PlayerCollisionUtil.h"

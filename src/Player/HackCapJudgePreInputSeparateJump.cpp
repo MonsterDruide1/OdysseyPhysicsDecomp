@@ -1,6 +1,7 @@
 #include "Player/HackCapJudgePreInputSeparateJump.h"
 
 #include "Library/Math/MathUtil.h"
+#include "Player/PlayerInput.h"
 #include "PlayerUtil.h"
 
 HackCapJudgePreInputSeparateJump::HackCapJudgePreInputSeparateJump(

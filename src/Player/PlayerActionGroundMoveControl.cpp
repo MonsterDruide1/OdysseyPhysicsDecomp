@@ -9,6 +9,7 @@
 #include "Library/stuff.h"
 #include "Player/PlayerActionFunction.h"
 #include "Player/PlayerActionTurnControl.h"
+#include "Player/PlayerInput.h"
 #include "PlayerUtil.h"
 #include "Stuff.h"
 #include "Util/Hack.h"

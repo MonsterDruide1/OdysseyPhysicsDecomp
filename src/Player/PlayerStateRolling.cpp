@@ -10,6 +10,7 @@
 #include "Library/Nerve/NerveUtil.h"
 #include "Library/stuff.h"
 #include "Player/PlayerActionSlopeSlideControl.h"
+#include "Player/PlayerInput.h"
 #include "Player/PlayerJudgePreInputJump.h"
 #include "PlayerUtil.h"
 #include "Stuff.h"
