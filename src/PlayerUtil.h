@@ -972,16 +972,7 @@ private:
     void* size[0x8 / 8];
 };
 
-class PlayerJudgeSleep : public IJudge {
-public:
-    PlayerJudgeSleep(PlayerStateWait const*);
-    void reset() override;
-    void update() override;
-    bool judge() const override;
-
-private:
-    void* size[0x8 / 8];
-};
+#include "Player/PlayerJudgeSleep.h"
 
 class PlayerJudgeEnableGuideArrow : public IJudge {
 public:
