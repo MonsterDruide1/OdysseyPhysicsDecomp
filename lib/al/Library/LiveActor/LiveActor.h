@@ -170,8 +170,6 @@ public:
     void setActorParamHolder(ActorParamHolder* paramHolder) { mParamHolder = paramHolder; }
 
     void setCollisionParts(CollisionParts* collisionParts) { mCollisionParts = collisionParts; }
-    
-    ~LiveActor();
 
 protected:
     friend class alActorFunction;

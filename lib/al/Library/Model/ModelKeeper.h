@@ -72,7 +72,7 @@ public:
 public:
     const char* mName;
     ModelCtrl* mModelCtrl;
-    ActorResource* mActorRes;
+    const ActorResource* mActorRes;
     AnimPlayerSkl* mAnimSkl;
     AnimPlayerMat* mAnimMtp;
     AnimPlayerMat* mAnimMts;

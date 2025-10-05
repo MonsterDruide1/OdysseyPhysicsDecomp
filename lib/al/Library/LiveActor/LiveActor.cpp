@@ -349,8 +349,7 @@ void LiveActor::initScoreKeeper() {
 }
 
 void LiveActor::initStageSwitchKeeper() {
-    CRASH
-    //mStageSwitchKeeper = new StageSwitchKeeper();
+    mStageSwitchKeeper = new StageSwitchKeeper();
 }
 
 void LiveActor::initItemKeeper(s32 itemAmount) {

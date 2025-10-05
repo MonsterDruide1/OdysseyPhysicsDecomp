@@ -153,10 +153,6 @@ ALWAYS_INLINE ModelLodCtrl* initActorModelLodCtrl(LiveActor* actor, Resource* mo
 ALWAYS_INLINE void initActorModel(LiveActor* actor, const ActorInitInfo& initInfo,
                                   Resource* modelRes, ActorResource* actorResource,
                                   const char* suffix) {
-    // PATCH:
-    return;
-    // END PATCH
-    
     ByamlIter initModel;
     if (!tryGetActorInitFileIter(&initModel, modelRes, "InitModel", suffix))
         return;
@@ -170,6 +166,10 @@ ALWAYS_INLINE void initActorModel(LiveActor* actor, const ActorInitInfo& initInf
     if (displayRootJointName)
         actor->getModelKeeper()->setDisplayRootJointMtxPtr(
             getJointMtxPtr(actor, displayRootJointName));
+
+    // PATCH:
+    return;
+    // END PATCH
 
     bool isCreateUniqShader = false;
     initModel.tryGetBoolByKey(&isCreateUniqShader, "IsCreateUniqShader");
@@ -455,6 +455,10 @@ ALWAYS_INLINE void initActorClipping(LiveActor* actor, const ActorInitInfo& init
 
 ALWAYS_INLINE void initActorShadowMask(LiveActor* actor, const ActorInitInfo& initInfo,
                                        Resource* modelRes, const char* suffix) {
+    // PATCH
+    return;
+    // END PATCH
+
     bool usingDepthShadow = false;
     tryGetArg(&usingDepthShadow, initInfo, "UsingDepthShadow");
     initDepthShadowMapCtrl(actor, modelRes, initInfo, suffix);
