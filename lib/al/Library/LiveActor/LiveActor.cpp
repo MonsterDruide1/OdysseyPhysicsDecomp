@@ -321,10 +321,9 @@ void LiveActor::initHitSensor(s32 amount) {
 }
 
 void LiveActor::initCollider(f32 radius, f32 offsetY, u32 allocatedHitInfo) {
-    WARN_UNIMPL;
-    /*mCollider = new Collider(getCollisionDirector(), getBaseMtx(), &getTrans(this),
+    mCollider = new Collider(getCollisionDirector(), getBaseMtx(), &getTrans(this),
                              &getGravity(this), radius, offsetY, allocatedHitInfo);
-    mFlags->isCollideOff = false;*/
+    mFlags->isCollideOff = false;
 }
 
 void LiveActor::initPoseKeeper(ActorPoseKeeperBase* poseKeeper) {

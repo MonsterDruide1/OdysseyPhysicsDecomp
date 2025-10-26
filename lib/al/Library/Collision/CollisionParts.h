@@ -8,13 +8,10 @@
 #include "Library/Collision/KCollisionServer.h"
 
 namespace al {
-class ArrowHitResultBuffer;
-class DiskHitResultBuffer;
 struct HitInfo;
 class HitSensor;
 class KCollisionServer;
 class LiveActor;
-class SphereHitResultBuffer;
 class TriangleFilterBase;
 
 enum class ForceCollisionFlag : u8 {
@@ -37,7 +34,7 @@ public:
     void validateBySystem();
     void invalidateBySystem();
     void onJoinList();
-    void makeEqualScale(sead::Matrix34f*);
+    f32 makeEqualScale(sead::Matrix34f*);
     void resetAllMtxPrivate(const sead::Matrix34f&);
     void resetAllMtx();
     void updateBoundingSphereRange();

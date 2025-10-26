@@ -102,13 +102,13 @@ private:
     sead::Vector3f mFixReaction;
     sead::Vector3f _64;
     HitInfo mFloorHit;
-    f32 _110;
+    f32 _110 = -1.0f;
     char filler3[0x4];
     HitInfo mWallHit;
-    f32 _1b8;
+    f32 _1b8 = -1.0f;
     char filler4[0x4];
     HitInfo mCeilingHit;
-    f32 _260;
+    f32 _260 = -1.0f;
     u32 _264;
     sead::Vector3f _268;
     char _274;

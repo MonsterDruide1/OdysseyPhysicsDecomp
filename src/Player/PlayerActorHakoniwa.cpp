@@ -537,7 +537,7 @@ void PlayerActorHakoniwa::initPlayer(const al::ActorInitInfo& actorInfo,
     // NON_MATCHING: allocated/created differently
     al::StringTmp<128> initPlayerModelNameWithoutMario = "";
     al::tryReplaceString(&initPlayerModelNameWithoutMario, initPlayerModelName, "Mario", "");
-    modelHolder->_10.format("%s", initPlayerModelNameWithoutMario.cstr());
+    modelHolder->_18.format("%s", initPlayerModelNameWithoutMario.cstr());
 
     al::StringTmp<64> modelName2d = &sead::SafeString::cNullChar;
     if (costumeInfo->isEnableCostume2D())

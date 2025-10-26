@@ -68,10 +68,10 @@ f32 CollisionParts::makeEqualScale(sead::Matrix34f* mtx) {
 
     f32 factor = 1.0f;
     sead::Vector3f vec;
-    if (something == 1) {
+    if (mForceCollisionFlag == ForceCollisionFlag::ScaleAverage) {
         factor = (scale.x + scale.y + scale.z) / 3.0f;
         vec = {factor / scale.x, factor / scale.y, factor / scale.z};
-    } else if (something == 2) {
+    } else if (mForceCollisionFlag == ForceCollisionFlag::ScaleOne) {
         vec = {1.0f / scale.x, 1.0f / scale.y, 1.0f / scale.z};
     }
 

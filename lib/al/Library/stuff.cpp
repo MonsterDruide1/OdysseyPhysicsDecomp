@@ -544,20 +544,6 @@ void alongVectorNormalH(sead::Vector3f* a1, const sead::Vector3f& a2, const sead
     a1->z = v19;
 }
 
-s32 converge(s32 val, s32 goal, s32 step) {
-    if (val >= goal)
-        return sead::Mathi::clampMin(val - step, goal);
-    else
-        return sead::Mathi::clampMax(val + step, goal);
-}
-
-f32 converge(f32 val, f32 goal, f32 step) {
-    if (val >= goal)
-        return sead::Mathf::clampMin(val - step, goal);
-    else
-        return sead::Mathf::clampMax(val + step, goal);
-}
-
 bool sub_7100926C0C(sead::Vector3f* a1, float* a2, const sead::Vector3f* a3,
                     const sead::Vector3f* a4) {
     float x;             // s0
@@ -795,13 +781,6 @@ void calcDirVerticalAny(sead::Vector3f* a1, const sead::Vector3f& a2) {
         a1->y = 0.0;
         a1->z = 0.0;
     }
-}
-
-void separateVectorHV(sead::Vector3f* h, sead::Vector3f* v, const sead::Vector3f& vertical,
-                      const sead::Vector3f& vec) {
-    f32 dot = vec.dot(vertical);
-    *v = vertical * dot;
-    *h = vec - *v;
 }
 
 void separateVelocityHV(sead::Vector3f* h, sead::Vector3f* v, al::LiveActor* actor) {
@@ -1456,57 +1435,6 @@ bool al::checkHitLinePlane(sead::Vector3f* a1, const sead::Vector3f& a2, const s
     }
 
     return 1LL;
-}
-
-void al::followRotateFrontAxisUp(al::LiveActor* actor, al::CollisionParts const* collParts) {
-    float v4;            // s3
-    float v5;            // s4
-    float v6;            // s0
-    float v7;            // s1
-    float v8;            // s2
-    sead::Quatf v10;     // [xsp+0h] [xbp-60h] BYREF
-    sead::Vector3f v11;  // [xsp+10h] [xbp-50h] BYREF
-    sead::Vector3f a1;   // [xsp+20h] [xbp-40h] BYREF
-    sead::Vector3f v13;  // [xsp+30h] [xbp-30h] BYREF
-    sead::Vector3f v14;  // [xsp+40h] [xbp-20h] BYREF
-
-    v14.x = 0.0;
-    v14.y = 0.0;
-    v14.z = 0.0;
-    al::calcFrontDir(&v14, actor);
-    v13 = v14;
-    v4 = (float)((float)(v14.x * collParts->mPrevBaseInvMtx.m[0][0]) +
-                 (float)(v14.y * collParts->mPrevBaseInvMtx.m[0][1])) +
-         (float)(v14.z * collParts->mPrevBaseInvMtx.m[0][2]);
-    v5 = (float)((float)(v14.x * collParts->mPrevBaseInvMtx.m[1][0]) +
-                 (float)(v14.y * collParts->mPrevBaseInvMtx.m[1][1])) +
-         (float)(v14.z * collParts->mPrevBaseInvMtx.m[1][2]);
-    v6 = (float)((float)(v14.x * collParts->mPrevBaseInvMtx.m[2][0]) +
-                 (float)(v14.y * collParts->mPrevBaseInvMtx.m[2][1])) +
-         (float)(v14.z * collParts->mPrevBaseInvMtx.m[2][2]);
-    v13.x = (float)((float)(v4 * collParts->mBaseMtx.m[0][0]) +
-                    (float)(v5 * collParts->mBaseMtx.m[0][1])) +
-            (float)(v6 * collParts->mBaseMtx.m[0][2]);
-    v13.y = (float)((float)(v4 * collParts->mBaseMtx.m[1][0]) +
-                    (float)(v5 * collParts->mBaseMtx.m[1][1])) +
-            (float)(v6 * collParts->mBaseMtx.m[1][2]);
-    v7 = (float)(v4 * collParts->mBaseMtx.m[2][0]) + (float)(v5 * collParts->mBaseMtx.m[2][1]);
-    v8 = collParts->mBaseMtx.m[2][2];
-    a1.x = 0.0;
-    a1.y = 0.0;
-    a1.z = 0.0;
-    v13.z = v7 + (float)(v6 * v8);
-    al::calcUpDir(&a1, actor);
-    v11.x = 0.0;
-    v11.y = 0.0;
-    v11.z = 0.0;
-    al::turnVecToVecCosOnPlane(&v11, v14, v13, a1, -1.0);
-    v10.x = 0.0;
-    v10.y = 0.0;
-    v10.z = 0.0;
-    v10.w = 1.0;
-    al::makeQuatUpFront(&v10, a1, v11);
-    al::updatePoseQuat(actor, v10);
 }
 
 bool al::turnVecToVecCosOnPlane(sead::Vector3<float>* a1, sead::Vector3<float> const& a2,
@@ -2505,21 +2433,6 @@ void al::calcDirSlide(sead::Vector3<float>* a1, sead::Vector3<float> const& a2,
 bool al::turnVecToVecCosOnPlane(sead::Vector3<float>* a1, sead::Vector3<float> const& a2,
                                 sead::Vector3<float> const& a3, float a4) {
     return al::turnVecToVecCosOnPlane(a1, *a1, a2, a3, a4);
-}
-
-void al::syncCollisionMtx(al::LiveActor* a1, sead::Matrix34<float> const* a2) {
-    if (!a1->mCollisionParts->isValidatedBySystem || !a1->mCollisionParts->isValidatedByUser)
-        return;
-
-    if (a1->mCollisionParts->mJointMtx)
-        a1->mCollisionParts->syncMtx();
-    else if (a2)
-        a1->mCollisionParts->syncMtx(*a2);
-    else {
-        sead::Matrix34f mtx;
-        al::makeMtxSRT(&mtx, a1);
-        a1->mCollisionParts->syncMtx(mtx);
-    }
 }
 
 const al::CollisionParts* alCollisionUtil::getCollisionHitParts(const al::HitInfo* a1) {
