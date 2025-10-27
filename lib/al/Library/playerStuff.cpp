@@ -9,10 +9,6 @@ HitSensor* getHitSensor(al::LiveActor const* actor, char const* name) {
     return alActorSensorFunction::getSensorKeeper(actor)->getSensor(name);
 }
 
-PadRumbleKeeper* getPlayerPadRumbleKeeper(al::LiveActor const* actor, int index) {
-    return actor->getSceneInfo()->playerHolder->getPadRumbleKeeper(index);
-}
-
 }  // namespace al
 
 al::HitSensorKeeper* alActorSensorFunction::getSensorKeeper(al::LiveActor const* actor) {
