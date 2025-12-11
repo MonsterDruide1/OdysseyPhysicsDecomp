@@ -7,18 +7,10 @@ CollidedShapeResult::CollidedShapeResult(const CollisionShapeInfoBase* shapeInfo
     : mShapeInfo(shapeInfo) {}
 
 void CollidedShapeResult::setArrowHitInfo(const al::ArrowHitInfo& hitInfo) {
-    if (hitInfo.hitInfo->collisionLocation != al::CollisionLocation::None)
-        dbg_printf("CollidedShapeResult::setArrowHitInfo{tri.index=%d, unk=%f, mCollisionHitPos=(%f, %f, %f), unk3=(%f, %f, %f), mCollisionMovingReaction=(%f, %f, %f), mCollisionLocation=%d}\n",
-            (*hitInfo)->mTriangle.mKCPrismData->triIndex, (*hitInfo)->unk, (*hitInfo)->mCollisionHitPos.x, (*hitInfo)->mCollisionHitPos.y, (*hitInfo)->mCollisionHitPos.z,
-            (*hitInfo)->unk3.x, (*hitInfo)->unk3.y, (*hitInfo)->unk3.z, (*hitInfo)->mCollisionMovingReaction.x, (*hitInfo)->mCollisionMovingReaction.y, (*hitInfo)->mCollisionMovingReaction.z, (*hitInfo)->mCollisionLocation);
     *mArrowHitInfo.hitInfo = *hitInfo.hitInfo;
 }
 
 void CollidedShapeResult::setSphereHitInfo(const al::SphereHitInfo& hitInfo) {
-    if (hitInfo.hitInfo->collisionLocation != al::CollisionLocation::None)
-        dbg_printf("CollidedShapeResult::setSphereHitInfo{tri.index=%d, unk=%f, mCollisionHitPos=(%f, %f, %f), unk3=(%f, %f, %f), mCollisionMovingReaction=(%f, %f, %f), mCollisionLocation=%d}\n",
-            (*hitInfo)->mTriangle.mKCPrismData->triIndex, (*hitInfo)->unk, (*hitInfo)->mCollisionHitPos.x, (*hitInfo)->mCollisionHitPos.y, (*hitInfo)->mCollisionHitPos.z,
-            (*hitInfo)->unk3.x, (*hitInfo)->unk3.y, (*hitInfo)->unk3.z, (*hitInfo)->mCollisionMovingReaction.x, (*hitInfo)->mCollisionMovingReaction.y, (*hitInfo)->mCollisionMovingReaction.z, (*hitInfo)->mCollisionLocation);
     *mSphereHitInfo.hitInfo = *hitInfo.hitInfo;
 }
 
