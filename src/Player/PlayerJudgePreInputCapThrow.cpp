@@ -1,5 +1,6 @@
 
 #include "Player/PlayerJudgePreInputCapThrow.h"
+#include "Player/HackCap.h"
 #include "Player/PlayerCarryKeeper.h"
 #include "Player/PlayerConst.h"
 #include "Player/PlayerInput.h"

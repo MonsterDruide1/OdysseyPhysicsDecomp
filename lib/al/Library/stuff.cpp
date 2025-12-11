@@ -46,22 +46,6 @@
 
 namespace al {
 
-void calcQuatUp(sead::Vector3f* out, const sead::Quatf& quat) {
-    out->x = 2.0f * (quat.x * quat.y - quat.w * quat.z);
-    out->y = (1 - (quat.x * quat.x)) - 2.0f * (quat.z * quat.z);
-    out->z = 2.0f * (quat.w * quat.x + quat.y * quat.z);
-}
-
-void calcQuatFront(sead::Vector3f* out, const sead::Quatf& quat) {
-    out->x = 2.0f * (quat.x * quat.z + quat.w * quat.y);
-    out->y = 2.0f * (quat.y * quat.z - quat.w * quat.x);
-    out->z = (1 - (quat.x * quat.x)) - 2.0f * (quat.y * quat.y);
-}
-
-void slerpQuat(sead::Quatf* out, const sead::Quatf& a, const sead::Quatf& b, float val) {
-    sead::QuatCalcCommon<f32>::slerpTo(*out, a, b, val);
-}
-
 s32 getPadAccelerationDeviceNum(s32) {
     return 2;
 }
@@ -118,20 +102,6 @@ void calcTransLocalOffsetByMtx(sead::Vector3f* out, const sead::Matrix34f& a2,
     out->x = a2.m[0][3] + (float)((float)(v7 + (float)(a2.m[0][2] * z)) + 0.0);
     out->y = v10;
     out->z = v8 + v9;
-}
-
-void makeQuatAxisRotation(sead::Quat<float>* q, const sead::Vector3<float>& a2,
-                          const sead::Vector3<float>& a3, const sead::Vector3<float>& a4,
-                          float a5) {
-    sead::Vector3f vec1 = a2 - (a4 * a4.dot(a2));
-    sead::Vector3f vec2 = a3 - (a4 * a4.dot(a3));
-    sead::Vector3f vec3;
-    vec3.setCross(vec1, vec2);
-    f32 tan = sead::Mathf::atan2(vec3.length(), vec1.dot(vec2));
-    if (a4.dot(vec3) < 0.0f)
-        tan = -tan;
-    f32 angle = sead::Mathf::rad2deg(tan) * a5;
-    sead::QuatCalcCommon<float>::setAxisAngle(*q, a4, angle);
 }
 
 void separateVectorParallelVertical(sead::Vector3f* p1, sead::Vector3f* p2,
@@ -646,51 +616,6 @@ bool sub_7100926C0C(sead::Vector3f* a1, float* a2, const sead::Vector3f* a3,
     }
 
     return result;
-}
-
-bool makeQuatRotationLimit(sead::Quatf* a1, const sead::Vector3f& a2, const sead::Vector3f& a3,
-                           float a4) {
-    float v6;            // s1
-    bool v7;             // w20
-    float v8;            // s8
-    float v9;            // s9
-    float v10;           // s0
-    float v11;           // s1
-    float v12;           // s3
-    float v13;           // s0
-    float v15;           // [xsp+Ch] [xbp-34h] BYREF
-    sead::Vector3f v16;  // [xsp+10h] [xbp-30h] BYREF
-
-    v15 = 0.0;
-    if ((sub_7100926C0C(&v16, &v15, &a2, &a3) & 1) != 0) {
-        v6 = a4 / v15;
-        v7 = v15 > a4;
-        if ((float)(a4 / v15) >= 0.0) {
-            if (v6 > 1.0)
-                v6 = 1.0;
-        } else {
-            v6 = 0.0;
-        }
-
-        v8 = (float)(v6 * v15) * 0.5;
-        v9 = cosf(v8);
-        v10 = sinf(v8);
-        v11 = v10 * v16.x;
-        v12 = v10 * v16.z;
-        v13 = v10 * v16.y;
-        a1->z = v12;
-        a1->w = v9;
-        a1->x = v11;
-        a1->y = v13;
-    } else {
-        v7 = 0;
-        a1->x = 0.0;
-        a1->y = 0.0;
-        a1->z = 0.0;
-        a1->w = 1.0;
-    }
-
-    return v7;
 }
 
 void calcDirVerticalAny(sead::Vector3f* a1, const sead::Vector3f& a2) {
@@ -2107,27 +2032,6 @@ s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
 LABEL_51:
     std::sort(x1_0, &x1_0[v14], alCollisionUtil::SphereMoveHitInfo::compare);
     return (unsigned int)v14;
-}
-
-bool al::turnQuatYDirRadian(sead::Quat<float>* a1, sead::Quat<float> const& a2,
-                            sead::Vector3<float> const& a3, float a4) {
-    float y;             // s2
-    float z;             // s4
-    float w;             // s5
-    float v7;            // s3
-    float v8;            // s6
-    sead::Vector3f v10;  // [xsp+0h] [xbp-10h] BYREF
-
-    y = a2.y;
-    z = a2.z;
-    w = a2.w;
-    v7 = (float)((float)(a2.x * y) + (float)(a2.x * y)) - (float)((float)(w * z) + (float)(w * z));
-    v8 = a2.x * a2.x;
-    v10.z =
-        (float)((float)(a2.x * w) + (float)(a2.x * w)) + (float)((float)(y * z) + (float)(y * z));
-    v10.x = v7;
-    v10.y = (float)(1.0 - (float)(v8 + v8)) - (float)((float)(z * z) + (float)(z * z));
-    return al::turnQuat(a1, a2, v10, a3, a4);
 }
 
 bool al::turnQuat(sead::Quat<float>* a1, sead::Quat<float> const& a2,

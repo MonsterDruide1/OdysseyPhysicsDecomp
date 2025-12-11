@@ -1104,6 +1104,8 @@ public:
     f32 getSubAnimFrame() const { return 0.0f; }
 
     bool isSubAnimPlaying() const { return unk2; }
+    
+    void resetModelAlpha() {}
 
     bool unk2;
     bool mIsNeedFullFaceAnim = false;

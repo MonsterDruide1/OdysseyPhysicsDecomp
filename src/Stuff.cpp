@@ -2423,10 +2423,6 @@ bool findGrabCeilPosNoWallHit(const al::CollisionParts** x0_0, sead::Vector3f* x
     return false;
 }
 
-SaveObjInfo* createSaveObjInfoNoWriteSaveDataInSameWorldResetMiniGame(al::ActorInitInfo const& info) {
-    return SaveObjInfo::createSaveObjInfoNoWriteSaveDataInSameWorldResetMiniGame(info, al::createPlacementId(al::getPlacementInfo(info)));
-}
-
 }  // namespace rs
 
 namespace CollisionShapeUtil {

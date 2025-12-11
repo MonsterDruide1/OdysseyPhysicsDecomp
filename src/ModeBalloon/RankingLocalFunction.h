@@ -3,7 +3,7 @@
 #include <basis/seadTypes.h>
 #include <container/seadObjArray.h>
 
-enum class alignas(8) RankingCategory : s32;
+enum class RankingCategory : s32;
 
 namespace RankingLocalFunction {
 bool isValidCourceIdYukimaruRace(s32);

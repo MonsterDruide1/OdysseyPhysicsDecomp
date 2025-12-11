@@ -101,7 +101,7 @@ public:
 
     void setIgnoreGround() { isSupportGround = true; }
 
-    void set48(f32 value) { _48 = value; }
+    void set48(f32 value) { unk1 = value; }
 
 public:
     float mBoundingRadius;
