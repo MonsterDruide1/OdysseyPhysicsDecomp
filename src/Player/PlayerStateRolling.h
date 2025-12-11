@@ -53,11 +53,11 @@ public:
     PlayerJudgePreInputJump* mJudgePreInputJump;
     PlayerJudgePreInputCapThrow* mJudgePreInputCapThrow;
     IJudge* mJudgeForceRolling;
-    int _90 = 0;
+    int mRestartCounter = 0;
     int _94 = 0;
     int _98 = 0;
     int _9C = 0;
-    int _A0 = 0;
+    int mRestartForceCounter = 0;
     PlayerSeCtrl* mSeCtrl;
     bool _B0 = false;
 };

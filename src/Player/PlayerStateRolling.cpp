@@ -67,33 +67,23 @@ s32 getStateBitMap<PlayerStateRolling>(u128* state, int startOffset, PlayerState
 
 void sub_710047B228(al::LiveActor* a1, const IUsePlayerCollision* a2, const PlayerConst* a3,
                     const sead::Vector3f& x3_0, float a5) {
-    const sead::Vector3f* v14;
-    const sead::Vector3f* v15;
-    float v16;
-    float v17;
-    float v18;
-    sead::Vector3f v19;
+    sead::Vector3f up = {0.0f, 0.0f, 0.0f};
+    rs::calcGroundNormalOrGravityDir(&up, a1, a2);
+    al::alongVectorNormalH(al::getVelocityPtr(a1), al::getVelocity(a1), x3_0, up);
+    if (al::isFloorPolygonCos(up, al::getGravity(a1), sead::Mathf::cos(sead::Mathf::deg2rad(a3->getStandAngleMin()))))
+        return;
 
-    sead::Vector3f a4 = {0.0, 0.0, 0.0};
-    rs::calcGroundNormalOrGravityDir(&a4, a1, a2);
-    al::alongVectorNormalH(al::getVelocityPtr(a1), al::getVelocity(a1), x3_0, a4);
-    if (!al::isFloorPolygonCos(a4, al::getGravity(a1),
-                               sead::Mathf::cos(sead::Mathf::deg2rad(a3->getStandAngleMin())))) {
-        v19.x = 0.0;
-        v19.y = 0.0;
-        v19.z = 0.0;
-        v14 = &al::getGravity(a1);
-        rs::calcSlideDir(&v19, *v14, a4);
-        v15 = &al::getVelocity(a1);
-        v16 = v19.dot(*v15);
-        v17 = sead::Mathf::clampMin(a5 - v16, 0.0);
-        if (v16 >= 0.0)
-            v18 = v17;
-        else
-            v18 = a5 - v16;
+    sead::Vector3f slideDir = {0.0f, 0.0f, 0.0f};
+    rs::calcSlideDir(&slideDir, al::getGravity(a1), up);
+    f32 v16 = slideDir.dot(al::getVelocity(a1));
+    
+    f32 v18;
+    if (v16 < 0.0f)
+        v18 = a5 - v16;
+    else
+        v18 = sead::Mathf::clampMin(a5 - v16, 0.0f);
 
-        al::addVelocityToDirection(a1, v19, v18);
-    }
+    al::addVelocityToDirection(a1, slideDir, v18);
 }
 
 void sub_710047B358(const al::LiveActor* a1, PlayerActionSlopeSlideControl* a2,
@@ -136,15 +126,15 @@ void PlayerStateRolling::appear() {
     mIsDead = false;
     rs::startHitReactionLandJumpIfLanding(mActor, mCollider, false);
     _98 = 0;
-    _90 = 0;
+    mRestartCounter = 0;
     _94 = 0;
-    _A0 = 0;
+    mRestartForceCounter = 0;
     _B0 = rs::updateJudgeAndResult(mJudgeForceRolling);
 
     if (mTrigger->isOn(PlayerTrigger::EActionTrigger_val8)) {
         _98 = mConst->getSlopeRollingFrameMin();
         _9C = mConst->getSlopeRollingReStartCharge();
-        _90 = 1;
+        mRestartCounter = 1;
         sead::Vector3f a2 = {0.0f, 0.0f, 0.0f};
         rs::calcGroundNormalExceptJustLandOrGravityDir(&a2, mActor, mCollider);
         sead::Vector3f front = {0.0f, 0.0f, 0.0f};
@@ -168,7 +158,7 @@ void PlayerStateRolling::appear() {
     if (mTrigger->isOn(PlayerTrigger::EActionTrigger_val17)) {
         _98 = mConst->getSlopeRollingFrameMin();
         _9C = mConst->getSlopeRollingReStartCharge();
-        _90 = 1;
+        mRestartCounter = 1;
         sead::Vector3f a2 = {0.0f, 0.0f, 0.0f};
         rs::calcGroundNormalExceptJustLandOrGravityDir(&a2, mActor, mCollider);
         sead::Vector3f front = {0.0f, 0.0f, 0.0f};
@@ -217,7 +207,7 @@ void PlayerStateRolling::control() {
 
     if (al::isNerve(this, &Jump)) {
         _9C = 0;
-        _A0 = 0;
+        mRestartForceCounter = 0;
         return;
     }
 
@@ -225,7 +215,7 @@ void PlayerStateRolling::control() {
         _9C++;
     if (rs::updateJudgeAndResult(mJudgeStartRolling))
         _9C = 0;
-    _A0 = al::converge(_A0, mConst->getSlopeRollingReStartForce(), 1);
+    mRestartForceCounter = al::converge(mRestartForceCounter, mConst->getSlopeRollingReStartForce(), 1);
 
     if (al::isNerve(this, &BoostStart) || al::isNerve(this, &Start) ||
         al::isNerve(this, &Rolling)) {
@@ -373,7 +363,7 @@ void PlayerStateRolling::exeRolling() {
             bool v24;
             if (mJudgeStartRolling->isTriggerRestartSwing())
                 v24 = mConst->getSlopeRollingReStartSwing() <= _9C;
-            else if (mConst->getSlopeRollingReStartForce() <= _A0)
+            else if (mConst->getSlopeRollingReStartForce() <= mRestartForceCounter)
                 v24 = true;
             else
                 v24 = mConst->getSlopeRollingReStartCharge() <= _9C;
@@ -390,37 +380,37 @@ void PlayerStateRolling::exeRolling() {
     }
 }
 
-void PlayerStateRolling::restartRolling(bool w1_0, bool w2_0) {
-    f32 v9 = 0.0f;
-    if (w1_0) {
-        _90 = al::converge(_90, w2_0 ? 3 : 2, 1);
-        if (_90 == 1)
+void PlayerStateRolling::restartRolling(bool charged, bool swing) {
+    f32 multiplier = 0.0f;
+    if (charged) {
+        mRestartCounter = al::converge(mRestartCounter, swing ? 3 : 2, 1);
+        if (mRestartCounter == 1)
             al::startHitReaction(mActor, "転がり再加速[1回目]");
-        else if (_90 >= 2)
+        else if (mRestartCounter >= 2)
             al::startHitReaction(mActor, "転がり再加速[2回目以降]");
 
-        v9 = (float)_90;
-        _A0 = 0;
+        multiplier = (f32) mRestartCounter;
+        mRestartForceCounter = 0;
     }
 
     _98 = 0;
-    sead::Vector3f a1 = {0.0f, 0.0f, 0.0f};
-    sead::Vector3f v20 = {0.0f, 0.0f, 0.0f};
-    rs::calcGroundNormalOrGravityDir(&v20, mActor, mCollider);
-    al::verticalizeVec(&a1, v20, al::getVelocity(mActor));
-    f32 v11 = a1.length();
-    f32 v12_1 = mConst->getSlopeRollingSpeedStart();
-    f32 v14 = sead::Mathf::max(v11, v12_1 + (v9 * mConst->getSlopeRollingReStartMaxAdd()));
-    f32 v12_2 = sead::Mathf::clamp(v11 + (v9 * mConst->getSlopeRollingReStartAccel()), v12_1, v14);
+    sead::Vector3f velH = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f up = {0.0f, 0.0f, 0.0f};
+    rs::calcGroundNormalOrGravityDir(&up, mActor, mCollider);
+    al::verticalizeVec(&velH, up, al::getVelocity(mActor));
+    f32 speedH = velH.length();
+    f32 slopeRollingSpeedStart = mConst->getSlopeRollingSpeedStart();
+    f32 v14 = sead::Mathf::max(speedH, slopeRollingSpeedStart + (multiplier * mConst->getSlopeRollingReStartMaxAdd()));
+    f32 newSpeedH = sead::Mathf::clamp(speedH + (multiplier * mConst->getSlopeRollingReStartAccel()), slopeRollingSpeedStart, v14);
 
-    sead::Vector3f a2 = {0.0f, 0.0f, 0.0f};
-    rs::calcGroundNormalExceptJustLandOrGravityDir(&a2, mActor, mCollider);
-    sead::Vector3f a3 = {0.0f, 0.0f, 0.0f};
-    al::calcFrontDir(&a3, mActor);
-    al::verticalizeVec(&a3, a2, a3);
-    al::tryNormalizeOrZero(&a3);
-    al::addVelocityToDirection(mActor, a3,
-                               sead::Mathf::clampMin(v12_2 - al::getVelocity(mActor).dot(a3), 0.0));
+    sead::Vector3f up2 = {0.0f, 0.0f, 0.0f};
+    rs::calcGroundNormalExceptJustLandOrGravityDir(&up2, mActor, mCollider);
+    sead::Vector3f frontH = {0.0f, 0.0f, 0.0f};
+    al::calcFrontDir(&frontH, mActor);
+    al::verticalizeVec(&frontH, up2, frontH);
+    al::tryNormalizeOrZero(&frontH);
+    al::addVelocityToDirection(mActor, frontH,
+                               sead::Mathf::clampMin(newSpeedH - al::getVelocity(mActor).dot(frontH), 0.0));
     return rs::resetJudge(mJudgePreInputCapThrow);
 }
 
@@ -497,7 +487,7 @@ void PlayerStateRolling::exeLand() {
             bool v22;
             if (mJudgeStartRolling->isTriggerRestartSwing())
                 v22 = mConst->getSlopeRollingReStartSwing() <= _9C;
-            else if (mConst->getSlopeRollingReStartForce() <= _A0)
+            else if (mConst->getSlopeRollingReStartForce() <= mRestartForceCounter)
                 v22 = true;
             else
                 v22 = mConst->getSlopeRollingReStartCharge() <= _9C;
@@ -530,17 +520,17 @@ void PlayerStateRolling::exeUnRoll() {
         mEffect->tryDeleteRollingEffect();
     }
 
-    sead::Vector3f v38 = {0.0f, 0.0f, 0.0f};
-    rs::calcGroundNormalOrUpDir(&v38, mActor, mCollider);
+    sead::Vector3f up = {0.0f, 0.0f, 0.0f};
+    rs::calcGroundNormalOrUpDir(&up, mActor, mCollider);
 
     sead::Vector3f moveInput = {0.0f, 0.0f, 0.0f};
-    mInput->calcMoveInput(&moveInput, v38);
+    mInput->calcMoveInput(&moveInput, up);
 
     sead::Vector3f v36 = {0.0f, 0.0f, 0.0f};
     rs::moveInertiaSlide(&v36, mActor, mCollider, moveInput, mConst->getSlopeRollingBrake(), 0.0f,
                          0.0f, 0.0f, mConst->getGravity(), mConst->getGravityAir(),
                          mConst->getFallSpeedMax());
-    rs::slerpUp(mActor, v38, mConst->getSlerpQuatRate(), mConst->getHillPoseDegreeMax());
+    rs::slerpUp(mActor, up, mConst->getSlerpQuatRate(), mConst->getHillPoseDegreeMax());
     updateRollingAnimFrameRate();
 
     if (rs::updateJudgeAndResult(mJudgeStartRolling)) {
@@ -548,7 +538,7 @@ void PlayerStateRolling::exeUnRoll() {
             bool v24;
             if (mJudgeStartRolling->isTriggerRestartSwing())
                 v24 = mConst->getSlopeRollingReStartSwing() <= _9C;
-            else if (mConst->getSlopeRollingReStartForce() <= _A0)
+            else if (mConst->getSlopeRollingReStartForce() <= mRestartForceCounter)
                 v24 = true;
             else
                 v24 = mConst->getSlopeRollingReStartCharge() <= _9C;
@@ -609,7 +599,7 @@ void PlayerStateRolling::exeBrake() {
             bool v24;
             if (mJudgeStartRolling->isTriggerRestartSwing())
                 v24 = mConst->getSlopeRollingReStartSwing() <= _9C;
-            else if (mConst->getSlopeRollingReStartForce() <= _A0)
+            else if (mConst->getSlopeRollingReStartForce() <= mRestartForceCounter)
                 v24 = true;
             else
                 v24 = mConst->getSlopeRollingReStartCharge() <= _9C;
