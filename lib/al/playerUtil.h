@@ -18,15 +18,6 @@ AreaObjGroup* tryFindAreaObjGroup(al::IUseAreaObj const*, char const*);
 AreaObj* tryFindAreaObj(al::IUseAreaObj const*, char const*, sead::Vector3<float> const&);
 bool isPlayingEntranceCamera(al::IUseCamera const*, int);
 
-class WaterSurfaceFinder {
-public:
-    WaterSurfaceFinder(al::LiveActor const*);
-    void update(sead::Vector3<float> const&, sead::Vector3<float> const&, float);
-
-private:
-    void* size[0x38 / 8];
-};
-
 class FootPrintHolder {
 public:
     FootPrintHolder(al::LiveActor*, char const*, al::HitSensor*, al::FootPrintServer*);

@@ -283,20 +283,7 @@ private:
 };
 
 #include "Player/PlayerRecoverySafetyPoint.h"
-
-class IUsePlayerPuppet {};
-
-class PlayerPuppet : public IUsePlayerPuppet {
-public:
-    PlayerPuppet(al::LiveActor*, HackCap*, PlayerAnimator*, IUsePlayerCollision*,
-                 ActorDimensionKeeper*, IPlayerModelChanger*, WorldEndBorderKeeper*,
-                 PlayerCounterForceRun*, PlayerDamageKeeper*, PlayerEffect*, PlayerInput const*,
-                 PlayerConst const*);
-    bool isNoCollide();
-
-private:
-    void* size[0xD0 / 8];
-};
+#include "Player/PlayerPuppet.h"
 
 class PlayerBindableSensorList;
 
@@ -545,20 +532,7 @@ class CollisionPartsConnector;
 #include "Player/PlayerJudgeWallHitDownRolling.h"
 #include "Player/PlayerJudgeWallKeep.h"
 #include "Player/PlayerJudgeWallPush.h"
-
-class PlayerJudgeCameraSubjective : public IJudge {
-public:
-    PlayerJudgeCameraSubjective(al::LiveActor const*, IUsePlayerCollision const*,
-                                PlayerInput const*);
-
-    void reset() override;
-    void update() override;
-    bool judge() const override;
-
-private:
-    void* size[0x28 / 8];
-};
-
+#include "Player/PlayerJudgeCameraSubjective.h"
 #include "Player/PlayerSpinCapAttack.h"
 #include "Player/PlayerJudgeDiveInWater.h"
 #include "Player/PlayerActionDiveInWater.h"
@@ -879,17 +853,6 @@ private:
     void* size[0x48 / 8];
 };
 
-class PlayerJudgeCameraInWater : public IJudge {
-public:
-    PlayerJudgeCameraInWater(al::LiveActor const*, IJudge const*, al::WaterSurfaceFinder const*);
-    void reset() override;
-    void update() override;
-    bool judge() const override;
-
-private:
-    void* size[0x18 / 8];
-};
-
 class PlayerJudgeActiveCameraSubjective : public IJudge {
 public:
     PlayerJudgeActiveCameraSubjective(PlayerStateCameraSubjective const*);
@@ -914,30 +877,10 @@ private:
     void* size[0x18 / 8];
 };
 
-class PlayerJudgeDead : public IJudge {
-public:
-    PlayerJudgeDead(al::LiveActor const*);
-    void reset() override;
-    void update() override;
-    bool judge() const override;
-
-private:
-    void* size[0x8 / 8];
-};
-
+#include "Player/PlayerJudgeDead.h"
 #include "Player/PlayerJudgeDrawForward.h"
 #include "Player/PlayerJudgeSameNerve.h"
-
-class PlayerJudgeFailureCameraSubjective : public IJudge {
-public:
-    PlayerJudgeFailureCameraSubjective(PlayerInput const*, IJudge const*);
-    void reset() override;
-    void update() override;
-    bool judge() const override;
-
-private:
-    void* size[0x10 / 8];
-};
+#include "Player/PlayerJudgeFailureCameraSubjective.h"
 
 class PlayerJudgeSafetyPointRecovery : public IJudge {
 public:

@@ -32,6 +32,7 @@
 #include "Player/PlayerFunction.h"
 #include "Player/PlayerInput.h"
 #include "Player/PlayerInputFunction.h"
+#include "Player/PlayerJudgeCameraInWater.h"
 #include "Player/PlayerJudgePreInputJump.h"
 #include "Player/PlayerJumpMessageRequest.h"
 #include "Player/PlayerPainPartsKeeper.h"
