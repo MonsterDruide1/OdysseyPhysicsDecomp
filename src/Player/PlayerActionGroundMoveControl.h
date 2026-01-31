@@ -38,55 +38,51 @@ public:
 
     const sead::Vector3f& getGroundNormal() const { return mGroundNormal; }
 
-    void set_c4(bool c4) { _c4 = c4; }
+    void set_c4(bool c4) { _C4 = c4; }
 
-private:
-    al::LiveActor* mParent;
-    const PlayerConst* mPlayerConst;
-    const PlayerInput* mPlayerInput;
+public:
+    al::LiveActor* mActor;
+    const PlayerConst* mConst;
+    const PlayerInput* mInput;
     const IUsePlayerCollision* mCollision;
-    const IUsePlayerHack** mHack = nullptr;
-    bool mIsSetup = false;
-    sead::Vector3f mGroundNormal;
-    f32 mMaxSpeed;
-    f32 mMinSpeed;
-    f32 _40;
-    s32 _44;
-    s32 mRunFrame;
-    s32 mStickOnBrakeFrame;
-    s32 mBrakeFrame;
-    f32 mGravityMove;
-    f32 mBrakeSpeed;
-    s32 mCounterBorder;
-    s32 _60;
-    bool _64;
-    IJudge* mJudge;
-    f32 _70;
-    s32 _74;
-    bool _78;
-    f32 _7c;
-    bool mHasStopped;
-    sead::Vector3f _84;
-    f32 _90;
-    f32 _94;
-    f32 _98;
-    bool mIsForceRunCtrlActive;
-    f32 _a0;
-    bool mAlwaysFalse;
-    f32 _a8;
-    f32 _ac;
-    PlayerActionTurnControl* mTurnCtrl;
-    bool _b8;
-    bool _b9;
-    bool _ba;
-    bool _bb;
-    bool _bc;
-    bool _bd;
-    f32 _c0;
-    bool _c4;
-    sead::Vector3f _c8;
-    bool _d4;
-    bool _d5;
+    const IUsePlayerHack** _20 = 0;
+    bool someFlag = 0;
+    sead::Vector3f mGroundNormal = {0.0f, 0.0f, 0.0f};
+    float mMaxSpeed = 0;
+    float mMinSpeed = 0;
+    float somethingAboutSpeed = 0;
+    float somethingAboutSpeed2 = 0;
+    int mAccelFrame = 0;
+    int mStickOnBrakeFrame = 0;
+    int mNormalBrakeFrame = 0;
+    float mGravity = 0;
+    float mBrakeOnSpeed = 0;
+    int mBrakeOnCounterCorner = 0;
+    int _60 = 0;
+    bool _64 = 0;
+    IJudge* mJudgeStartDash = 0;
+    float mDashMaxSpeed2D = 0;
+    int mDashAccelFrame2D = 0;
+    bool _78 = 0;
+    float _7C = 0;
+    bool _80 = 0;
+    sead::Vector3f _84 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f _90 = {0.0f, 0.0f, 0.0f};
+    bool _9C = 0;
+    float _A0 = 0;
+    bool _A4 = 0;
+    float _A8 = 0;
+    float _AC = 0;
+    PlayerActionTurnControl* mTurnControl = 0;
+    bool someFlags[3] = {false, false, false};
+    bool _BB = 0;
+    bool _BC = 0;
+    bool _BD = 0;
+    float _C0 = 0;
+    bool _C4 = 0;
+    sead::Vector3f someVec = {0.0f, 0.0f, 0.0f};
+    bool _D4 = 0;
+    bool _D5 = 0;
 };
 
 static_assert(sizeof(PlayerActionGroundMoveControl) == 0xD8);

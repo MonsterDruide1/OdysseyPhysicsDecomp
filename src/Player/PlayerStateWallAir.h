@@ -33,7 +33,7 @@ public:
     void exeSlide();
     void exeJump();
 
-private:
+//private:
     const PlayerConst* mConst;
     PlayerStateNormalWallSlide* mStateNormalWallSlide = nullptr;
     PlayerStateNormalWallJump* mStateNormalWallJump = nullptr;

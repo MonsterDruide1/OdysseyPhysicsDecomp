@@ -39,6 +39,8 @@
 #include "Project/Item/ActorScoreKeeper.h"
 #include "Project/Light/ActorPrepassLightKeeper.h"
 
+#include <cstdio>
+
 namespace al {
 
 LiveActor::LiveActor(const char* actorName) : mName(actorName) {
@@ -293,6 +295,10 @@ void LiveActor::endClipped() {
 }
 
 const sead::Matrix34f* LiveActor::getBaseMtx() const {
+    // PATCH:
+    return mPoseKeeper->getMtxPtr();
+    // END PATCH
+    
     if (mModelKeeper)
         return mModelKeeper->getBaseMtx();
     if (mPoseKeeper)
@@ -346,7 +352,8 @@ void LiveActor::initStageSwitchKeeper() {
 }
 
 void LiveActor::initItemKeeper(s32 itemAmount) {
-    mItemKeeper = new ActorItemKeeper(this, itemAmount);
+    CRASH
+    //mItemKeeper = new ActorItemKeeper(this, itemAmount);
 }
 
 void LiveActor::initActionKeeper(ActorActionKeeper* actionKeeper) {

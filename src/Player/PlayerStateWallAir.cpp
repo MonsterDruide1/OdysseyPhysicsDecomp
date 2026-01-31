@@ -18,6 +18,29 @@ NERVE_IMPL(PlayerStateWallAir, Jump)
 NERVES_MAKE_NOSTRUCT(PlayerStateWallAir, Slide, Jump)
 }  // namespace
 
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerStateWallAir>(u128* state, int startOffset, PlayerStateWallAir* player) {
+    constexpr int size = 2;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &Slide);
+    *state |= al::isNerve(player, &Jump) << 1;
+
+    int offset = startOffset+size;
+    offset += getStateBitMap(state, offset, player->mStateNormalWallSlide);
+    offset += getStateBitMap(state, offset, player->mStateNormalWallJump);
+
+    if(player->isDead()) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
+
 PlayerStateWallAir::PlayerStateWallAir(al::LiveActor* player, const PlayerConst* pConst,
                                        const PlayerInput* input, const PlayerTrigger* trigger,
                                        IUsePlayerCollision* collision, IJudge* judgeWallKeep,

@@ -2,13 +2,20 @@
 
 #include <math/seadVector.h>
 
+#include <container/seadPtrArray.h>
+
 #include "Library/Collision/IUseCollision.h"
 
 namespace al {
 class CollisionDirector;
 class CollisionParts;
 class CollisionPartsFilterBase;
+class Triangle;
 }  // namespace al
+
+namespace alCollisionUtil {
+class SphereMoveHitInfo;
+}  // namespace alCollisionUtil
 
 class PlayerCollisionCheckSphereMove : public al::IUseCollision {
 public:
@@ -32,8 +39,15 @@ public:
     }
 
 private:
-    void* _8[0x50 / 8];
+    al::CollisionDirector* mCollisionDirector;
+    int unk;
+    u32 mNum = 0;
+    float* mTValues;
+    sead::Vector3f* mPos;
+    al::Triangle* mTriangles;
+    alCollisionUtil::SphereMoveHitInfo* mSphereMoveHitInfos;
+    void* gap;
+    int* unkArrayType2;
+    sead::PtrArray<al::CollisionParts> mCollisionParts;
     const al::CollisionPartsFilterBase* mCollisionPartsFilter;
 };
-
-static_assert(sizeof(PlayerCollisionCheckSphereMove) == 0x60);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <math/seadMatrix.h>
+#include <math/seadQuat.h>
 #include <math/seadVector.h>
 #include <prim/seadStorageFor.h>
 
@@ -56,7 +57,7 @@ public:
     friend bool ::operator!=(const Triangle& lhs, const Triangle& rhs);
     // clang-format on
 
-private:
+public:
     const CollisionParts* mCollisionParts;
     const KCPrismData* mKCPrismData;
     const KCPrismHeader* mKCPrismHeader;
@@ -78,6 +79,16 @@ enum class CollisionLocation : u8 {
 struct HitInfo {
     HitInfo();
 
+    HitInfo& operator=(const HitInfo& o) {
+        triangle = o.triangle;
+        _70 = o._70;
+        collisionHitPos = o.collisionHitPos;
+        _80 = o._80;
+        collisionMovingReaction = o.collisionMovingReaction;
+        collisionLocation = o.collisionLocation;
+        return *this;
+    }
+
     bool isCollisionAtFace() const;
     bool isCollisionAtEdge() const;
     bool isCollisionAtCorner() const;
@@ -89,6 +100,15 @@ struct HitInfo {
     sead::Vector3f _80 = {0.0f, 0.0f, 0.0f};
     sead::Vector3f collisionMovingReaction = {0.0f, 0.0f, 0.0f};
     CollisionLocation collisionLocation = CollisionLocation::None;
+
+    /*
+    al::Triangle mTriangle;
+    f32 unk = 0.0f;
+    sead::Vector3f mCollisionHitPos = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f unk3 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f mCollisionMovingReaction = {0.0f, 0.0f, 0.0f};
+    u8 mCollisionLocation = 0;
+    */
 };
 
 struct ArrowHitInfo {

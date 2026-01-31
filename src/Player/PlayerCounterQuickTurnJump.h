@@ -12,7 +12,7 @@ public:
     void update();
     bool isEnableTurnJump() const;
 
-private:
+//private:
     const PlayerConst* mConst;
     const PlayerTrigger* mTrigger;
     s32 mCounter = 0;

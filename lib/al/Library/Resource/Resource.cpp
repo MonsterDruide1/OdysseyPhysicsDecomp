@@ -136,6 +136,9 @@ const void* Resource::getOtherFile(const sead::SafeString& filePath) const {
 }
 
 const char* Resource::getArchiveName() const {
+    // PATCH:
+    if (this == nullptr) return "";
+    
     return getBaseName(mPath.cstr());
 }
 

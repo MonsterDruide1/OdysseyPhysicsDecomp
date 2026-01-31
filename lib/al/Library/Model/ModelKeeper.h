@@ -40,6 +40,7 @@ public:
     void updateLast();
     void calc(const sead::Matrix34f&, const sead::Vector3f&);
     const sead::Matrix34f* getBaseMtx() const;
+    sead::Matrix34f* getBaseMtx();
     sead::Matrix34f* getWorldMtxPtrByIndex(s32 index) const;
     Resource* getAnimResource() const;
     Resource* getModelResource() const;
@@ -68,10 +69,10 @@ public:
 
     bool isNeedSetBaseMtxAndCalcAnim() const { return mIsNeedSetBaseMtxAndCalcAnim; }
 
-private:
+public:
     const char* mName;
     ModelCtrl* mModelCtrl;
-    ActorResource* mActorRes;
+    const ActorResource* mActorRes;
     AnimPlayerSkl* mAnimSkl;
     AnimPlayerMat* mAnimMtp;
     AnimPlayerMat* mAnimMts;
@@ -79,10 +80,12 @@ private:
     AnimPlayerMat* mAnimMat;
     AnimPlayerVis* mAnimVisForAction;
     AnimPlayerVis* mAnimVis;
-    char gap_58[9];
-    bool mIsFixedModel;
-    bool mIsIgnoreUpdateDrawClipping;
-    bool mIsNeedSetBaseMtxAndCalcAnim;
+    void* size1;
+    bool mIsFixedModel;  // flag1
+    bool mIsIgnoreUpdateDrawClipping;  // flag2
+    bool mIsNeedSetBaseMtxAndCalcAnim;  // flag3
+    bool flag4;
+    bool pad[4];
 };
 
 }  // namespace al

@@ -2,6 +2,9 @@
 
 #include <math/seadVector.h>
 
+#include "Library/stuff.h"
+#include "Library/Collision/KTriangle.h"
+
 namespace al {
 class Triangle;
 
@@ -24,7 +27,9 @@ class TriangleFilterWallOnly : public TriangleFilterBase {
 public:
     TriangleFilterWallOnly(const sead::Vector3f& down) : mDown(down) {}
 
-    bool isInvalidTriangle(const Triangle& triangle) const override;
+    bool isInvalidTriangle(const Triangle& triangle) const override {
+        return !al::isWallPolygon(triangle.getFaceNormal(), mDown);
+    }
 
 private:
     const sead::Vector3f& mDown;

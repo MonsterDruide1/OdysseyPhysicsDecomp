@@ -18,7 +18,7 @@ public:
     void setHitPushVeryStrong(const sead::Vector3f& dir);
     void setHitPushBlowDown(const sead::Vector3f& dir);
 
-private:
+public:
     const al::LiveActor* mPlayer = nullptr;
     const PlayerConst* mPlayerConst = nullptr;
     bool mIsHit = false;

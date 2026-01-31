@@ -24,7 +24,7 @@ public:
 
     const sead::Vector3f& getNormalStart() const { return mNormalStart; }
 
-private:
+public:
     const PlayerConst* mConst;
     const PlayerInput* mInput;
     IUsePlayerCollision* mCollision;

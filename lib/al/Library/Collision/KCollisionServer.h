@@ -5,6 +5,7 @@
 #include <math/seadQuat.h>
 #include <math/seadVector.h>
 #include <prim/seadDelegate.h>
+#include "Library/Yaml/ByamlIter.h"
 
 namespace al {
 class ByamlIter;
@@ -35,8 +36,8 @@ struct KCPrismData {
 struct KCHitInfo {
     const KCPrismHeader* header;
     const KCPrismData* data;
-    f32 _10;
-    u8 _14;  // collision location, enum
+    f32 something;  // _16
+    u8 mCollisionLocation;  // _20
 };
 
 class KCollisionServer {
@@ -130,15 +131,15 @@ public:
     static s32 calcChildBlockOffset(const sead::Vector3u& block, s32 shift);
     static u32 getBlockData(const u32* data, u32 offset);
 
-private:
+//private:
     sead::PtrArray<KCPrismHeader> mModelsData;
-    void* mData;
-    ByamlIter* mAttributeIter;
-    void* mModelListData;
-    void* mOctreeData;
-    s32 mAreaWidthShift[3];
-    s32 mAreaWidthMask[3];
-    f32 mFarthestVertexDistance;
+    void* mData = nullptr;
+    ByamlIter* mIter = nullptr;
+    void* mModelListData = nullptr;
+    void* mOctreeData = nullptr;
+    sead::Vector3u mCoordShift = {0, 0, 0};
+    sead::Vector3u unkShiftedByCoordShift = {0, 0, 0};
+    f32 mFarthestVertexDistance = 1.0f;
 };
 
 class SphereInterpolator {
@@ -154,7 +155,7 @@ public:
     void getMoveVector(sead::Vector3f* moveVec);
     void calcStepMoveVector(sead::Vector3f* moveVec) const;
 
-private:
+public:
     sead::Vector3f mPos;
     sead::Vector3f mMove;
     f32 mSizeStart;
@@ -167,7 +168,6 @@ private:
 class SpherePoseInterpolator {
 public:
     SpherePoseInterpolator() {}
-
     void startInterp(const sead::Vector3f& posStart, const sead::Vector3f& posEnd, f32 sizeStart,
                      f32 sizeEnd, const sead::Quatf& quatStart, const sead::Quatf& quatEnd,
                      f32 steps);
@@ -179,7 +179,7 @@ public:
     f32 calcRadiusBaseScale(f32 unk) const;
     void getMoveVector(sead::Vector3f* moveVec);
 
-private:
+public:
     sead::Vector3f mPos;
     sead::Vector3f mMove;
     f32 mSizeStart;

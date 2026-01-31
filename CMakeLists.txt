@@ -14,6 +14,8 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     add_compile_options(-fdebug-prefix-map=/tmp=${CMAKE_CURRENT_BINARY_DIR})
 endif ()
 
+set(CMAKE_BUILD_TYPE "RelWithDebInfo")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -22,6 +24,11 @@ file(GLOB_RECURSE SOURCES_GAME CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/src/*.cpp
 file(GLOB_RECURSE SOURCES_AL CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/lib/al/*.cpp ${PROJECT_SOURCE_DIR}/lib/al/*.c ${PROJECT_SOURCE_DIR}/lib/al/*.h ${PROJECT_SOURCE_DIR}/lib/al/*.hpp)
 
 add_executable(odyssey ${SOURCES_GAME} ${SOURCES_AL})
+add_library(odyssey_lib STATIC ${SOURCES_GAME} ${SOURCES_AL})
+install(TARGETS odyssey_lib
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
 
 target_include_directories(odyssey PRIVATE src)
 target_include_directories(odyssey PRIVATE lib/al)
@@ -33,6 +40,10 @@ target_compile_options(odyssey PRIVATE -fno-strict-aliasing)
 target_compile_options(odyssey PRIVATE -Wno-invalid-offsetof)
 target_compile_options(odyssey PRIVATE -Wshadow)
 target_compile_options(odyssey PRIVATE -Woverloaded-virtual)
+
+target_include_directories(odyssey_lib PUBLIC src)
+target_include_directories(odyssey_lib PUBLIC lib/al)
+target_compile_definitions(odyssey_lib PRIVATE NON_MATCHING)
 
 set(NN_WARE 3.5.1)
 set(NN_SDK 3.5.1)
@@ -48,3 +59,5 @@ add_subdirectory(lib/sead)
 add_subdirectory(lib/agl)
 add_subdirectory(lib/eui)
 target_link_libraries(odyssey PUBLIC NintendoSDK-NEX NintendoSDK sead agl eui)
+
+target_link_libraries(odyssey_lib PUBLIC NintendoSDK-NEX NintendoSDK sead agl eui)

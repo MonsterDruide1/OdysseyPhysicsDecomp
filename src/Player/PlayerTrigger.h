@@ -10,6 +10,8 @@ public:
         ECollisionTrigger_val1 = 1,
         // used in PlayerStateDamageLife::exeDead
         ECollisionTrigger_val6 = 6,
+        ECollisionTrigger_val7 = 7,
+        ECollisionTrigger_val8 = 8,
         // used in PlayerJudgeWallHitDown::judge
         ECollisionTrigger_val9 = 9,
         // used in PlayerTrigger::isOnYoshiHackEnd
@@ -19,19 +21,43 @@ public:
     enum EAttackSensorTrigger : u32 {
         // used in PlayerCounterAfterCapCatch::isCapCatch
         EAttackSensorTrigger_val0 = 0,
+        EAttackSensorTrigger_val4 = 4,
     };
 
     enum EActionTrigger : u32 {
+        EActionTrigger_val0 = 0,
+        EActionTrigger_val1 = 1,
+        EActionTrigger_val2 = 2,
         // used in PlayerStateHipDrop::exeStart
         EActionTrigger_val3 = 3,
+        EActionTrigger_val5 = 5,
         // used in PlayerStateDamageLife::appear
         EActionTrigger_val6 = 6,
+        EActionTrigger_val8 = 8,
+        EActionTrigger_val9 = 9,
+        EActionTrigger_val10 = 10,
         // used in PlayerJudgeForceLand::judge
         EActionTrigger_val11 = 11,
         // used in PlayerStateSquat::appear
         EActionTrigger_val12 = 12,
+        EActionTrigger_val14 = 14,
+        EActionTrigger_val15 = 15,
+        EActionTrigger_val16 = 16,
+        EActionTrigger_val17 = 17,
+        EActionTrigger_val18 = 18,
+        EActionTrigger_val19 = 19,
+        EActionTrigger_val21 = 21,
+        EActionTrigger_val22 = 22,
+        EActionTrigger_val24 = 24,
+        EActionTrigger_val25 = 25,
+        EActionTrigger_val26 = 26,
+        EActionTrigger_val27 = 27,
+        EActionTrigger_val28 = 28,
+        EActionTrigger_val29 = 29,
         // used in PlayerJudgeWallCatch::update, PlayerJudgeWallKeep::update
         EActionTrigger_val30 = 30,
+        EActionTrigger_val32 = 32,
+        EActionTrigger_val33 = 33,
         // used in PlayerCounterQuickTurnJump::isEnableTurnJump
         EActionTrigger_QuickTurn = 34,
     };
@@ -41,11 +67,16 @@ public:
     enum EPreMovementTrigger : u32 {
         // used in PlayerStateDamageLife::appear
         EPreMovementTrigger_val2 = 2,
+        EPreMovementTrigger_val5 = 5,
     };
 
-    enum EDemoEndTrigger : u32 {};
+    enum EDemoEndTrigger : u32 {
+        EDemoEndTrigger_val0 = 0,
+    };
 
-    enum EMaterialChangeTrigger : u32 {};
+    enum EMaterialChangeTrigger : u32 {
+        EMaterialChangeTrigger_val0 = 0,
+    };
 
     PlayerTrigger();
     void set(ECollisionTrigger flag);

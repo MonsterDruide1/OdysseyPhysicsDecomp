@@ -1,4 +1,5 @@
 #include "Player/PlayerActorBase.h"
+#include "Library/LiveActor/LiveActor.h"
 
 #include "Library/LiveActor/ActorAreaFunction.h"
 #include "Library/LiveActor/ActorCollisionFunction.h"
@@ -16,7 +17,7 @@ u32 PlayerActorBase::getPortNo() const {
     return mPortNo;
 }
 
-sead::Matrix34f* PlayerActorBase::getViewMtx() const {
+const sead::Matrix34f* PlayerActorBase::getViewMtx() const {
     return mViewMtx;
 }
 

@@ -239,6 +239,12 @@ void initActorModelKeeper(LiveActor* actor, const ActorInitInfo& info,
     auto* modelKeeper = new ModelKeeper();
     modelKeeper->initResource(resource);
 
+    // PATCH
+    actor->initModelKeeper(modelKeeper);
+    info.actorSceneInfo.modelGroup->registerModel(modelKeeper);
+    return;
+    // END PATCH
+
     SceneCameraInfo* sceneCameraInfo = info.actorSceneInfo.cameraDirector->getSceneCameraInfo();
 
     if (sceneCameraInfo->getViewNumMax() >= 2) {

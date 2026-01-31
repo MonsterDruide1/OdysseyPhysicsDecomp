@@ -52,7 +52,7 @@ public:
         return -1;
     }
 
-private:
+public:
     const char* mFactoryName;
     const NameToCreator<T>* mFactoryEntries;
     s32 mNumFactoryEntries;

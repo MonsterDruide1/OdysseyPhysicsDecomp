@@ -1,5 +1,6 @@
 #pragma once
 
+#include <math/seadQuat.h>
 #include "Library/LiveActor/LiveActor.h"
 
 namespace al {
