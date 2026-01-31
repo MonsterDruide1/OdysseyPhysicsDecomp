@@ -145,10 +145,6 @@ public:
     void resetHoldInfo3D();
     void resetHoldInfo2D();
 
-    void resetAlongWall();
-
-    bool isSameStickMove(const sead::Vector2f& a2, float a3) const;
-
 public:
     const al::LiveActor* mLiveActor;
     const IUsePlayerCollision* mPlayerCollision;

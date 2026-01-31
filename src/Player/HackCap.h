@@ -25,10 +25,10 @@ public:
             const PlayerWallActionHistory*, const PlayerCapActionHistory*,
             const PlayerEyeSensorHitHolder*, const PlayerSeparateCapFlag*,
             const IUsePlayerCollision*, const IUsePlayerHeightCheck*, const PlayerWetControl*,
-            const PlayerWetControl*, HackCapJudgePreInputSeparateThrow*,
+            const PlayerJointControlKeeper*, HackCapJudgePreInputSeparateThrow*,
             HackCapJudgePreInputSeparateJump*);
 
-    void init(const al::ActorInitInfo&) override;
+        void init(const al::ActorInitInfo&) override;
     void hide(bool);
     void movement() override;
     void updateShadowMaskOffset();

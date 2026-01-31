@@ -171,7 +171,7 @@ void PlayerSpinCapAttack::startCapSpinAttack(PlayerAnimator* animator, PlayerInp
     sub_7100464C88(&_60, "SpinCapStart", mInput, _31, _34, _50, _48, _40);
     animator->startAnimSpinAttack(_60);
     animator->startSubAnim(_60);
-    mHackCap->startSpinAttack(_60);
+    mHackCap->startSpinAttack(_60.cstr());
     _B8.format("");
 }
 
@@ -184,7 +184,7 @@ void PlayerSpinCapAttack::startCapSpinAttackAir(PlayerAnimator* animator,
     animator->startAnimSpinAttack(_60);
     if (animator->unk2)
         animator->endSubAnim();
-    mHackCap->startSpinAttack(_60);
+    mHackCap->startSpinAttack(_60.cstr());
     _B8.format("");
 }
 
@@ -196,7 +196,7 @@ void PlayerSpinCapAttack::startCapSpinAttackSwim(PlayerAnimator* animator,
 
     sub_7100464C88(&_60, "SpinCapAirStart", mInput, _31, _34, _50, _48, _40);
     animator->startAnimSpinAttack(_60);
-    mHackCap->startSpinAttack(_60);
+    mHackCap->startSpinAttack(_60.cstr());
     _B8.format("");
 }
 

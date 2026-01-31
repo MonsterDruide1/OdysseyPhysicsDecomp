@@ -363,6 +363,9 @@ bool checkIsOpenWorldWarpHoleCurrentScenario(const WorldWarpHole* worldWarpHole)
 }
 
 bool isKidsMode(const al::LiveActor* actor) {
+    // PATCH:
+    return false;
+    // END PATCH
     return isKidsMode(getGameDataHolderFromActor(actor));
 }
 

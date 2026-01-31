@@ -65,11 +65,11 @@ public:
     void receiveRequestDamage();
     void sendSyncDamageVisibility();
     void pushWorldEndBorder(const sead::Vector3f&);
-    PlayerCollider* getPlayerCollision();
-    f32 getHackGuideHeight();
+    PlayerCollider* getPlayerCollision() const;
+    f32 getHackGuideHeight() const;
     bool isHackGuideEnable() const;
-    f32 getHackStayGravityMargine();
-    void* getCollisionPartsFilter();
+    f32 getHackStayGravityMargine() const;
+    al::CollisionPartsFilterBase* getCollisionPartsFilter() const;
     bool isHackGroupTalkScare() const;
     bool isHackNoCollisionMsg() const;
     bool isHackNoSeparateCameraInput() const;
@@ -79,6 +79,8 @@ public:
     void requestForceHackStageStart(al::HitSensor*, const CapTargetInfo*, al::LiveActor*);
     void startDemo();
     void endDemo();
+    bool executeForceHackStageStart(al::HitSensor *,IUsePlayerHack *);
+    const char* getCurrentHackName() const;
 
     void setPuppetable(bool isPuppetable) { mIsPuppetable = isPuppetable; }
 
@@ -94,7 +96,7 @@ public:
 
     al::HitSensor* getHackSensor() const { return mHackHitSensor; }
 
-private:
+public:
     al::LiveActor* mParent;
     HackCap* mHackCap;
     PlayerRecoverySafetyPoint* mRecoverySafePoint;

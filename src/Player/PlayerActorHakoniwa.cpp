@@ -264,7 +264,7 @@ void PlayerActorHakoniwa::movement() {
     mTrigger->clearPreMovementTrigger();
     executePreMovementNerveChange();
 
-    if (!al::isNerve(this, &Hack) || mHackKeeper->_5D)
+    if (!al::isNerve(this, &Hack) || mHackKeeper->isHack())
         mAnimator->updateAnimFrame();
 
     mTrigger->clearReceiveSensorTrigger();
@@ -1210,7 +1210,7 @@ void PlayerActorHakoniwa::executePreMovementNerveChange() {
         return;
     }
 
-    if (al::isNerve(this, &Hack) && mHackKeeper->_70)
+    if (al::isNerve(this, &Hack) && mHackKeeper->getHackSensor())
         CRASH
 
     if (mActorStateSandGeyser->mGeyserSensor && !al::isNerve(this, &SandGeyser))
@@ -1219,13 +1219,13 @@ void PlayerActorHakoniwa::executePreMovementNerveChange() {
     if (mBindKeeper->_8)
         CRASH
 
-    if (mHackKeeper->_70)
+    if (mHackKeeper->getHackSensor())
         CRASH
 
     if (mTrigger->isOnAnyDamage())
         CRASH
 
-    if (mHitPush->mIsPush)
+    if (mHitPush->mIsHit)
         CRASH
 
     if (!PlayerFunction::isPlayerDeadStatus(this) && !al::isNerve(this, &Rise) &&

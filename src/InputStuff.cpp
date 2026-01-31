@@ -339,7 +339,7 @@ bool PlayerInput::isTriggerSwingRightHand() const {
 }
 
 void PlayerInput::calcCapSeparateMoveInput(sead::Vector3<float>* a1,
-                                           sead::Vector3<float> const& a2) {
+                                           sead::Vector3<float> const& a2) const {
     if (mIsDisableInput) {
         *a1 = sead::Vector3<float>::zero;
         return;

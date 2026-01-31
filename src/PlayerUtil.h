@@ -89,11 +89,7 @@ bool isPlayerCarrySomething(al::LiveActor const*);
 
 }  // namespace rs
 
-class CapFunction {
-public:
-    static void putOnCapPlayer(HackCap*, PlayerAnimator*);
-};
-
+#include "Player/PlayerCapFunction.h"
 #include "Player/PlayerModelHolder.h"
 
 class PlayerJointControlKeeper {
@@ -115,23 +111,8 @@ class CollisionShapeKeeper;
 
 #include "Player/IPlayerModelChanger.h"
 #include "Player/PlayerModelHolder.h"
-
 #include "Player/PlayerAnimator.h"
-
-class PlayerEffect {
-public:
-    PlayerEffect(al::LiveActor*, PlayerModelHolder const*, sead::Matrix34<float> const*);
-    void updateWaterSurfaceMtx(al::WaterSurfaceFinder const*);
-    void tryEmitRollingEffect();
-    void tryDeleteRollingEffect();
-    void clearRunEffect();
-    void tryStartRunEffectDashWaterSurface();
-    void tryStartRunEffectRunStart();
-
-private:
-    void* size[0xC0 / 8];
-};
-
+#include "Player/PlayerEffect.h"
 #include "Player/PlayerAnimControlRun.h"
 #include "Player/PlayerContinuousJump.h"
 #include "Player/PlayerContinuousLongJump.h"
@@ -219,20 +200,7 @@ private:
 };
 
 #include "Player/PlayerPushReceiver.h"
-
-class PlayerHitPush {
-public:
-    PlayerHitPush(al::LiveActor* const, PlayerConst* const);
-    void clearHitFlag();
-
-public:
-    al::LiveActor* mPlayer;
-    const PlayerConst* mConst;
-    bool mIsPush = false;
-    bool _11 = false;
-    sead::Vector3f mPush = {0.0f, 0.0f, 0.0f};
-};
-
+#include "Player/PlayerHitPush.h"
 #include "Player/PlayerExternalVelocity.h"
 
 class PlayerWetControl {
@@ -777,16 +745,7 @@ private:
     void* size[0x40 / 8];
 };
 
-class PlayerStateHack : public al::NerveStateBase {
-public:
-    PlayerStateHack(al::LiveActor*, PlayerHackKeeper*, IPlayerModelChanger*, PlayerAnimator*,
-                    HackCap*);
-    bool isEnableModelSyncShowHide();
-    void prepareStageStartHack();
-
-private:
-    void* size[0xD0 / 8];
-};
+#include "Player/PlayerStateHack.h"
 
 class PlayerStateEndHack : public al::NerveStateBase {
 public:
