@@ -17,7 +17,10 @@ namespace al {
 static sead::SafeString sDeviceName{"main"};
 
 FileLoader::FileLoader(s32 threadPriority) {
-    mLoaderThread = new FileLoaderThread(threadPriority);
+    // PATCH:
+    //mLoaderThread = new FileLoaderThread(threadPriority);
+    // END PATCH
+    
     mArchiveHolder = new ArchiveHolder();
     mSoundItemHolder = new SoundItemHolder();
     mFileDevice = sead::FileDeviceMgr::instance()->findDevice(sDeviceName);

@@ -3,6 +3,8 @@
 #include <container/seadPtrArray.h>
 #include <math/seadMatrix.h>
 #include <math/seadVector.h>
+#include "Player/CollidedShapeResult.h"
+#include "Player/CollisionShapeInfo.h"
 
 class CollisionShapeInfoBase;
 class CollisionShapeInfoArrow;
@@ -54,7 +56,7 @@ public:
 
     void set54(f32 value) { _54 = value; }
 
-private:
+public:
     sead::Vector3f mBoundingCenter = {0.0f, 0.0f, 0.0f};
     f32 mBoundingRadius = 0.0f;
     sead::PtrArray<CollisionShapeInfoBase> mCollisionShape;

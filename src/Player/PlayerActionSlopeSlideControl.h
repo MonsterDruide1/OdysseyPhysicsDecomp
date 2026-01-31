@@ -24,7 +24,7 @@ public:
 
     const sead::Vector3f& getHorizontalVelocity() const { return mHorizontalVelocity; }
 
-private:
+public:
     al::LiveActor* mPlayer;
     const PlayerConst* mConst;
     const PlayerInput* mInput;

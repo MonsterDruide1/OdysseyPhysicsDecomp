@@ -310,4 +310,6 @@ void setNerveAction(al::IUseNerve* user, const char* action) {
     keeper->setNerve(keeper->getActionCtrl()->findNerve(action));
 }
 
+NerveActionCollector* NerveActionCollector::sCurrentCollector;
+
 }  // namespace alNerveFunction

@@ -22,6 +22,27 @@ NERVE_IMPL(PlayerStateHipDrop, Fall);
 NERVES_MAKE_NOSTRUCT(PlayerStateHipDrop, Land, Start, Fall);
 }  // namespace
 
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerStateHipDrop>(u128* state, int startOffset, PlayerStateHipDrop* player) {
+    constexpr int size = 3;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &Land);
+    *state |= al::isNerve(player, &Start) << 1;
+    *state |= al::isNerve(player, &Fall) << 2;
+
+    int offset = startOffset+size;
+    if(player->isDead()) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
+
 PlayerStateHipDrop::PlayerStateHipDrop(al::LiveActor* player, const PlayerConst* pConst,
                                        const PlayerInput* input,
                                        const IUsePlayerCollision* collider,

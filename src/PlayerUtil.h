@@ -1,0 +1,826 @@
+#pragma once
+
+#include "Library/Collision/Collider.h"
+#include "Library/Collision/KCollisionServer.h"
+#include "Library/LiveActor/LiveActor.h"
+#include "Library/Nerve/NerveStateBase.h"
+#include "Player/IJudge.h"
+#include "Player/IUsePlayerCollision.h"
+#include "Player/PlayerActorBase.h"
+#include "Player/PlayerActorHakoniwa.h"
+#include "Player/PlayerConst.h"
+#include "Player/PlayerEquipmentUser.h"
+#include "Player/PlayerFunction.h"
+#include "Player/PlayerPainPartsKeeper.h"
+#include "math/seadQuat.h"
+#include "prim/seadSafeString.h"
+
+namespace al {
+class CameraTicket;
+class AreaObj;
+}  // namespace al
+
+namespace PlayerEquipmentFunction {
+bool tryGetEquipmentForceDashInfo(int*, float*, PlayerEquipmentUser const*);
+bool isEquipmentNoCapThrow(PlayerEquipmentUser const*);
+}  // namespace PlayerEquipmentFunction
+
+namespace rs {
+
+void initPlayerActorInfo(PlayerActorBase*, PlayerInitInfo const&);
+const char* getInitPlayerModelName(PlayerInitInfo const&);
+const char* getInitCapTypeName(PlayerInitInfo const&);
+bool isClosetScenePlayer(PlayerInitInfo const&);
+bool isNeedCreateNoseNeedle(PlayerInitInfo const&);
+void resetCollision(IUsePlayerCollision*);
+bool isOnGroundRunAngle(al::LiveActor const*, IUsePlayerCollision const*, PlayerConst const*);
+bool isOnGround(al::LiveActor const*, IUsePlayerCollision const*);
+bool isJustLand(IUsePlayerCollision const*);
+void cutVerticalVelocityGroundNormal(al::LiveActor*, IUsePlayerCollision const*);
+bool calcSlideDir(sead::Vector3<float>*, sead::Vector3<float> const&, sead::Vector3<float> const&);
+void calcGroundNormalOrGravityDir(sead::Vector3<float>*, al::LiveActor const*,
+                                  IUsePlayerCollision const*);
+void startHitReactionLandJumpIfLanding(al::LiveActor const*, IUsePlayerCollision const*, bool);
+void startHitReactionLandIfLanding(al::LiveActor const*, IUsePlayerCollision const*, bool);
+void noticePlayerJumpStart(PlayerTrigger*, al::LiveActor const*);
+bool isPlayerDamageStopDemo(al::LiveActor const*);
+bool isKidsMode(const al::LiveActor*);
+bool isTouchJumpCode(al::LiveActor const*, IUsePlayerCollision const*);
+bool isActiveDemo(al::LiveActor const*);
+bool isPressedCollision(IUsePlayerCollision const*);
+void resetCollisionPose(IUsePlayerCollision const*, sead::Quat<float> const&);
+void calcSnapVelocitySnapMoveArea(sead::Vector3<float>*, al::LiveActor const*,
+                                  IUsePlayerCollision const*, sead::Vector3<float> const&, float);
+void calcSnapVelocitySnapMoveAreaWithCutDir(sead::Vector3<float>*, al::LiveActor const*,
+                                            IUsePlayerCollision const*, sead::Vector3<float> const&,
+                                            float, sead::Vector3<float> const&);
+bool isCollidedCeiling(IUsePlayerCollision const*);
+void reflectCeiling(al::LiveActor*, float);
+bool isOnGroundAndGravity(al::LiveActor const*, IUsePlayerCollision const*);
+void calcGroundNormalExceptJustLandOrGravityDir(sead::Vector3<float>*, al::LiveActor const*,
+                                                IUsePlayerCollision const*);
+bool isOnGroundSkateCode(al::LiveActor const*, IUsePlayerCollision const*);
+bool findWallEnablePush(al::LiveActor const*, IUsePlayerCollision const*, float, float);
+bool isCollidedWallFace(IUsePlayerCollision const*);
+const al::CollisionParts* getCollidedGroundCollisionParts(IUsePlayerCollision const*);
+const sead::Vector3f& getCollidedCeilingNormal(IUsePlayerCollision const*);
+void reflectCeilingUpperPunch(al::LiveActor*, IUsePlayerCollision const*, PlayerInput const*,
+                              PlayerConst const*, PlayerTrigger const*, bool);
+void setupLongJumpVelocity(al::LiveActor*, IUsePlayerCollision const*, float, float, float, float,
+                           float);
+bool isModeE3Rom();
+bool isModeE3MovieRom();
+void calcFrontVelocityAndDirH(sead::Vector3<float>*, sead::Vector3<float>*, al::LiveActor const*,
+                              IUsePlayerCollision const*);
+bool isCollidedGroundOverAngle(const al::LiveActor*, IUsePlayerCollision const*, float);
+bool isCollidedGroundLessAngle(const al::LiveActor*, IUsePlayerCollision const*, float);
+bool calcAlongDirFront(sead::Vector3<float>*, al::LiveActor const*, sead::Vector3<float> const&);
+void addPlayerThrowCapCount(const al::LiveActor*);
+void moveInertiaTurn(sead::Vector3<float>*, sead::Quat<float>*, al::LiveActor*,
+                     IUsePlayerCollision const*, sead::Vector3<float> const&, float, float, float,
+                     float, float);
+bool calcAlongSkyFront(sead::Vector3<float>*, al::LiveActor const*);
+void brakeLandVelocityGroundNormal(al::LiveActor*, sead::Vector3<float>*,
+                                   IUsePlayerCollision const*, sead::Vector3<float> const&, float,
+                                   float);
+bool isPlayerCarrySomething(al::LiveActor const*);
+
+}  // namespace rs
+
+#include "Player/PlayerCapFunction.h"
+#include "Player/PlayerModelHolder.h"
+
+class PlayerJointControlKeeper {
+public:
+    PlayerJointControlKeeper(al::LiveActor*, PlayerConst const*, bool, bool, bool);
+    void resetPartsDynamics();
+    void calcGroundPoseUp(sead::Vector3<float>*) const;
+
+public:
+    void* gap1[5];
+    al::LiveActor* mPlayer; // this is wrong, I confused it with `PlayerJointControlGroundPose`
+    void* gap2[18];
+    sead::Matrix34f* mtx;
+    void* size_f0[5];
+};
+
+class PlayerCeilingCheck;
+class CollisionShapeKeeper;
+
+#include "Player/IPlayerModelChanger.h"
+#include "Player/PlayerModelHolder.h"
+#include "Player/PlayerAnimator.h"
+#include "Player/PlayerEffect.h"
+#include "Player/PlayerAnimControlRun.h"
+#include "Player/PlayerContinuousJump.h"
+#include "Player/PlayerContinuousLongJump.h"
+
+class PlayerDamageKeeper {
+public:
+    PlayerDamageKeeper(al::LiveActor*, PlayerEffect*);
+
+    void update(IPlayerModelChanger*, bool, bool);
+
+public:
+    al::LiveActor* mPlayerActor;
+    PlayerEffect* mPlayerEffect;
+    bool _10;
+    int _14;
+    void* gap[3];
+};
+
+class PlayerDemoActionFlag {
+public:
+    PlayerDemoActionFlag();
+
+private:
+    void* size[0x18 / 8];
+};
+
+namespace al {
+class CollisionPartsFilterOnlySpecialPurpose : public CollisionPartsFilterBase {};
+}
+
+class PlayerCounterAfterCapCatch;
+#include "Player/PlayerCapActionHistory.h"
+#include "Player/PlayerAreaChecker.h"
+
+namespace al {
+class AreaObj;
+}
+
+class WorldEndBorderKeeper : public al::NerveExecutor {
+public:
+    WorldEndBorderKeeper(al::LiveActor const*);
+    void update(sead::Vector3<float> const&, sead::Vector3<float> const&, bool);
+
+public:
+    const al::LiveActor* mPlayer;
+    sead::Vector3f _18;
+    sead::Vector3f _24;
+    bool mIsSwimOrInAir;
+    bool pad[7];
+    al::AreaObj* mWorldEndBorderArea;
+    sead::Vector3f _40;
+    float _4c;
+    float _50;
+    sead::Vector3f _54 = {0.0f, 0.0f, 0.0f};
+};
+
+#include "Player/PlayerWallActionHistory.h"
+
+#include "Player/PlayerCounterAfterUpperPunch.h"
+#include "Player/PlayerCounterForceRun.h"
+#include "Player/PlayerCounterQuickTurnJump.h"
+#include "Player/PlayerJumpMessageRequest.h"
+#include "Player/PlayerSandSinkAffect.h"
+
+class PlayerEyeSensorHitHolder {
+public:
+    PlayerEyeSensorHitHolder(int);
+    void createTargetMarkerBuffer(int);
+    void clear();
+
+private:
+    void* size[0x48 / 8];
+};
+
+#include "Player/PlayerPushReceiver.h"
+#include "Player/PlayerHitPush.h"
+#include "Player/PlayerExternalVelocity.h"
+
+class PlayerWetControl {
+public:
+    PlayerWetControl(al::LiveActor const*, al::LiveActor*, PlayerAreaChecker const*);
+    void recordPuddleRolling();
+
+public:
+    void* gap[1];
+    PlayerEffect* mEffect;
+    void* size[5];
+};
+
+class PlayerSeparateCapFlag {
+public:
+    PlayerSeparateCapFlag();
+
+    bool someCheck() const { return (*((int*)this) & 0xFF0000) != 0 || *((u16*)this) == 0; }
+
+public:
+    bool _0;
+    bool _1;
+    bool _2;
+    sead::Vector3f _4;
+};
+
+class HackCapJudgePreInputSeparateThrow : public IJudge {
+public:
+    HackCapJudgePreInputSeparateThrow(PlayerInput const*, PlayerSeparateCapFlag const*);
+
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x20 / 8];
+};
+
+#include "Player/HackCapJudgePreInputSeparateJump.h"
+
+class PlayerRippleGenerator {
+public:
+    PlayerRippleGenerator(al::LiveActor const*, al::LiveActor const*, PlayerModelHolder const*);
+    void reset();
+
+private:
+    void* size[0x58 / 8];
+};
+
+#include "Player/PlayerRecoverySafetyPoint.h"
+#include "Player/PlayerPuppet.h"
+
+class PlayerBindableSensorList;
+
+class PlayerBindKeeper {
+public:
+    PlayerBindKeeper(al::HitSensor*, IUsePlayerPuppet*);
+    void clearBindableSensor();
+    bool sendStartMsg();
+
+public:
+    al::HitSensor* mBodyHitSensor = nullptr;
+    al::HitSensor* _8 = nullptr;
+    PlayerBindableSensorList* mBindableSensorList = nullptr;
+    IUsePlayerPuppet* mPuppet;
+    int _20 = 0;
+    bool _24 = false;
+};
+
+static_assert(sizeof(PlayerBindKeeper) == 0x28);
+
+class PlayerJointParamHandLegAngle;
+class IUsePlayerCeilingCheck;
+#include "Player/PlayerCarryKeeper.h"
+
+class PlayerSeCtrl {
+public:
+    PlayerSeCtrl(al::LiveActor const*, PlayerAnimator const*, HackCap const*,
+                 PlayerModelChangerHakoniwa const*, al::LiveActor const*,
+                 PlayerExternalVelocity const*);
+    void update();
+
+public:
+    void* size1[5];
+    sead::FixedSafeString<256> _28;
+    void* size2[6];
+    float _170;
+    float _174;
+    void* size3[4];
+};
+
+#include "Player/PlayerHackKeeper.h"
+#include "Player/PlayerFormSensorCollisionArranger.h"
+
+class PlayerCapManHeroEyesControl {
+public:
+    PlayerCapManHeroEyesControl(char const*, al::LiveActor*, al::LiveActor*);
+
+private:
+    void* size[0x20 / 8];
+};
+
+class PlayerJudgeAirForceCount : public IJudge {
+public:
+    PlayerJudgeAirForceCount(al::LiveActor const*, PlayerExternalVelocity const*,
+                             IUsePlayerCollision const*);
+
+    void reset() override { WARN_UNIMPL; }
+
+    void update() override { WARN_UNIMPL; }
+
+    bool judge() const override {
+        WARN_UNIMPL;
+        return false;
+    }
+
+private:
+    void* size[0x28 / 8];
+};
+
+class PlayerCounterAfterCapCatch;
+
+class PlayerJudgeCapCatchPop : public IJudge {
+public:
+    PlayerJudgeCapCatchPop(al::LiveActor const*, PlayerInput const*, IUsePlayerCollision const*,
+                           IPlayerModelChanger const*, PlayerCapActionHistory const*,
+                           PlayerCounterAfterCapCatch const*);
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x38 / 8];
+};
+
+#include "Player/PlayerJudgeDeadWipeStart.h"
+#include "Player/PlayerJudgeDirectRolling.h"
+#include "Player/PlayerJudgeEnableStandUp.h"
+#include "Player/PlayerJudgeForceRolling.h"
+#include "Player/PlayerJudgeForceSlopeSlide.h"
+#include "Player/PlayerJudgeGrabCeil.h"
+
+class PlayerJudgeInWater : public IJudge {
+public:
+    PlayerJudgeInWater(al::LiveActor const*, PlayerConst const*, IUsePlayerCollision const*,
+                       PlayerAreaChecker const*, al::WaterSurfaceFinder const*,
+                       IUsePlayerHeightCheck const*, PlayerCounterForceRun const*, bool, bool,
+                       bool);
+
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x48 / 8];
+};
+
+#include "Player/PlayerJudgeInvalidateInputFall.h"
+
+#include "Player/PlayerModelChangerHakoniwa.h"
+
+class IUsePlayerFallDistanceCheck;
+
+#include "Player/PlayerJudgeLongFall.h"
+
+class PlayerJudgePoleClimb : public al::HioNode, public IJudge {
+public:
+    PlayerJudgePoleClimb(al::LiveActor const*, PlayerConst const*, IUsePlayerCollision const*,
+                         IPlayerModelChanger const*, PlayerCarryKeeper const*,
+                         PlayerExternalVelocity const*, PlayerInput const*, PlayerTrigger const*);
+
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+public:
+    const al::LiveActor* mPlayer;
+    const PlayerConst* mConst;
+    const IUsePlayerCollision* mCollision;
+    const IPlayerModelChanger* mModelChanger;
+    const PlayerCarryKeeper* mCarryKeeper;
+    const PlayerExternalVelocity* mExternalVelocity;
+    const PlayerInput* mInput;
+    const PlayerTrigger* mTrigger;
+    bool mIsJudge = 0;
+    const al::CollisionParts* mCollisionParts = 0;
+    sead::Vector3f _58 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f _64 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f _70 = {0.0f, 0.0f, 0.0f};
+    float _7C = 0;
+    float mPoleCodeAngleOffsetCeiling = 0;
+    const char* mMaterialCodeCeiling = 0;
+};
+
+static_assert(sizeof(PlayerJudgePoleClimb) == 0x90);
+
+#include "Player/PlayerJudgePreInputCapThrow.h"
+
+class PlayerJudgePreInputHackAction : public IJudge {
+public:
+    PlayerJudgePreInputHackAction(PlayerConst const*, PlayerInput const*);
+
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x20 / 8];
+};
+
+class HackCapJudgePreInputHoveringJump : public IJudge {
+public:
+    HackCapJudgePreInputHoveringJump(al::LiveActor const*, IUsePlayerCollision const*,
+                                     HackCap const*, PlayerInput const*);
+
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x30 / 8];
+};
+
+#include "Player/PlayerJudgeSandSink.h"
+#include "Player/PlayerJudgeSlopeSlide.h"
+#include "Player/PlayerJudgeStartHipDrop.h"
+#include "Player/PlayerJudgeStartRise.h"
+#include "Player/PlayerJudgeStartRolling.h"
+#include "Player/PlayerJudgeStartSquat.h"
+#include "Player/PlayerJudgeWallCatch.h"
+
+namespace al {
+class CollisionPartsConnector;
+}
+
+#include "Player/PlayerJudgeWallCatchInputDir.h"
+#include "Player/PlayerJudgeWallHitDown.h"
+#include "Player/PlayerJudgeWallHitDownForceRun.h"
+#include "Player/PlayerJudgeWallHitDownRolling.h"
+#include "Player/PlayerJudgeWallKeep.h"
+#include "Player/PlayerJudgeWallPush.h"
+#include "Player/PlayerJudgeCameraSubjective.h"
+#include "Player/PlayerSpinCapAttack.h"
+#include "Player/PlayerJudgeDiveInWater.h"
+#include "Player/PlayerActionDiveInWater.h"
+#include "Player/PlayerJudgeForceLand.h"
+
+class PlayerJudgeOutInWater : public IJudge {
+public:
+    PlayerJudgeOutInWater(al::LiveActor const*, IJudge const*, IJudge const*);
+
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x28 / 8];
+};
+
+#include "Player/PlayerJudgeStartGroundSpin.h"
+#include "Player/PlayerJudgeWaterSurfaceRun.h"
+#include "Player/PlayerJudgeStartWaterSurfaceRun.h"
+#include "Player/PlayerJudgeSpeedCheckFall.h"
+#include "Player/PlayerJudgeStartRun.h"
+
+class PlayerJudgeCapCatch : public IJudge {
+public:
+    PlayerJudgeCapCatch(al::LiveActor const*, PlayerCounterAfterCapCatch const*);
+
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x18 / 8];
+};
+
+class HackCapJudgeHoldHoveringJump : public IJudge {
+public:
+    HackCapJudgeHoldHoveringJump(al::LiveActor const*, PlayerColliderHakoniwa const*,
+                                 HackCap const*, PlayerInput const*, PlayerConst const*);
+
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x30 / 8];
+};
+
+class PlayerJointParamGroundPose;
+class PlayerJointParamCenterDynamics;
+#include "Player/PlayerStateWait.h"
+
+class PlayerStateSandSink : public al::NerveStateBase {
+public:
+    PlayerStateSandSink(al::LiveActor*, PlayerConst const*, PlayerInput const*,
+                        PlayerTrigger const*, IUsePlayerCollision*, PlayerAnimator*, IJudge*,
+                        PlayerJudgePreInputJump*);
+
+private:
+    void* size[0x78 / 8];
+};
+
+class ActorStateSandGeyser : public al::ActorStateBase {
+public:
+    ActorStateSandGeyser(al::LiveActor*);
+
+public:
+    al::HitSensor* mGeyserSensor = nullptr;
+    void* size[1];
+    bool _30;
+};
+
+class PlayerJointParamCapThrow;
+#include "Player/PlayerStateSlope.h"
+#include "Player/PlayerStateSpinCap.h"
+#include "Player/PlayerStateSquat.h"
+
+class PlayerStateRun2D : public al::NerveStateBase {
+public:
+    PlayerStateRun2D(al::LiveActor*, PlayerConst const*, PlayerInput const*,
+                     IUsePlayerCollision const*, PlayerAnimator*);
+
+    bool isBrake() { return false; }
+
+private:
+    void* size[0x48 / 8];
+};
+
+#include "Player/PlayerStateRolling.h"
+
+class PlayerStateCapCatchPop : public al::NerveStateBase {
+public:
+    PlayerStateCapCatchPop(al::LiveActor*, PlayerConst const*, IUsePlayerCollision const*,
+                           PlayerInput const*, PlayerAnimator*, HackCap*);
+
+private:
+    void* size[0x48 / 8];
+};
+
+#include "Player/PlayerStateWallAir.h"
+
+class PlayerJointParamGrab;
+
+class PlayerStateWallCatch : public al::NerveStateBase {
+public:
+    PlayerStateWallCatch(al::LiveActor*, PlayerConst const*, PlayerInput const*,
+                         IUsePlayerCollision*, IUsePlayerCeilingCheck const*,
+                         PlayerModelHolder const*, PlayerAreaChecker const*, PlayerAnimator*,
+                         PlayerTrigger*, PlayerJudgePreInputJump*, PlayerJointParamGrab*);
+    void setup(al::CollisionParts const*, sead::Vector3<float> const&, sead::Vector3<float> const&,
+               sead::Vector3<float> const&);
+    bool isWallCatchForm();
+    const sead::Vector3f& getCeilingCheckPos();
+    const sead::Vector3f& getWallCatchFront() const;
+
+private:
+    void* size[0xB8 / 8];
+};
+
+class PlayerStateGrabCeil : public al::NerveStateBase {
+public:
+    PlayerStateGrabCeil(al::LiveActor*, PlayerConst const*, PlayerInput const*,
+                        PlayerModelHolder const*, PlayerTrigger*, IUsePlayerCollision*,
+                        PlayerAnimator*, PlayerJudgePreInputJump*, al::HitSensor*,
+                        PlayerJointParamGrab*);
+
+    void setup(al::CollisionParts const*, sead::Vector3<float> const&, sead::Vector3<float> const&,
+               sead::Vector3<float> const&);
+    bool isEnableNextGrabCeil();
+    bool isFormGrabCeil() const { return false; }
+    const sead::Vector3f& getGrabCeilFront() const { CRASH; }
+
+private:
+    void* size[0xC8 / 8];
+};
+
+class PlayerStatePoleClimb : public al::NerveStateBase {
+public:
+    PlayerStatePoleClimb(al::LiveActor*, PlayerConst const*, PlayerInput const*,
+                         PlayerTrigger const*, PlayerModelHolder*, IUsePlayerCollision*,
+                         PlayerAnimator*, PlayerWallActionHistory*, PlayerJointParamHandLegAngle*,
+                         PlayerJudgePreInputJump*, PlayerActionDiveInWater*);
+
+    void setup(al::CollisionParts const*, sead::Vector3<float> const&, sead::Vector3<float> const&,
+               sead::Vector3<float> const&, float, float, char const*);
+    bool isFormPoleClimb() const { return false; }
+    const sead::Vector3f& getPoleClimbFront() const { CRASH; }
+
+private:
+    void* size[0xC0 / 8];
+};
+
+#include "Player/PlayerStateHeadSliding.h"
+#include "Player/PlayerStateHipDrop.h"
+#include "Player/PlayerStateLongJump.h"
+
+class PlayerStateRise : public al::NerveStateBase {
+public:
+    PlayerStateRise(al::LiveActor*, PlayerConst const*, IUsePlayerCollision const*,
+                    PlayerInput const*, PlayerAnimator*);
+
+private:
+    void* size[0x38 / 8];
+};
+
+class PlayerJointParamSwim;
+
+class PlayerStateSwim : public al::NerveStateBase {
+public:
+    PlayerStateSwim(al::LiveActor*, PlayerConst const*, IUsePlayerCollision const*,
+                    PlayerInput const*, PlayerTrigger const*, PlayerCarryKeeper const*,
+                    PlayerModelHolder const*, PlayerExternalVelocity const*, PlayerAnimator*,
+                    PlayerSpinCapAttack*, al::WaterSurfaceFinder const*, PlayerEffect*,
+                    PlayerJointParamSwim*);
+
+    void tryReactionWaterIn() { CRASH; }
+
+private:
+    void* size[0x118 / 8];
+};
+
+#include "Player/PlayerStateDamageLife.h"
+
+class PlayerStateDamageSwim : public al::NerveStateBase {
+public:
+    PlayerStateDamageSwim(al::LiveActor*, PlayerConst const*, IUsePlayerCollision const*,
+                          PlayerInput const*, PlayerTrigger const*, PlayerAnimator*,
+                          al::WaterSurfaceFinder const*, PlayerEffect*, IJudge*, IJudge*);
+
+private:
+    void* size[0x70 / 8];
+};
+
+class PlayerStateDamageFire : public al::NerveStateBase {
+public:
+    PlayerStateDamageFire(al::LiveActor*, PlayerConst const*, IUsePlayerCollision const*,
+                          PlayerInput const*, PlayerAnimator*, IJudge*);
+
+private:
+    void* size[0x68 / 8];
+};
+
+class PlayerStatePress : public al::NerveStateBase {
+public:
+    PlayerStatePress(al::LiveActor*, IUsePlayerCollision const*, PlayerAnimator*);
+
+private:
+    void* size[0x60 / 8];
+};
+
+class PlayerStateBind : public al::NerveStateBase {
+public:
+    PlayerStateBind(al::LiveActor*, PlayerConst const*, PlayerInput const*, PlayerPuppet const*,
+                    IUsePlayerCollision const*, PlayerTrigger*);
+
+private:
+    void* size[0x40 / 8];
+};
+
+#include "Player/PlayerStateHack.h"
+
+class PlayerStateEndHack : public al::NerveStateBase {
+public:
+    PlayerStateEndHack(al::LiveActor*, PlayerConst const*, IUsePlayerCollision const*,
+                       PlayerInput const*, PlayerTrigger*, PlayerAnimator*);
+
+private:
+    void* size[0x60 / 8];
+};
+
+class PlayerStateCameraSubjective : public al::NerveStateBase {
+public:
+    PlayerStateCameraSubjective(al::LiveActor*, al::CameraTicket*, IPlayerModelChanger*,
+                                PlayerCarryKeeper*, PlayerAnimator*, PlayerConst const*,
+                                IUsePlayerCollision const*, PlayerInput const*);
+
+private:
+    void* size[0x60 / 8];
+};
+
+class PlayerStateAbyss : public al::NerveStateBase {
+public:
+    PlayerStateAbyss(al::LiveActor*, PlayerConst const*, PlayerRecoverySafetyPoint*,
+                     PlayerColliderHakoniwa*, PlayerAnimator*, al::LiveActor*);
+
+private:
+    void* size[0x40 / 8];
+};
+
+#include "Player/PlayerOxygen.h"
+
+class PlayerCounterIceWater {
+public:
+    PlayerCounterIceWater(al::LiveActor*, al::ActorInitInfo const&, PlayerConst const*,
+                          IUsePlayerCollision const*, IJudge*);
+    void clearIceWaterCount();
+    void updateCount(bool, bool);
+
+private:
+    void* size[0x48 / 8];
+};
+
+class PlayerStainControl {
+public:
+    PlayerStainControl(al::LiveActor const*, al::LiveActor*, PlayerModelChangerHakoniwa const*,
+                       HackCap const*, PlayerEffect*);
+
+private:
+    void* size[0x88 / 8];
+};
+
+class PlayerJudgeRecoveryLifeFast : public IJudge {
+public:
+    PlayerJudgeRecoveryLifeFast(al::LiveActor const*, PlayerDamageKeeper const*,
+                                PlayerBindKeeper const*, IUsePlayerCollision const*,
+                                PlayerInput const*, PlayerHackKeeper const*, PlayerStateWait const*,
+                                PlayerStateSwim const*, IJudge const*);
+
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x48 / 8];
+};
+
+class PlayerJudgeActiveCameraSubjective : public IJudge {
+public:
+    PlayerJudgeActiveCameraSubjective(PlayerStateCameraSubjective const*);
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x8 / 8];
+};
+
+#include "Player/PlayerJudgeTalkGround.h"
+
+class PlayerJudgeTalkSwim : public IJudge {
+public:
+    PlayerJudgeTalkSwim(PlayerHackKeeper const*, PlayerCarryKeeper const*, PlayerStateSwim const*);
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x18 / 8];
+};
+
+#include "Player/PlayerJudgeDead.h"
+#include "Player/PlayerJudgeDrawForward.h"
+#include "Player/PlayerJudgeSameNerve.h"
+#include "Player/PlayerJudgeFailureCameraSubjective.h"
+
+class PlayerJudgeSafetyPointRecovery : public IJudge {
+public:
+    PlayerJudgeSafetyPointRecovery(IJudge*, PlayerStateAbyss const*);
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x10 / 8];
+};
+
+class PlayerJudgeStatusPoleClimb : public IJudge {
+public:
+    PlayerJudgeStatusPoleClimb(IJudge const*, PlayerStatePoleClimb const*);
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x10 / 8];
+};
+
+class PlayerJudgePlaySwitchOnAreaWaitAnim : public IJudge {
+public:
+    PlayerJudgePlaySwitchOnAreaWaitAnim(PlayerStateWait const*);
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x8 / 8];
+};
+
+#include "Player/PlayerJudgeSleep.h"
+
+class PlayerJudgeEnableGuideArrow : public IJudge {
+public:
+    PlayerJudgeEnableGuideArrow(PlayerPuppet const*);
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x8 / 8];
+};
+
+class PlayerJudgeEnablePeachAmiibo : public IJudge {
+public:
+    PlayerJudgeEnablePeachAmiibo(PlayerStateDamageFire const*);
+    void reset() override;
+    void update() override;
+    bool judge() const override;
+
+private:
+    void* size[0x8 / 8];
+};
+
+#include "Util/WaterSurfaceShadow.h"
+
+class PlayerInitInfo {
+public:
+    al::GamePadSystem* mGamePadSystem;
+    const sead::Matrix34f* mViewMtx;
+    int mPortNo;
+    const char* strings[2];
+    sead::Vector3f _20;
+    sead::Quatf _34;
+    int gap3;
+    void* unk_size[];
+};
+
+class GaugeAir {
+public:
+    GaugeAir(char const*, al::LayoutInitInfo const&);
+
+public:
+    void* size[0x130 / 8];
+};
+
+#include "Player/PlayerInfo.h"

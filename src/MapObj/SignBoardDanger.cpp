@@ -153,7 +153,9 @@ void SignBoardDanger::attackSensor(al::HitSensor* self, al::HitSensor* other) {
 void SignBoardDanger::exeWait() {
     if (al::isFirstStep(this)) {
         al::startAction(this, "Wait");
-        al::setRotateY(this, mYRotation);
+        // PATCH:
+        //al::setRotateY(this, mYRotation);
+        // END PATCH
     }
 }
 

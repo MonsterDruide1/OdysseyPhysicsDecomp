@@ -1,3 +1,5 @@
+#include "CUSTOM/PlayerAnimator.h"
+/*
 #pragma once
 
 #include <math/seadMatrix.h>
@@ -79,16 +81,17 @@ public:
     void setPartsAnimFrame(f32, const char*);
     void copyAnimLocal();
 
-    bool isSubAnimPlaying() const { return mIsSubAnimPlaying; }
-
-private:
+public:
     PlayerModelHolder* mModelHolder;
     al::LiveActor* mPlayerDeco;
     al::LiveActor* mPlayer;
     PlayerAnimFrameCtrl* mAnimFrameCtrl;
     sead::FixedSafeString<64> mCurAnim;
+    int gap;
     sead::FixedSafeString<64> mCurSubAnim;
-    sead::FixedSafeString<64> mCurUpperBodyAnim;
+    int gap2;
+    sead::FixedSafeString<64> _D0;
+    int gap3;
     sead::FixedSafeString<64> _128;
     al::ActorDitherAnimator* mDitherAnim;
     f32* mSklAnimBlendWeights;
@@ -106,3 +109,4 @@ private:
 };
 
 static_assert(sizeof(PlayerAnimator) == 0x1a8);
+*/

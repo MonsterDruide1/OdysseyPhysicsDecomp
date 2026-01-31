@@ -19,7 +19,7 @@ public:
 
     bool isDead() const { return mIsDead; }
 
-private:
+public:
     bool mIsDead = true;
 };
 
@@ -29,7 +29,7 @@ class ActorStateBase : public NerveStateBase {
 public:
     ActorStateBase(const char* name, LiveActor* actor);
 
-protected:
+public:
     LiveActor* mActor;
 };
 

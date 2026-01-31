@@ -1,13 +1,21 @@
 #pragma once
 
 #include <math/seadMatrix.h>
+#include <math/seadVector.h>
 #include <prim/seadSafeString.h>
+
+#include "Library/Audio/System/AudioKeeper.h"
+#include "Library/LiveActor/ActorInitInfo.h"
+#include "Player/PlayerConst.h"
+#include "Player/PlayerCostumeInfo.h"
+#include "math/seadMatrix.h"
 
 namespace al {
 class LiveActor;
 struct ActorInitInfo;
 class Resource;
 class AudioKeeper;
+class ActorDitherAnimator;
 }  // namespace al
 
 class PlayerConst;

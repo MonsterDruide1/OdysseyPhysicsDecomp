@@ -38,7 +38,7 @@ public:
     void validateFallJudge();
     void updateWallCatchEnviroment();
 
-private:
+public:
     const al::LiveActor* mPlayer;
     const PlayerConst* mConst;
     const PlayerInput* mInput;

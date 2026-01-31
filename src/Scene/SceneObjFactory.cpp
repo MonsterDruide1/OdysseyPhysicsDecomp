@@ -13,6 +13,9 @@
 #include "MapObj/RouteGuideDirector.h"
 #include "Scene/HintPhotoLayoutHolder.h"
 
+#include "Item/CoinCollectHolder.h"
+#include "Item/CoinCollectWatcher.h"
+
 static al::ISceneObj* sceneObjCreator(s32 id) {
     switch (id) {
     case SceneObjID_AmiiboNpcDirector:

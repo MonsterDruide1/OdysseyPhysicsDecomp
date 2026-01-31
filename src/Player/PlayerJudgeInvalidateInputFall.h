@@ -19,6 +19,10 @@ public:
 
     bool judge() const override { return mInvalidateInputFallArea != nullptr; }
 
+    const al::AreaObj* getInvalidateInputFallArea() const {
+        return mInvalidateInputFallArea;
+    }
+
 private:
     const al::LiveActor* mActor = nullptr;
     const PlayerAreaChecker* mAreaChecker = nullptr;

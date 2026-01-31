@@ -74,7 +74,7 @@ const sead::Vector3f& getCollisionHitPos(const al::HitInfo*);
 const sead::Vector3f& getCollisionHitNormal(const al::HitInfo*);
 const sead::Vector3f& getCollisionMovingReaction(const al::HitInfo*);
 al::HitSensor* getCollisionHitSensor(const al::HitInfo*);
-al::CollisionParts* getCollisionHitParts(const al::HitInfo*);
+const al::CollisionParts* getCollisionHitParts(const al::HitInfo*);
 al::LiveActor* getCollisionHitActor(const al::HitInfo*);
 s32 checkStrikeSphere(const al::IUseCollision*, const sead::Vector3f&, f32,
                       const al::CollisionPartsFilterBase*, const al::TriangleFilterBase*);

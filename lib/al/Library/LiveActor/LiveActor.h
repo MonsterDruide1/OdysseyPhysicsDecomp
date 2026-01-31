@@ -1,5 +1,6 @@
 #pragma once
 
+#include <math/seadQuat.h>
 #include <math/seadMatrix.h>
 
 #include "Library/Area/IUseAreaObj.h"
@@ -170,7 +171,7 @@ public:
 
     void setCollisionParts(CollisionParts* collisionParts) { mCollisionParts = collisionParts; }
 
-private:
+public:
     const char* mName = nullptr;
     ActorPoseKeeperBase* mPoseKeeper = nullptr;
     ActorExecuteInfo* mExecuteInfo = nullptr;

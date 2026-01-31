@@ -3,6 +3,7 @@
 #include <math/seadVector.h>
 #include <prim/seadDelegate.h>
 
+#include "Library/Collision/CollisionResultBuffer.h"
 #include "Library/HostIO/HioNode.h"
 
 namespace al {
@@ -11,9 +12,6 @@ struct HitInfo;
 class SphereCheckInfo;
 class ArrowCheckInfo;
 class DiskCheckInfo;
-class SphereHitResultBuffer;
-class ArrowHitResultBuffer;
-class DiskHitResultBuffer;
 class CollisionCheckInfoBase;
 
 class ICollisionPartsKeeper : public IUseHioNode {

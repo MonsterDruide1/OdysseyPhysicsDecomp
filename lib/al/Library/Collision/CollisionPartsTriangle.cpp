@@ -29,7 +29,7 @@ void Triangle::fillData(const CollisionParts& parts, const KCPrismData* data,
     mKCPrismData = data;
     mKCPrismHeader = header;
 
-    KCollisionServer* kCollisionServer = parts.getKCollisionServer();
+    const KCollisionServer* kCollisionServer = parts.getKCollisionServer();
     const sead::Matrix34f& baseMtx = parts.getBaseMtx();
 
     mNormals[0].setRotated(baseMtx, kCollisionServer->getFaceNormal(data, mKCPrismHeader));
@@ -81,7 +81,7 @@ const LiveActor* Triangle::getHostActor() const {
 }
 
 bool Triangle::isHostMoved() const {
-    return mCollisionParts->get_15c() == 0 || mCollisionParts->isMoving();
+    return mCollisionParts->getSomeCounter() == 0 || mCollisionParts->isMoving();
 }
 
 bool Triangle::isValid() const {
@@ -110,7 +110,7 @@ void Triangle::calcCenterPos(sead::Vector3f* center) const {
 
 const sead::Vector3f& Triangle::calcAndGetNormal(s32 index) {
     const CollisionParts* collisionParts = mCollisionParts;
-    KCollisionServer* kCollisionServer = collisionParts->getKCollisionServer();
+    const KCollisionServer* kCollisionServer = collisionParts->getKCollisionServer();
     switch (index) {
     case 0:
         return calcAndGetFaceNormal();
@@ -145,7 +145,7 @@ const sead::Vector3f& Triangle::calcAndGetFaceNormal() {
 
 const sead::Vector3f& Triangle::calcAndGetEdgeNormal(s32 index) {
     const CollisionParts* collisionParts = mCollisionParts;
-    KCollisionServer* kCollisionServer = collisionParts->getKCollisionServer();
+    const KCollisionServer* kCollisionServer = collisionParts->getKCollisionServer();
     switch (index) {
     case 0:
         mNormals[1] = kCollisionServer->getEdgeNormal1(mKCPrismData, mKCPrismHeader);

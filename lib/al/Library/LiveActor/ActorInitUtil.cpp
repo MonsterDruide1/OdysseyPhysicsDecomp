@@ -87,6 +87,11 @@ ALWAYS_INLINE bool initActorPoseKeeper(const char* pose, LiveActor* actor) {
 
 ALWAYS_INLINE void initActorPose(LiveActor* actor, const ActorInitInfo& initInfo,
                                  Resource* modelRes, const char* suffix) {
+    // EDIT:
+    initActorPoseKeeper("TQGMSV", actor);
+    return;
+    // END EDIT
+    
     ByamlIter initPose;
     if (!tryGetActorInitFileIter(&initPose, modelRes, "InitPose", suffix))
         return;
@@ -162,6 +167,10 @@ ALWAYS_INLINE void initActorModel(LiveActor* actor, const ActorInitInfo& initInf
         actor->getModelKeeper()->setDisplayRootJointMtxPtr(
             getJointMtxPtr(actor, displayRootJointName));
 
+    // PATCH:
+    return;
+    // END PATCH
+
     bool isCreateUniqShader = false;
     initModel.tryGetBoolByKey(&isCreateUniqShader, "IsCreateUniqShader");
     if (isCreateUniqShader)
@@ -225,6 +234,10 @@ ALWAYS_INLINE void initActorExecutor(LiveActor* actor, const ActorInitInfo& init
     ByamlIter initExecutor;
     if (!tryGetActorInitFileIter(&initExecutor, modelRes, "InitExecutor", suffix)) {
         ModelKeeper* modelKeeper = actor->getModelKeeper();
+        // PATCH:
+        return;
+        // END PATCH
+        
         if (modelKeeper && modelKeeper->getModelCtrl()->getModelObj()->GetNumShapes())
             initExecutorModelUpdate(actor, initInfo);
         return;
@@ -264,8 +277,12 @@ ALWAYS_INLINE void initActorExecutor(LiveActor* actor, const ActorInitInfo& init
 ALWAYS_INLINE void initActorSensor(LiveActor* actor, const ActorInitInfo& initInfo,
                                    Resource* modelRes, const char* suffix) {
     ByamlIter initSensor;
-    if (!tryGetActorInitFileIter(&initSensor, modelRes, "InitSensor", suffix))
+    if (!tryGetActorInitFileIter(&initSensor, modelRes, "InitSensor", suffix)) {
+        // PATCH
+        actor->initHitSensor(0);
+        // END PATCH
         return;
+    }
 
     s32 numSensors = initSensor.getSize();
     if (numSensors <= 0)
@@ -437,6 +454,10 @@ ALWAYS_INLINE void initActorClipping(LiveActor* actor, const ActorInitInfo& init
 
 ALWAYS_INLINE void initActorShadowMask(LiveActor* actor, const ActorInitInfo& initInfo,
                                        Resource* modelRes, const char* suffix) {
+    // PATCH
+    return;
+    // END PATCH
+
     bool usingDepthShadow = false;
     tryGetArg(&usingDepthShadow, initInfo, "UsingDepthShadow");
     initDepthShadowMapCtrl(actor, modelRes, initInfo, suffix);

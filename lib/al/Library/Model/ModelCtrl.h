@@ -51,8 +51,9 @@ private:
     ActorDitherAnimator* mActorDitherAnimator;
     unsigned char padding3[36];
     s32 mCalcViewCore;
-    s32 pad_3b0;
-    unsigned char padding4[124];
+    Resource* mModelRes;
+    Resource* mAnimRes;
+    unsigned char padding4[112];
     ModelOcclusionQuery* mModelOcclusionQuery;
     unsigned char padding5[16];
 };

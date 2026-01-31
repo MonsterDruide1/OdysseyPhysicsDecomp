@@ -101,3 +101,26 @@ bool PlayerTrigger::tryGetRecMaterialCode(const char** dest) const {
     *dest = mRecMaterialTrigger;
     return true;
 }
+
+bool PlayerTrigger::isOnUpperPunchHit() const {
+    return mCollisionTrigger.isOnBit(ECollisionTrigger_val1) ||
+           mAttackSensorTrigger.isOnBit(EAttackSensorTrigger_val4);
+}
+
+bool PlayerTrigger::isOnHipDropCancelThrow() const {
+    return mActionTrigger.isOnBit(EActionTrigger_val16);
+}
+
+bool PlayerTrigger::isOnSpinMoveCapThrow() const {
+    return mActionTrigger.isOnBit(EActionTrigger_val26) ||
+           mActionTrigger.isOnBit(EActionTrigger_val27);
+}
+
+bool PlayerTrigger::isOnNoDamageDown() const {
+    return mActionTrigger.isOnBit(EActionTrigger_val11) ||
+           mPreMovementTrigger.isOnBit(EPreMovementTrigger_val5);
+}
+
+bool PlayerTrigger::isOnCollisionExpandCheck() const {
+    return mActionTrigger.isOnBit(EActionTrigger_val3);
+}

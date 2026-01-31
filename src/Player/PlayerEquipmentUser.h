@@ -21,6 +21,10 @@ public:
     void endEquip();
     void noticeDamage();
 
+    void setPlayerStateRolling(PlayerStateRolling* state) { mPlayerStateRolling = state; }
+
+    al::HitSensor* getEquipmentSensor() { return mEquipmentSensor; }
+
 private:
     al::HitSensor* mSourceSensor = nullptr;
     al::HitSensor* mEquipmentSensor = nullptr;

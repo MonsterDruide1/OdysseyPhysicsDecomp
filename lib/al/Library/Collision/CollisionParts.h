@@ -2,16 +2,16 @@
 
 #include <container/seadTList.h>
 #include <math/seadMatrix.h>
+#include <math/seadQuat.h>
 #include <math/seadVector.h>
+#include "Library/Collision/CollisionResultBuffer.h"
+#include "Library/Collision/KCollisionServer.h"
 
 namespace al {
-class ArrowHitResultBuffer;
-class DiskHitResultBuffer;
 struct HitInfo;
 class HitSensor;
 class KCollisionServer;
 class LiveActor;
-class SphereHitResultBuffer;
 class TriangleFilterBase;
 
 enum class ForceCollisionFlag : u8 {
@@ -34,7 +34,7 @@ public:
     void validateBySystem();
     void invalidateBySystem();
     void onJoinList();
-    void makeEqualScale(sead::Matrix34f*);
+    f32 makeEqualScale(sead::Matrix34f*);
     void resetAllMtxPrivate(const sead::Matrix34f&);
     void resetAllMtx();
     void updateBoundingSphereRange();
@@ -70,6 +70,9 @@ public:
 
     void setSyncCollisionMtx(const sead::Matrix34f* mtx) { mSyncCollisionMtx = mtx; }
 
+    s32 checkStrikeArrow(al::ArrowHitResultBuffer*, sead::Vector3f const&, sead::Vector3f const&,
+                         al::TriangleFilterBase const*);
+
     const sead::Matrix34f& getBaseMtx() const { return mBaseMtx; }
 
     const sead::Matrix34f& getBaseInvMtx() const { return mBaseInvMtx; }
@@ -90,13 +93,17 @@ public:
 
     void setOptionalPurpose(const char* optionalPurpose) { mOptionalPurpose = optionalPurpose; }
 
-    s32 get_15c() const { return _15c; }
+    s32 get_15c() const { return getSomeCounter(); }
 
-    bool isValidCollision() const { return mIsValidatedByUser && mIsValidatedBySystem; }
+    bool isValidCollision() const { return isValidatedByUser && isValidatedBySystem; }
+
+    int getSomeCounter() const { return someCounter; }
 
     bool isMoving() const { return mIsMoving; }
 
     void setIsMoving(bool isMoving) { mIsMoving = isMoving; }
+
+    void set_16e(bool val) { bVar6 = val; }
 
     void setForceCollisionScaleNone() { mForceCollisionFlag = ForceCollisionFlag::ScaleNone; }
 
@@ -104,35 +111,48 @@ public:
 
     void setForceCollisionScaleOne() { mForceCollisionFlag = ForceCollisionFlag::ScaleOne; }
 
-private:
-    void* unk[2];
-    CollisionParts* _10;  // self-reference
-    sead::TList<CollisionParts*>* mPartsList;
-    const sead::Matrix34f* mSyncCollisionMtx;
+    ~CollisionParts() {
+        delete mKCollisionServer;
+    }
+
+public:
+    void* unk[2] = {nullptr, nullptr};
+    CollisionParts* selfReference = this;
+    sead::TList<CollisionParts*>* mPartsList = nullptr;
+    union {
+        const sead::Matrix34f* mJointMtx = nullptr;
+        const sead::Matrix34f* mSyncCollisionMtx;
+    };
     sead::Matrix34f mSyncMtx;
     sead::Matrix34f mBaseMtx;
     sead::Matrix34f mBaseInvMtx;
     sead::Matrix34f mPrevBaseMtx;
     sead::Matrix34f mPrevBaseInvMtx;
-    sead::Vector3f mMtxScaleVec;
-    f32 mMtxScale;
-    f32 mInvMtxScale;
-    s32 mPriority;
-    KCollisionServer* mKCollisionServer;
-    HitSensor* mConnectedSensor;
-    const char* mSpecialPurpose;
-    const char* mOptionalPurpose;
-    sead::Vector3f _150;  // same as mMtxScaleVec?
-    s32 _15c;
-    f32 mBoundingSphereRange;
-    f32 mBaseMtxScale;
-    bool mIsValidatedByUser;
-    bool mIsValidatedBySystem;
-    bool _16a;
-    bool _16b;
-    bool _16c;
-    bool mIsMoving;
-    ForceCollisionFlag mForceCollisionFlag;
+    sead::Vector3f mMtxScaleVec = {1.0f, 1.0f, 1.0f};
+    f32 mMtxScale = 1.0f;
+    f32 mInvMtxScale = 1.0f;
+    s32 mPriority = -1;
+    KCollisionServer* mKCollisionServer = nullptr;
+    al::HitSensor* mConnectedSensor = nullptr;
+    const char* mSpecialPurpose = nullptr;
+    const char* mOptionalPurpose = nullptr;
+    sead::Vector3f mMtxScaleVecAgain = {1.0f, 1.0f, 1.0f};
+    int someCounter = 0;
+    float mBoundingSphereRange = -1.0f;
+    float mBaseMtxScale = 1.0f;
+    bool isValidatedByUser = true;
+    bool isValidatedBySystem = true;
+    bool bVar3 = true;
+    bool bVar4 = false;
+    bool bVar5 = true;
+    bool mIsMoving = false;
+    union {
+        ForceCollisionFlag mForceCollisionFlag;
+        bool bVar6;
+    };
+    bool pad2;
 };
+
+static_assert(sizeof(CollisionParts) == 0x170);
 
 }  // namespace al

@@ -4,6 +4,8 @@
 #include <math/seadVector.h>
 
 #include "Library/HostIO/HioNode.h"
+#include "math/seadBoundBox.h"
+#include "math/seadVectorFwd.h"
 
 enum class CollisionShapeId : u32 {
     Arrow,
@@ -56,8 +58,22 @@ public:
     void calcWorldShapeInfo(const sead::Matrix34f&, f32) override;
     void calcRelativeShapeInfo(const sead::Matrix34f&) override;
 
-private:
-    void* _18[20];
+public:
+    s32 mArrowIndex;
+    sead::Vector3f mBoundingCenter = {0.0f, 0.0f, 0.0f};
+    f32 mBoundingRadius;
+    sead::Vector3f mBoundingCenterWorld = {0.0f, 0.0f, 0.0f};
+    f32 mBoundingRadiusWorld;
+    sead::Vector3f a3;
+    sead::Vector3f a4;
+    f32 a5;
+    sead::Vector3f vec1 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f vec2 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f vec3 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f vec4 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f vec5 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f vec6 = {0.0f, 0.0f, 0.0f};
+    sead::BoundBox3f mAabb;
 };
 
 static_assert(sizeof(CollisionShapeInfoArrow) == 0xb8);
@@ -78,24 +94,28 @@ public:
 
     // TODO: rename parameter
     void setSupportGround(const sead::Vector3f& up, f32 unk1) {
-        mIsSupportGround = true;
+        isSupportGround = true;
         mUp = up;
-        _48 = unk1;
+        this->unk1 = unk1;
     }
 
-    void setIgnoreGround() { mIsIgnoreGround = true; }
+    void setIgnoreGround() { isSupportGround = true; }
 
-    void set48(f32 value) { _48 = value; }
+    void set48(f32 value) { unk1 = value; }
 
-private:
-    void* _18[5];
-    s32 _40;
-    bool mIsSupportGround;
-    f32 _48;
-    f32 _4c;
-    sead::Vector3f mUp;
-    sead::Vector3f _5c;
-    bool mIsIgnoreGround;
+public:
+    float mBoundingRadius;
+    sead::Vector3f mBoundingCenter;
+    sead::Vector3f mBoundingCenterWorld;
+    float mBoundingRadiusWorld;
+    sead::Vector3f mRelativeShapeInfo = {0.0f, 0.0f, 0.0f};
+    bool isSupportGround = false;
+    float unk1 = 0.0f;
+    float unk2;
+    sead::Vector3f mUp = sead::Vector3f::ey;
+    sead::Vector3f mWorldShapeInfo;
+    bool isIgnoreGround = false;
+    bool unkFlag = false;
 };
 
 static_assert(sizeof(CollisionShapeInfoSphere) == 0x70);
@@ -118,21 +138,36 @@ public:
 
     // TODO: rename parameter
     void setSupportGround(const sead::Vector3f& up, f32 unk1) {
-        mIsSupportGround = true;
+        isSupportGround = true;
         mUp = up;
-        _84 = unk1;
+        this->unk1 = unk1;
     }
 
-    void setIgnoreGround() { mIsIgnoreGround = true; }
+    void setIgnoreGround() { isIgnoreGround = true; }
 
 private:
-    void* _18[13];
-    bool mIsSupportGround;
-    f32 _84;
-    f32 _88;
-    sead::Vector3f mUp;
-    sead::Vector3f _98;
-    bool mIsIgnoreGround = false;
+    float mBoundingRadius = 0.0f;
+    float mBoundingRadiusWorld = 0.0f;
+    float mCheckStepRange = 0.0f;
+    float mCheckStepRangeWorld = 0.0f;
+    float _28 = 0.0f;
+    float _2C = 0.0f;
+    sead::Vector3f mBoundingCenter;
+    sead::Vector3f _3C = sead::Vector3f::ey;
+    float _48 = 0.0f;
+    float _4C = 0.0f;
+    sead::Vector3f mBoundingCenterWorld = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f _5C = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f _68 = {0.0f, 0.0f, 0.0f};
+    sead::Vector3f _74 = {0.0f, 0.0f, 0.0f};
+    bool isSupportGround = false;
+    bool pad[3];
+    float unk1 = 0.0f;
+    float _88 = 0.0f;
+    sead::Vector3f mUp = sead::Vector3f::ey;
+    sead::Vector3f _98 = sead::Vector3f::ey;
+    bool isIgnoreGround = false;
+    bool flags[3];
 };
 
 static_assert(sizeof(CollisionShapeInfoDisk) == 0xA8);

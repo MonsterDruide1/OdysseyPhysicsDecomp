@@ -6,6 +6,8 @@
 #include "Player/CollisionShapeInfo.h"
 #include "Util/CollisionShapeFunction.h"
 
+#include <cstdio>
+
 CollisionShapeKeeper::CollisionShapeKeeper(s32 maxShapes, s32 maxCollideResults,
                                            s32 maxCollideSupportResults) {
     mCollisionShape.allocBuffer(maxShapes, nullptr);
@@ -76,6 +78,7 @@ void CollisionShapeKeeper::updateShape() {
     mBoundingRadius = 0.0f;
 
     s32 numShapes = mCollisionShape.size();
+    dbg_printf("numShapes = %d\n", numShapes);
     for (s32 i = 0; i < numShapes; i++) {
         const sead::Vector3f& center = mCollisionShape[i]->getBoundingCenter();
 
@@ -126,6 +129,9 @@ void CollisionShapeKeeper::calcRelativeShapeInfo(const sead::Matrix34f& a2) {
 }
 
 void CollisionShapeKeeper::registerCollideResult(const CollidedShapeResult& result) {
+    dbg_printf("CollisionShapeKeeper::registerCollideResult(type=%s)\n", result.isSphere() ? "sphere" :
+                                                                     result.isArrow()  ? "arrow" :
+                                                                                         "disk");
     *mCollideShapeResult[mNumCollideResult] = result;
     mNumCollideResult++;
 }

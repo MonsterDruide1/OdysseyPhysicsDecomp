@@ -1,20 +1,21 @@
 #include "Player/CollidedShapeResult.h"
 
+#include "Library/Collision/KCollisionServer.h"
 #include "Util/CollisionShapeFunction.h"
 
 CollidedShapeResult::CollidedShapeResult(const CollisionShapeInfoBase* shapeInfo)
     : mShapeInfo(shapeInfo) {}
 
-void CollidedShapeResult::setArrowHitInfo(const al::ArrowHitInfo& arrowHitInfo) {
-    *mArrowHitInfo.hitInfo = *arrowHitInfo.hitInfo;
+void CollidedShapeResult::setArrowHitInfo(const al::ArrowHitInfo& hitInfo) {
+    *mArrowHitInfo.hitInfo = *hitInfo.hitInfo;
 }
 
-void CollidedShapeResult::setSphereHitInfo(const al::SphereHitInfo& sphereHitInfo) {
-    *mSphereHitInfo.hitInfo = *sphereHitInfo.hitInfo;
+void CollidedShapeResult::setSphereHitInfo(const al::SphereHitInfo& hitInfo) {
+    *mSphereHitInfo.hitInfo = *hitInfo.hitInfo;
 }
 
-void CollidedShapeResult::setDiskHitInfo(const al::DiskHitInfo& diskHitInfo) {
-    *mDiskHitInfo.hitInfo = *diskHitInfo.hitInfo;
+void CollidedShapeResult::setDiskHitInfo(const al::DiskHitInfo& hitInfo) {
+    *mDiskHitInfo.hitInfo = *hitInfo.hitInfo;
 }
 
 bool CollidedShapeResult::isArrow() const {

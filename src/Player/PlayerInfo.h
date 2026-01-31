@@ -51,7 +51,7 @@ public:
 
     HackCap* getHackCap() const { return mHackCap; }
 
-private:
+public:
     PlayerModelChangerHakoniwa* mModelChangerHakoniwa = nullptr;
     PlayerOxygen* mOxygen = nullptr;
     PlayerAnimator* mAnimator = nullptr;

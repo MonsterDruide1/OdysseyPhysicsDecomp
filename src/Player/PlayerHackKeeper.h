@@ -123,7 +123,7 @@ public:
 
     al::HitSensor* getHackSensor() const { return mHackHitSensor; }
 
-private:
+public:
     al::LiveActor* mParent;
     HackCap* mHackCap;
     PlayerRecoverySafetyPoint* mRecoverySafePoint;

@@ -54,6 +54,24 @@ private:
     s32 mApplyLastGroundInertiaFrames = 0;
     sead::Vector3f mMovePowerForce = {0.0f, 0.0f, 0.0f};
     sead::Vector3f mLastGroundInertia = {0.0f, 0.0f, 0.0f};
+/*
+    ExternalForceKeeper* mExternalForceKeeper;
+    sead::Vector3f someForce1;
+    sead::Vector3f someForce2;
+    sead::Vector3f someVec2;
+    int pad;
+    const al::LiveActor* mActor;
+    const IUsePlayerCollision* mCollision;
+    const sead::Vector3f* someVec;
+    bool someFlag;
+    bool gap2[3];
+    sead::Vector3f someForce3;
+    float someMultipliersDependingOnGroundOrAir[6];
+    sead::Vector3f mSnapForce;
+    int mApplyLastGroundInertia;
+    sead::Vector3f someForceRegardingGround;
+    sead::Vector3f someForceRegardingGround2;
+*/
 };
 
 static_assert(sizeof(PlayerExternalVelocity) == 0x98);

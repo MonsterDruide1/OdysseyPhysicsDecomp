@@ -1,5 +1,6 @@
 #include "Player/PlayerStateSquat.h"
 
+#include "CUSTOM/PlayerAnimator.h"
 #include "Library/LiveActor/ActorMovementFunction.h"
 #include "Library/LiveActor/ActorPoseKeeper.h"
 #include "Library/LiveActor/ActorPoseUtil.h"
@@ -27,6 +28,28 @@ NERVE_IMPL(PlayerStateSquat, StandUp);
 NERVES_MAKE_NOSTRUCT(PlayerStateSquat, Brake);
 NERVES_MAKE_STRUCT(PlayerStateSquat, Wait, Walk, StandUp);
 }  // namespace
+
+/* For Gym */
+template <typename T> s32 getStateBitMap(u128*, int, T*);
+template <>
+s32 getStateBitMap<PlayerStateSquat>(u128* state, int startOffset, PlayerStateSquat* player) {
+    constexpr int size = 4;
+    if(startOffset+size >= 128) CRASH;
+    *state <<= size;
+
+    *state |= al::isNerve(player, &Brake);
+    *state |= al::isNerve(player, &NrvPlayerStateSquat.Wait) << 1;
+    *state |= al::isNerve(player, &NrvPlayerStateSquat.Walk) << 2;
+    *state |= al::isNerve(player, &NrvPlayerStateSquat.StandUp) << 3;
+
+    int offset = startOffset+size;
+    if(player->isDead()) {
+        u128 mask = ~0;
+        mask <<= offset - startOffset;
+        *state &= mask;
+    }
+    return offset - startOffset;
+}
 
 PlayerStateSquat::PlayerStateSquat(al::LiveActor* player, const PlayerConst* pConst,
                                    PlayerAnimator* animator, const PlayerInput* input,
