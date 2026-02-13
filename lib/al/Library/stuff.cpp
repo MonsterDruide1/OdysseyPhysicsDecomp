@@ -1948,16 +1948,16 @@ s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
 
                     v57->_0 = v56;
                     v57->_8.z = v44;
-                    v57->mTriangle.mKCPrismHeader = StrikeSphereInfo->hitInfo->triangle.mKCPrismHeader;
-                    v57->mTriangle.mKCPrismData = StrikeSphereInfo->hitInfo->triangle.mKCPrismData;
-                    v57->mTriangle.mCollisionParts = StrikeSphereInfo->hitInfo->triangle.mCollisionParts;
-                    v57->mTriangle.mNormals[0] = StrikeSphereInfo->hitInfo->triangle.mNormals[0];
-                    v57->mTriangle.mNormals[1] = StrikeSphereInfo->hitInfo->triangle.mNormals[1];
-                    v57->mTriangle.mNormals[2] = StrikeSphereInfo->hitInfo->triangle.mNormals[2];
-                    v57->mTriangle.mNormals[3] = StrikeSphereInfo->hitInfo->triangle.mNormals[3];
-                    v57->mTriangle.mPositions[0] = StrikeSphereInfo->hitInfo->triangle.mPositions[0];
-                    v57->mTriangle.mPositions[1] = StrikeSphereInfo->hitInfo->triangle.mPositions[1];
-                    v57->mTriangle.mPositions[2] = StrikeSphereInfo->hitInfo->triangle.mPositions[2];
+                    v57->triangle.mKCPrismHeader = StrikeSphereInfo->hitInfo->triangle.mKCPrismHeader;
+                    v57->triangle.mKCPrismData = StrikeSphereInfo->hitInfo->triangle.mKCPrismData;
+                    v57->triangle.mCollisionParts = StrikeSphereInfo->hitInfo->triangle.mCollisionParts;
+                    v57->triangle.mNormals[0] = StrikeSphereInfo->hitInfo->triangle.mNormals[0];
+                    v57->triangle.mNormals[1] = StrikeSphereInfo->hitInfo->triangle.mNormals[1];
+                    v57->triangle.mNormals[2] = StrikeSphereInfo->hitInfo->triangle.mNormals[2];
+                    v57->triangle.mNormals[3] = StrikeSphereInfo->hitInfo->triangle.mNormals[3];
+                    v57->triangle.mPositions[0] = StrikeSphereInfo->hitInfo->triangle.mPositions[0];
+                    v57->triangle.mPositions[1] = StrikeSphereInfo->hitInfo->triangle.mPositions[1];
+                    v57->triangle.mPositions[2] = StrikeSphereInfo->hitInfo->triangle.mPositions[2];
                     v57->_4 = v103;
                 } else {
                     v82 = StrikeSphereInfo->hitInfo->collisionHitPos.y - a2.y;
@@ -1993,20 +1993,20 @@ s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
                     v96 = StrikeSphereInfo->hitInfo->collisionHitPos.y;
                     v95->_8.x = StrikeSphereInfo->hitInfo->collisionHitPos.x;
                     v95->_8.y = v96;
-                    v95->mTriangle.mKCPrismHeader = StrikeSphereInfo->hitInfo->triangle.mKCPrismHeader;
-                    v95->mTriangle.mKCPrismData = StrikeSphereInfo->hitInfo->triangle.mKCPrismData;
-                    v95->mTriangle.mCollisionParts = StrikeSphereInfo->hitInfo->triangle.mCollisionParts;
-                    v95->mTriangle.mNormals[0] = StrikeSphereInfo->hitInfo->triangle.mNormals[0];
-                    v95->mTriangle.mNormals[1].x = StrikeSphereInfo->hitInfo->triangle.mNormals[1].x;
-                    v95->mTriangle.mNormals[1].y = StrikeSphereInfo->hitInfo->triangle.mNormals[1].y;
-                    v95->mTriangle.mNormals[1].z = StrikeSphereInfo->hitInfo->triangle.mNormals[1].z;
-                    v95->mTriangle.mNormals[2] = StrikeSphereInfo->hitInfo->triangle.mNormals[2];
-                    v95->mTriangle.mNormals[3] = StrikeSphereInfo->hitInfo->triangle.mNormals[3];
-                    v95->mTriangle.mPositions[0].x = StrikeSphereInfo->hitInfo->triangle.mPositions[0].x;
-                    v95->mTriangle.mPositions[0].y = StrikeSphereInfo->hitInfo->triangle.mPositions[0].y;
-                    v95->mTriangle.mPositions[0].z = StrikeSphereInfo->hitInfo->triangle.mPositions[0].z;
-                    v95->mTriangle.mPositions[1] = StrikeSphereInfo->hitInfo->triangle.mPositions[1];
-                    v95->mTriangle.mPositions[2] = StrikeSphereInfo->hitInfo->triangle.mPositions[2];
+                    v95->triangle.mKCPrismHeader = StrikeSphereInfo->hitInfo->triangle.mKCPrismHeader;
+                    v95->triangle.mKCPrismData = StrikeSphereInfo->hitInfo->triangle.mKCPrismData;
+                    v95->triangle.mCollisionParts = StrikeSphereInfo->hitInfo->triangle.mCollisionParts;
+                    v95->triangle.mNormals[0] = StrikeSphereInfo->hitInfo->triangle.mNormals[0];
+                    v95->triangle.mNormals[1].x = StrikeSphereInfo->hitInfo->triangle.mNormals[1].x;
+                    v95->triangle.mNormals[1].y = StrikeSphereInfo->hitInfo->triangle.mNormals[1].y;
+                    v95->triangle.mNormals[1].z = StrikeSphereInfo->hitInfo->triangle.mNormals[1].z;
+                    v95->triangle.mNormals[2] = StrikeSphereInfo->hitInfo->triangle.mNormals[2];
+                    v95->triangle.mNormals[3] = StrikeSphereInfo->hitInfo->triangle.mNormals[3];
+                    v95->triangle.mPositions[0].x = StrikeSphereInfo->hitInfo->triangle.mPositions[0].x;
+                    v95->triangle.mPositions[0].y = StrikeSphereInfo->hitInfo->triangle.mPositions[0].y;
+                    v95->triangle.mPositions[0].z = StrikeSphereInfo->hitInfo->triangle.mPositions[0].z;
+                    v95->triangle.mPositions[1] = StrikeSphereInfo->hitInfo->triangle.mPositions[1];
+                    v95->triangle.mPositions[2] = StrikeSphereInfo->hitInfo->triangle.mPositions[2];
                     v95->_4 = unk;
                 }
 
