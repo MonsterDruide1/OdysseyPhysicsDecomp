@@ -677,7 +677,7 @@ const al::NameToCreator<al::ActorCreatorFunction> sProjectActorFactoryEntries[] 
     {"WheelWaveSurfParts", nullptr},
     {"WindBlowPuzzle", nullptr},
     {"WorldMapEarth", al::createActorFunction<WorldMapEarth>},
-    {"WorldTravelingNpc", al::createActorFunction<WorldTravelingNpc>},
+    {"WorldTravelingNpc", nullptr},
     {"WorldTravelingPeach", nullptr},
     {"WorldWarpHole", al::createActorFunction<WorldWarpHole>},
     {"Fastener", nullptr},

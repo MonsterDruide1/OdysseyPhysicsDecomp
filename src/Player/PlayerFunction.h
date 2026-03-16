@@ -50,4 +50,6 @@ PlayerCostumeInfo* initMarioModelActorDemo(PlayerJointControlPartsDynamics** joi
                                            const char* bodyName, const char* capName,
                                            const PlayerConst* pConst, sead::Vector3f* noseScale,
                                            sead::Vector3f* earScale, bool isCloset);
+
+al::ActorDitherAnimator* createPlayerDitherAnimator(al::LiveActor *,float);
 }  // namespace PlayerFunction

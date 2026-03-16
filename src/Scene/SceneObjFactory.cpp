@@ -91,7 +91,7 @@ static al::ISceneObj* sceneObjCreator(s32 id) {
         return new RhyhtmInfoWatcher("");
 
     case SceneObjID_RouteGuideDirector:
-        return new RouteGuideDirector();
+        return nullptr;
 
     case SceneObjID_SceneEventNotifier:
         return nullptr;
@@ -121,7 +121,7 @@ static al::ISceneObj* sceneObjCreator(s32 id) {
         return nullptr;
 
     case SceneObjID_HelpAmiiboDirector:
-        return new HelpAmiiboDirector();
+        return nullptr;
 
     default:
         return nullptr;
