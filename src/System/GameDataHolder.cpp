@@ -1,6 +1,6 @@
 #include "System/GameDataHolder.h"
 
-#include <heap/seadFrameHeap.h>
+#include <heap/seadExpHeap.h>
 #include <heap/seadHeap.h>
 #include <stream/seadRamStream.h>
 
@@ -288,7 +288,7 @@ GameDataHolder::GameDataHolder(const al::MessageSystem* messageSystem)
     : mMessageSystem(messageSystem) {
     setLanguage(al::getLanguageString());
     mSaveDataWriteHeap =
-        sead::FrameHeap::create(0x200000, "セーブデータByamlIter書き込み用", nullptr);
+        sead::ExpHeap::create(0x200000, "セーブデータByamlIter書き込み用", nullptr);
     mSaveDataWorkBuffer = new u8[0x200000];
     mGameConfigData = new GameConfigData();
     mGameConfigData->init();
