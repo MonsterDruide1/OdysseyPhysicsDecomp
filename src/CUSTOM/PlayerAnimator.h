@@ -1107,6 +1107,8 @@ public:
     
     void resetModelAlpha() {}
 
+    void forceCapOn() {}
+
     bool unk2;
     bool mIsNeedFullFaceAnim = false;
     bool mIsSubAnimOnlyAir = false;
