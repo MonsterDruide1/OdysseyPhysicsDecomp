@@ -47,28 +47,6 @@ s32 getPadAccelerationDeviceNum(s32) {
     return 2;
 }
 
-f32 calcCylinderRadiusDot(const sead::Vector3f& a1, const sead::Vector3f& a2, f32 a3) {
-    float v6;  // s0
-    float v7;  // s1
-    float v8;  // s0
-    float v9;  // s0
-
-    v6 = a2.dot(a1);
-    v7 = -v6;
-    if (v6 > 0.0)
-        v7 = a2.dot(a1);
-
-    v8 = -1.0;
-    if (v7 >= -1.0) {
-        v8 = v7;
-        if (v7 > 1.0)
-            v8 = 1.0;
-    }
-
-    v9 = sead::Mathf::cos(v8);
-    return sead::Mathf::sin(v9) * a3;
-}
-
 void calcMtxLocalTrans(sead::Vector3f* out, const sead::Matrix34f& mtx, const sead::Vector3f& in) {
     sead::Vector3f trans;
     mtx.getTranslation(trans);
@@ -99,12 +77,6 @@ void calcTransLocalOffsetByMtx(sead::Vector3f* out, const sead::Matrix34f& a2,
     out->x = a2.m[0][3] + (float)((float)(v7 + (float)(a2.m[0][2] * z)) + 0.0);
     out->y = v10;
     out->z = v8 + v9;
-}
-
-void separateVectorParallelVertical(sead::Vector3f* p1, sead::Vector3f* p2,
-                                    const sead::Vector3f& x1, const sead::Vector3f& x2) {
-    *p1 = x1 * x2.dot(x1);
-    *p2 = x2 - *p1;
 }
 
 const char* getCollisionCodeName(const al::Triangle& tri, const char* name) {
@@ -154,12 +126,6 @@ void calcArrowAabb(sead::BoundBox3<float>* box, sead::Vector3<float> const& val1
                    sead::Vector3<float> const& val2) {
     box->setUndef();
     box->set(val1.x, val1.y, val1.z, val2.x, val2.y, val2.z);
-}
-
-bool isNearCollideSphereAabb(const sead::Vector3f& vec, f32 dist, const sead::BoundBox3f& box) {
-    return vec.x >= box.getMin().x - dist && vec.x <= box.getMax().x + dist &&
-           vec.y >= box.getMin().y - dist && vec.y <= box.getMax().y + dist &&
-           vec.z >= box.getMin().z - dist && vec.z <= box.getMax().z + dist;
 }
 
 bool isWallPolygon(const sead::Vector3f& a1, const sead::Vector3f& a2) {
@@ -819,11 +785,6 @@ void turnVecToVecRate(sead::Vector3<float>* a1, sead::Vector3<float> const& a2,
     }
 }
 
-void parallelizeVec(sead::Vector3f* a1, const sead::Vector3f& a2, const sead::Vector3f& a3) {
-    f32 dot = a2.dot(a3);
-    *a1 = a2 * dot;
-}
-
 bool turnVecToVecDegree(sead::Vector3f* a1, const sead::Vector3f& a2, const sead::Vector3f& a3,
                         f32 a4) {
     float v7;            // s10
@@ -1012,47 +973,6 @@ void alCollisionUtil::invalidateCollisionPartsPtrArray(const al::IUseCollision* 
     return collision->getCollisionDirector()->invalidateCollisionPartsPtrArray();
 }
 
-bool al::isNearDirection(const sead::Vector3f& a1, const sead::Vector3f& a2, float a3) {
-    float x;    // s1
-    float y;    // s2
-    float v5;   // s3
-    float v6;   // s4
-    float z;    // s5
-    float v8;   // s6
-    float v10;  // s7
-    float v11;  // s5
-    float v12;  // s1
-
-    x = a1.x;
-    y = a1.y;
-    v5 = a2.x;
-    v6 = a2.y;
-    z = a1.z;
-    v8 = a2.z;
-    if ((float)((float)((float)(a1.x * a2.x) + (float)(y * v6)) + (float)(z * v8)) < 0.0)
-        return 0LL;
-
-    v10 = (float)(y * v8) - (float)(v6 * z);
-    if (v10 <= 0.0)
-        v10 = -v10;
-
-    if (v10 > a3)
-        return 0LL;
-
-    v11 = (float)(v5 * z) - (float)(x * v8);
-    if (v11 <= 0.0)
-        v11 = -v11;
-
-    if (v11 > a3)
-        return 0LL;
-
-    v12 = (float)(x * v6) - (float)(v5 * y);
-    if (v12 <= 0.0)
-        v12 = -v12;
-
-    return v12 <= a3;
-}
-
 bool al::separateScalarAndDirection(f32* a1, sead::Vector3f* a2, const sead::Vector3f& a3) {
     float x;      // s1
     bool result;  // w0
@@ -1086,19 +1006,6 @@ bool al::separateScalarAndDirection(f32* a1, sead::Vector3f* a2, const sead::Vec
     }
 
     return result;
-}
-
-bool al::isReverseDirection(const sead::Vector3f& a1, const sead::Vector3f& a2, f32 a3) {
-    if (a1.dot(a2) >= 0.0f)
-        return false;
-
-    if (sead::Mathf::abs((a1.y * a2.z) - (a1.z * a2.y)) > a3)
-        return false;
-    if (sead::Mathf::abs((a1.z * a2.x) - (a1.x * a2.z)) > a3)
-        return false;
-    if (sead::Mathf::abs((a1.x * a2.y) - (a1.y * a2.x)) > a3)
-        return false;
-    return true;
 }
 
 const sead::Vector3f& alCollisionUtil::getCollisionMovingReaction(const al::HitInfo* info) {
@@ -2329,11 +2236,6 @@ void al::calcDirSlide(sead::Vector3<float>* a1, sead::Vector3<float> const& a2,
         a1->y = 0.0;
         a1->z = 0.0;
     }
-}
-
-bool al::turnVecToVecCosOnPlane(sead::Vector3<float>* a1, sead::Vector3<float> const& a2,
-                                sead::Vector3<float> const& a3, float a4) {
-    return al::turnVecToVecCosOnPlane(a1, *a1, a2, a3, a4);
 }
 
 const al::CollisionParts* alCollisionUtil::getCollisionHitParts(const al::HitInfo* a1) {
