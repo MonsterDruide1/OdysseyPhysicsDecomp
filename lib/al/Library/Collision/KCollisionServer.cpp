@@ -75,8 +75,8 @@ void SpherePoseInterpolator::startInterp(const sead::Vector3f& posStart,
                                          const sead::Quatf& quatStart, const sead::Quatf& quatEnd,
                                          f32 steps) {
     dbg_printf("SpherePoseInterpolator::startInterp(start=(%f, %f, %f), end=(%f, %f, %f), ..., "
-           "steps=%f)\n",
-           posStart.x, posStart.y, posStart.z, posEnd.x, posEnd.y, posEnd.z, steps);
+               "steps=%f)\n",
+               posStart.x, posStart.y, posStart.z, posEnd.x, posEnd.y, posEnd.z, steps);
     mCurrentStep = 0.0f;
     mPrevStep = 0.0f;
     mPos = posStart;
@@ -122,11 +122,12 @@ void SpherePoseInterpolator::calcInterp(sead::Vector3f* pos, f32* size, sead::Qu
     slerpQuat(quat, mQuatStart, mQuatEnd, mCurrentStep);
     quat->normalize();
     calcRemainMoveVector(remainMoveVec);
-    dbg_printf("SpherePoseInterpolator::calcInterp(pos=(%f, %f, %f), size=%f, quat=(%f, %f, %f, %f), "
-           "remainMoveVec=(%f, %f, %f))\n",
-           pos->x, pos->y, pos->z, *size, quat->x, quat->y, quat->z, quat->w,
-           remainMoveVec ? remainMoveVec->x : -0, remainMoveVec ? remainMoveVec->y : -0,
-           remainMoveVec ? remainMoveVec->z : -0);
+    dbg_printf(
+        "SpherePoseInterpolator::calcInterp(pos=(%f, %f, %f), size=%f, quat=(%f, %f, %f, %f), "
+        "remainMoveVec=(%f, %f, %f))\n",
+        pos->x, pos->y, pos->z, *size, quat->x, quat->y, quat->z, quat->w,
+        remainMoveVec ? remainMoveVec->x : -0, remainMoveVec ? remainMoveVec->y : -0,
+        remainMoveVec ? remainMoveVec->z : -0);
 }
 
 void SpherePoseInterpolator::calcRemainMoveVector(sead::Vector3f* remainMoveVec) const {
@@ -423,8 +424,262 @@ const u8* KCollisionServer::searchBlock(s32* coordShift, const sead::Vector3u& p
     return octreeData + (v8 & 0x7FFFFFFF);
 }
 
-s32 KCollisionServer::checkSphere(const sead::Vector3f*, f32, f32, u32,
-                                  sead::FixedRingBuffer<KCHitInfo, 512>*) {}
+s32 KCollisionServer::checkSphere(const sead::Vector3f* a2, f32 a3, f32 a4, u32 a5,
+                                  sead::FixedRingBuffer<KCHitInfo, 512>* a6) {
+    int* mData;                  // x8
+    u64 v10;                     // x16
+    float z;                     // s2
+    float y;                     // s1
+    float v13;                   // s11
+    float v14;                   // s14
+    float v15;                   // s10
+    float v16;                   // s12
+    float v17;                   // s13
+    float v18;                   // s15
+    const u8* v19;               // x2
+    const u8* v20;               // x18
+    al::KCPrismHeader* v21;      // x26
+    float x;                     // s0
+    float v23;                   // s1
+    float v24;                   // s2
+    const u8* v25;               // x25
+    int v26;                     // w15
+    int v27;                     // w1
+    unsigned int v28;            // w9
+    unsigned int v29;            // w10
+    unsigned int v30;            // w23
+    int v31;                     // w4
+    unsigned int v32;            // w9
+    int v33;                     // w11
+    int v34;                     // w10
+    bool v35;                    // cc
+    unsigned int v37;            // w28
+    const u8* v38;               // x15
+    int v39;                     // w14
+    unsigned int v40;            // w24
+    int v41;                     // w16
+    int v42;                     // w18
+    int v49;                     // w8
+    const u8* v50;               // x22
+    int v51;                     // w10
+    int v52;                     // w10
+    unsigned short v53;          // w8
+    const u8* v54;               // x22
+    int v55;                     // t1
+    const al::KCPrismData* v56;  // x1
+    int v60;                     // t1
+    int v68;                     // t1
+    const al::KCPrismData* v69;  // x1
+    int v73;                     // t1
+    u64 v76;                     // [xsp+10h] [xbp-100h]
+    unsigned int v77;            // [xsp+18h] [xbp-F8h]
+    int v78;                     // [xsp+1Ch] [xbp-F4h]
+    unsigned int v79;            // [xsp+20h] [xbp-F0h]
+    int v80;                     // [xsp+24h] [xbp-ECh]
+    int v82;                     // [xsp+2Ch] [xbp-E4h]
+    const u8* v83;               // [xsp+30h] [xbp-E0h]
+    unsigned int v84;            // [xsp+3Ch] [xbp-D4h]
+    int v85;                     // [xsp+40h] [xbp-D0h]
+    int v86;                     // [xsp+44h] [xbp-CCh]
+    int v87;                     // [xsp+48h] [xbp-C8h]
+    int v88;                     // [xsp+4Ch] [xbp-C4h]
+    const al::KCPrismData* v90;  // [xsp+70h] [xbp-A0h] BYREF
+
+    float v90a = 0.0f;
+    u8 v90b = 0;
+    mData = (int*)this->mData;
+    if (mData[3] < 1) {
+        return 0;
+    } else {
+        v84 = 0;
+        v10 = 0;
+        z = a2->z;
+        y = a2->y;
+        v13 = y + a3;
+        v14 = y - a3;
+        v15 = a2->x + a3;
+        v16 = z + a3;
+        v17 = a2->x - a3;
+        v18 = z - a3;
+        v19 = 0;
+        v20 = 0;
+        do {
+            if ((unsigned int)this->mModelsData.mPtrNum <= v10)
+                v21 = 0;
+            else
+                v21 = (al::KCPrismHeader*)this->mModelsData.mPtrs[v10];
+            x = v21->octreeOrigin.x;
+            v23 = v21->octreeOrigin.y;
+            v24 = v21->octreeOrigin.z;
+            v25 = v20;
+            if ((int)(float)(v17 - x) >= 0)
+                v26 = (int)(float)(v17 - x);
+            else
+                v26 = 0;
+            if ((int)(float)(v14 - v23) >= 0)
+                v27 = (int)(float)(v14 - v23);
+            else
+                v27 = 0;
+            v28 = v21->widthMask.x;
+            v29 = v21->widthMask.y;
+            if ((int)(float)(v18 - v24) >= 0)
+                v30 = (int)(float)(v18 - v24);
+            else
+                v30 = 0;
+            if ((int)(float)(v15 - x) > (int)~v28)
+                v31 = ~v28;
+            else
+                v31 = (int)(float)(v15 - x);
+            v32 = v21->widthMask.z;
+            if ((int)(float)(v13 - v23) > (int)~v29)
+                v33 = ~v29;
+            else
+                v33 = (int)(float)(v13 - v23);
+            v79 = v33;
+            v80 = v26;
+            if ((int)(float)(v16 - v24) > (int)~v32)
+                v34 = ~v32;
+            else
+                v34 = (int)(float)(v16 - v24);
+            v35 = v31 < v26 || v33 < v27;
+            v77 = v34;
+            v78 = v27;
+            if (!v35 && v34 >= (int)v30) {
+                v76 = v10;
+                v82 = v31;
+                do {
+                    v37 = v78;
+                    v38 = v25;
+                    v25 = v19;
+                    v39 = 1000000;
+                    do {
+                        v40 = v80;
+                        v41 = 0;
+                        v83 = v38;
+                        v42 = 1000000;
+                        do {
+                            s32 v43;
+                            v50 = searchBlock(&v43, {v40, v37, v30}, v21);
+                            v49 = 1 << v43;
+                            v51 = v49 - ((v49 - 1) & v37);
+                            if ((int)(v49 - ((v49 - 1) & v30)) < v39)
+                                v39 = v49 - ((v49 - 1) & v30);
+                            if (v51 < v42)
+                                v42 = v49 - ((v49 - 1) & v37);
+                            if (v51 > v41 && *((short*)v50 + 1)) {
+                                v25 = v50;
+                                v41 = v49 - ((v49 - 1) & v37);
+                            }
+                            v52 = v49 - ((v49 - 1) & v40);
+                            if (!v38 || v50 != v38) {
+                                v55 = *((unsigned short*)v50 + 1);
+                                v54 = v50 + 2;
+                                v53 = v55;
+                                if (v55 != 0xFFFF) {
+                                    v87 = v41;
+                                    v88 = v39;
+                                    v85 = v52;
+                                    v86 = v42;
+                                LABEL_50:
+                                    if (v84 >= a5) {
+                                        while (1) {
+                                            v69 = (const al::KCPrismData*)((char*)v21 + 20 * v53 +
+                                                                           v21->trianglesOffset);
+                                            if (v69->length > 0.0) {
+                                                bool contains = false;
+                                                for (auto it : *a6) {
+                                                    if (it.data == v69) {
+                                                        contains = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if (!contains) {
+                                                    bool result = KCHitSphere(
+                                                        v69, v21, (const sead::Vector3f*)a2, a3, a4,
+                                                        &v90a, &v90b);
+                                                }
+                                            }
+                                            v73 = *((unsigned short*)v54 + 1);
+                                            v54 += 2;
+                                            v53 = v73;
+                                            if (v73 == 0xFFFF) {
+                                            LABEL_78:
+                                                v31 = v82;
+                                                v41 = v87;
+                                                v39 = v88;
+                                                v38 = v83;
+                                                v52 = v85;
+                                                v42 = v86;
+                                                goto LABEL_79;
+                                            }
+                                        }
+                                    }
+                                    while (1) {
+                                        v56 = (const al::KCPrismData*)((char*)v21 + 20 * v53 +
+                                                                       v21->trianglesOffset);
+                                        v90 = v56;
+                                        if (v56->length > 0.0) {
+                                            bool contains = false;
+                                            for (auto it : *a6) {
+                                                if (it.data == v69) {
+                                                    contains = true;
+                                                    break;
+                                                }
+                                            }
+                                            if (!contains) {
+                                                bool result =
+                                                    KCHitSphere(v56, v21, (const sead::Vector3f*)a2,
+                                                                a3, a4, &v90a, &v90b);
+                                                if (result) {
+                                                    v41 = v87;
+                                                    v39 = v88;
+                                                    v38 = v83;
+                                                    v42 = v86;
+                                                    a6->pushBack({
+                                                        .header = v21,
+                                                        .data = v90,
+                                                        .something = v90a,
+                                                        .mCollisionLocation = v90b,
+                                                    });
+                                                    v52 = v85;
+                                                    ++v84;
+                                                    v68 = *((unsigned short*)v54 + 1);
+                                                    v54 += 2;
+                                                    v53 = v68;
+                                                    v31 = v82;
+                                                    if (v68 == 0xFFFF)
+                                                        break;
+                                                    goto LABEL_50;
+                                                }
+                                            }
+                                        }
+                                        v60 = *((unsigned short*)v54 + 1);
+                                        v54 += 2;
+                                        v53 = v60;
+                                        if (v60 == 0xFFFF)
+                                            goto LABEL_78;
+                                    }
+                                }
+                            }
+                        LABEL_79:
+                            v40 += v52;
+                        } while (v40 <= v31);
+                        v37 += v42;
+                        v38 = v25;
+                    } while (v37 <= v79);
+                    v30 += v39;
+                    v19 = v25;
+                } while (v30 <= v77);
+                v10 = v76;
+                mData = (int*)this->mData;
+                v20 = v25;
+                v19 = v25;
+            }
+            ++v10;
+        } while ((u64)v10 < mData[3]);
+    }
+    return v84;
+}
 
 // NON_MATCHING: different comparison for posOut1->x and posOut2->x
 bool KCollisionServer::outCheckAndCalcArea(sead::Vector3u* posOut1, sead::Vector3u* posOut2,
@@ -455,7 +710,233 @@ bool KCollisionServer::outCheckAndCalcArea(sead::Vector3u* posOut1, sead::Vector
 }
 
 bool KCollisionServer::KCHitSphere(const KCPrismData* data, const KCPrismHeader* header,
-                                   const sead::Vector3f*, f32, f32, f32*, u8*) {}
+                                   const sead::Vector3f* a4, f32 a5, f32 a6, f32* a7, u8* a8) {
+    float thickness;  // s4
+    float* v9;        // x8
+    char* v11;        // x17
+    float v12;        // s7
+    float v13;        // s6
+    float* v14;       // x11
+    float v15;        // s5
+    float* v16;       // x9
+    float* v17;       // x8
+    float v18;        // s0
+    float* v20;       // x14
+    float* v21;       // x12
+    float* v22;       // x10
+    float v23;        // s2
+    float* v24;       // x16
+    float* v25;       // x15
+    float* v26;       // x13
+    float v27;        // s3
+    float* v28;       // x17
+    float v29;        // s10
+    float v30;        // s11
+    float v31;        // s1
+    float v32;        // s5
+    float v33;        // s1
+    float v34;        // s4
+    float v35;        // s3
+    float v36;        // s7
+    float v37;        // s6
+    float v38;        // s16
+    float v39;        // s4
+    float v40;        // s5
+    float v41;        // s0
+    float v42;        // s7
+    float v43;        // s6
+    float v44;        // s16
+    float v45;        // s2
+    float v46;        // s1
+    float v47;        // s7
+    float v48;        // s6
+    float v49;        // s16
+    u8 v50;           // w8
+    float v51;        // s2
+    float v52;        // s3
+    float v53;        // s16
+    float v54;        // s0
+    float v55;        // s1
+    u8 v56;           // w8
+    float v57;        // s3
+    float v58;        // s17
+    float v59;        // s17
+    float v60;        // s2
+    float v61;        // s9
+    float v62;        // s0
+    float v64;        // s0
+
+    thickness = header->thickness;
+    *a8 = 0;
+    v9 = (float*)((char*)&header->positionsOffset + 12 * (unsigned short)*(int*)&data->posIndex +
+                  header->positionsOffset);
+    v11 = (char*)header + header->normalsOffset;
+    v12 = a4->y - v9[1];
+    v13 = a4->x - *v9;
+    v14 = (float*)&v11[12 * (unsigned short)*(int*)&data->edgeNormalIndex];
+    v15 = a4->z - v9[2];
+    v16 = v14 + 1;
+    v17 = v14 + 2;
+    v18 = (float)((float)(v13 * *v14) + (float)(v12 * v14[1])) + (float)(v15 * v14[2]);
+    if (v18 >= a5)
+        return 0;
+    v20 = (float*)&v11[12 * data->edgeNormalIndex[1]];
+    v21 = v20 + 1;
+    v22 = v20 + 2;
+    v23 = (float)((float)(v13 * *v20) + (float)(v12 * v20[1])) + (float)(v15 * v20[2]);
+    if (v23 >= a5)
+        return 0;
+    v24 = (float*)&v11[12 * data->edgeNormalIndex[2]];
+    v25 = v24 + 1;
+    v26 = v24 + 2;
+    v27 = (float)((float)((float)(v13 * *v24) + (float)(v12 * v24[1])) + (float)(v15 * v24[2])) -
+          data->length;
+    if (v27 >= a5)
+        return 0;
+    v28 = (float*)&v11[12 * data->faceNormalIndex];
+    v29 = (float)((float)(v13 * *v28) + (float)(v12 * v28[1])) + (float)(v15 * v28[2]);
+    *a7 = a5 - v29;
+    if ((float)(a5 - v29) < 0.0)
+        return 0;
+    v30 = a5 * a5;
+    v31 = thickness * a6;
+    if (v18 <= v23) {
+        if (v23 > v27) {
+            if (v23 <= 0.0)
+                goto LABEL_20;
+            v33 = *v20;
+            if (v27 <= v18) {
+                v32 = *v14;
+                v35 = *v21;
+                v34 = *v16;
+                v37 = *v22;
+                v36 = *v17;
+                v38 = (float)((float)(v33 * *v14) + (float)(*v21 * *v16)) + (float)(*v22 * *v17);
+                if ((float)(v23 * v38) <= v18) {
+                LABEL_34:
+                    v59 = (float)((float)(v23 * v38) - v18) / (float)((float)(v38 * v38) + -1.0);
+                    v60 = v23 - (float)(v38 * v59);
+                    v53 = (float)(v32 * v59) + (float)(v33 * v60);
+                    v54 = (float)(v59 * v34) + (float)(v35 * v60);
+                    v55 = (float)(v59 * v36) + (float)(v60 * v37);
+                    v56 = 5;
+                    goto LABEL_35;
+                }
+            } else {
+                v39 = *v24;
+                v40 = *v21;
+                v41 = *v25;
+                v42 = *v22;
+                v43 = *v26;
+                v44 = (float)((float)(v33 * *v24) + (float)(*v21 * *v25)) + (float)(*v22 * *v26);
+                if ((float)(v23 * v44) <= v27)
+                    goto LABEL_25;
+            }
+            if (v23 <= v29) {
+                *a7 = v30 - (float)(v23 * v23);
+                v50 = 3;
+                goto LABEL_42;
+            }
+            return 0;
+        }
+    } else if (v18 > v27) {
+        if (v18 > 0.0) {
+            v32 = *v14;
+            if (v23 > v27) {
+                v33 = *v20;
+                v34 = *v16;
+                v35 = *v21;
+                v36 = *v17;
+                v37 = *v22;
+                v38 = (float)((float)(v32 * *v20) + (float)(*v16 * *v21)) + (float)(*v17 * *v22);
+                if ((float)(v18 * v38) <= v23)
+                    goto LABEL_34;
+            LABEL_27:
+                if (v18 <= v29) {
+                    *a7 = v30 - (float)(v18 * v18);
+                    v50 = 2;
+                    goto LABEL_42;
+                }
+                return 0;
+            }
+            v39 = *v24;
+            v46 = *v16;
+            v45 = *v25;
+            v48 = *v17;
+            v47 = *v26;
+            v49 = (float)((float)(v32 * *v24) + (float)(*v16 * *v25)) + (float)(*v17 * *v26);
+            if ((float)(v18 * v49) > v27)
+                goto LABEL_27;
+            goto LABEL_29;
+        }
+    LABEL_20:
+        if (v31 >= (float)(a5 - v29)) {
+            *a8 = 1;
+            return 1;
+        }
+        return 0;
+    }
+    if (v27 <= 0.0)
+        goto LABEL_20;
+    v39 = *v24;
+    if (v18 <= v23) {
+        v33 = *v20;
+        v41 = *v25;
+        v40 = *v21;
+        v43 = *v26;
+        v42 = *v22;
+        v44 = (float)((float)(v39 * *v20) + (float)(*v25 * *v21)) + (float)(*v26 * *v22);
+        if ((float)(v27 * v44) > v23)
+            goto LABEL_23;
+    LABEL_25:
+        v51 = (float)((float)(v27 * v44) - v23) / (float)((float)(v44 * v44) + -1.0);
+        v52 = v27 - (float)(v44 * v51);
+        v53 = (float)(v33 * v51) + (float)(v39 * v52);
+        v54 = (float)(v51 * v40) + (float)(v41 * v52);
+        v55 = (float)(v51 * v42) + (float)(v52 * v43);
+        v56 = 6;
+    LABEL_35:
+        v61 = (float)(v55 * v55) + (float)((float)(v54 * v54) + (float)(v53 * v53));
+        v62 = sqrtf(v61);
+        *a8 = v56;
+        if (v62 >= a5 || (float)(v62 * 0.70711) > v29)
+            goto LABEL_44;
+        *a7 = v30 - v61;
+        goto LABEL_43;
+    }
+    v32 = *v14;
+    v45 = *v25;
+    v46 = *v16;
+    v47 = *v26;
+    v48 = *v17;
+    v49 = (float)((float)(v39 * *v14) + (float)(*v25 * *v16)) + (float)(*v26 * *v17);
+    if ((float)(v27 * v49) <= v18) {
+    LABEL_29:
+        v57 = (float)((float)(v18 * v49) - v27) / (float)((float)(v49 * v49) + -1.0);
+        v58 = v18 - (float)(v49 * v57);
+        v54 = (float)(v57 * v45) + (float)(v46 * v58);
+        v53 = (float)(v39 * v57) + (float)(v32 * v58);
+        v55 = (float)(v57 * v47) + (float)(v58 * v48);
+        v56 = 7;
+        goto LABEL_35;
+    }
+LABEL_23:
+    if (v27 > v29)
+        return 0;
+    *a7 = v30 - (float)(v27 * v27);
+    v50 = 4;
+LABEL_42:
+    *a8 = v50;
+LABEL_43:
+    v64 = sqrtf(fmaxf(*a7, 0.0)) - v29;
+    *a7 = v64;
+    if (v64 < 0.0) {
+    LABEL_44:
+        *a8 = 0;
+        return 0;
+    }
+    return 1;
+}
 
 const KCPrismData* KCollisionServer::checkArrow(const sead::Vector3f& unk1,
                                                 const sead::Vector3f& unk2,
@@ -841,7 +1322,8 @@ void KCollisionServer::objectSpaceToAreaOffsetSpaceV3f(sead::Vector3f* areaOffSp
 
 bool KCollisionServer::isInsideMinMaxInAreaOffsetSpace(const sead::Vector3u& pos,
                                                        const KCPrismHeader* header) const {
-    return !(pos.x & header->widthMask.x) && !(pos.y & header->widthMask.y) && !(pos.z & header->widthMask.z);
+    return !(pos.x & header->widthMask.x) && !(pos.y & header->widthMask.y) &&
+           !(pos.z & header->widthMask.z);
 }
 
 bool KCollisionServer::KCHitArrow(const KCPrismData* data, const KCPrismHeader* header,
@@ -955,7 +1437,9 @@ LABEL_21:
 }
 
 s32 KCollisionServer::checkSphereForPlayer(const sead::Vector3f*, f32, f32, u32,
-                                           sead::FixedRingBuffer<KCHitInfo, 512>*) {}
+                                           sead::FixedRingBuffer<KCHitInfo, 512>*) {
+    CRASH
+}
 
 bool KCollisionServer::KCHitSphereForPlayer(const KCPrismData* data, const KCPrismHeader* header,
                                             const sead::Vector3f* position, f32 a5, f32 a6, f32* a7,
@@ -1097,7 +1581,7 @@ bool KCollisionServer::KCHitSphereForPlayer(const KCPrismData* data, const KCPri
                 goto LABEL_35;
             }
 
-            LABEL_23:
+        LABEL_23:
             if (fxe3 > fxf)
                 return false;
 
