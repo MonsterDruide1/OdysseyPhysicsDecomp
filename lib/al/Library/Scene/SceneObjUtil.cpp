@@ -13,9 +13,9 @@ void setSceneObj(const IUseSceneObjHolder* user, ISceneObj* obj, s32 sceneObjId)
     user->getSceneObjHolder()->setSceneObj(obj, sceneObjId);
 }
 
-/*ISceneObj* getSceneObj(const IUseSceneObjHolder* user, s32 sceneObjId) {
+ISceneObj* getSceneObj(const IUseSceneObjHolder* user, s32 sceneObjId) {
     return user->getSceneObjHolder()->getObj(sceneObjId);
-}*/
+}
 
 ISceneObj* tryGetSceneObj(const IUseSceneObjHolder* user, s32 sceneObjId) {
     return user->getSceneObjHolder()->tryGetObj(sceneObjId);
