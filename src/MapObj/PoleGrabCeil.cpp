@@ -86,8 +86,8 @@ void PoleGrabCeil::control() {
             }
         }
 
-        const sead::Vector3f& hitPos = alCollisionUtil::getCollisionHitPos(**hitInfo);
-        const sead::Vector3f& hitNormal = alCollisionUtil::getCollisionHitNormal(**hitInfo);
+        const sead::Vector3f& hitPos = alCollisionUtil::getCollisionHitPos(hitInfo);
+        const sead::Vector3f& hitNormal = alCollisionUtil::getCollisionHitNormal(hitInfo);
         al::makeMtxUpNoSupportPos(&mSurfaceMatrix, hitNormal, hitPos);
         al::startHitReaction(mKeyMoveFollowTarget, "コリジョンヒット");
         return;

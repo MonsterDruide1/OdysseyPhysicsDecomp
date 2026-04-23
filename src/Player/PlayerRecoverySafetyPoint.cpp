@@ -84,12 +84,12 @@ void PlayerRecoverySafetyPoint::noticeRequestSafetyPoint(const sead::Vector3f& s
                                                   &filter))
             return;
 
-        if (!rs::isEnableRecordSafetyPoint(&defaultPos, *hitInfo->hitInfo.data(), mHitSensor,
+        if (!rs::isEnableRecordSafetyPoint(&defaultPos, *hitInfo, mHitSensor,
                                            -gravity))
             return;
 
-        pos = alCollisionUtil::getCollisionHitPos(hitInfo->hitInfo.data());
-        normal = alCollisionUtil::getCollisionHitNormal(hitInfo->hitInfo.data());
+        pos = alCollisionUtil::getCollisionHitPos(hitInfo);
+        normal = alCollisionUtil::getCollisionHitNormal(hitInfo);
     }
 
     setSafetyPoint(pos, normal, areaObj);
@@ -151,7 +151,7 @@ void PlayerRecoverySafetyPoint::slideLastSafetyPoint(sead::Vector3f* safetyPos,
         if (alCollisionUtil::getFirstPolyOnArrow(mActor, &hitInfo, rayStart, rayDir, colFilter,
                                                  &filter)) {
             sead::Vector3f* outPos = nullptr;
-            if (rs::isEnableRecordSafetyPoint(&outPos, *hitInfo->hitInfo.data(), mHitSensor,
+            if (rs::isEnableRecordSafetyPoint(&outPos, *hitInfo, mHitSensor,
                                               -gravity))
                 return;
         }
@@ -170,12 +170,12 @@ void PlayerRecoverySafetyPoint::slideLastSafetyPoint(sead::Vector3f* safetyPos,
     sead::Vector3f* outPos = nullptr;
     if (alCollisionUtil::getFirstPolyOnArrow(mActor, &hitInfo, rayStart, rayDir, colFilter,
                                              nullptr)) {
-        if (rs::isEnableRecordSafetyPoint(&outPos, *hitInfo->hitInfo.data(), mHitSensor,
+        if (rs::isEnableRecordSafetyPoint(&outPos, *hitInfo, mHitSensor,
                                           -gravity) &&
-            rs::isCollisionCodeSafetyPoint(*hitInfo->hitInfo.data())) {
-            sead::Vector3f hitPos = alCollisionUtil::getCollisionHitPos(hitInfo->hitInfo.data());
+            rs::isCollisionCodeSafetyPoint(*hitInfo)) {
+            sead::Vector3f hitPos = alCollisionUtil::getCollisionHitPos(hitInfo);
             sead::Vector3f hitNormal =
-                alCollisionUtil::getCollisionHitNormal(hitInfo->hitInfo.data());
+                alCollisionUtil::getCollisionHitNormal(hitInfo);
 
             al::TriangleFilterGroundOnly filter(al::getGravity(mActor));
             if (!alCollisionUtil::getFirstPolyOnArrow(mActor, &hitInfo, *safetyPos - gravity * 5.0f,

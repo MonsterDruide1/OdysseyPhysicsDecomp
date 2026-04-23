@@ -928,8 +928,8 @@ bool alCollisionUtil::getLastPolyOnArrow(const al::IUseCollision* collider,
 
         for (s32 i = 0; i < hitNum; i++) {
             al::ArrowHitInfo* hitInfo = director->getStrikeArrowInfo(i);
-            if (!triFilter->isInvalidTriangle(hitInfo->hitInfo->triangle) && v14 < hitInfo->hitInfo->_70) {
-                v14 = hitInfo->hitInfo->_70;
+            if (!triFilter->isInvalidTriangle(hitInfo->triangle) && v14 < hitInfo->_70) {
+                v14 = hitInfo->_70;
                 v16 = i;
             }
         }
@@ -938,8 +938,8 @@ bool alCollisionUtil::getLastPolyOnArrow(const al::IUseCollision* collider,
 
         for (s32 i = 0; i < hitNum; i++) {
             al::ArrowHitInfo* hitInfo = director->getStrikeArrowInfo(i);
-            if (v14 < hitInfo->hitInfo->_70) {
-                v14 = hitInfo->hitInfo->_70;
+            if (v14 < hitInfo->_70) {
+                v14 = hitInfo->_70;
                 v16 = i;
             }
         }
@@ -1028,9 +1028,9 @@ bool alCollisionUtil::getHitPosAndNormalOnArrow(const al::IUseCollision* a1, sea
 
     v14 = v19;
     if (a2)
-        *a2 = v19->hitInfo->collisionHitPos;
+        *a2 = v19->collisionHitPos;
 
-    triangle = v14->hitInfo->triangle;
+    triangle = v14->triangle;
     *a3 = triangle.getNormal(0);
     return true;
 }
@@ -1079,9 +1079,9 @@ bool alCollisionUtil::getFirstPolyOnArrow(al::IUseCollision const* a1, al::Arrow
         do {
             v17 = (al::CollisionDirector*)a1->getCollisionDirector();
             StrikeArrowInfo = v17->getStrikeArrowInfo(v15);
-            if (a6->isInvalidTriangle(StrikeArrowInfo->hitInfo->triangle) == 0 &&
-                StrikeArrowInfo->hitInfo->_70 < v14) {
-                v14 = StrikeArrowInfo->hitInfo->_70;
+            if (a6->isInvalidTriangle(StrikeArrowInfo->triangle) == 0 &&
+                StrikeArrowInfo->_70 < v14) {
+                v14 = StrikeArrowInfo->_70;
                 v16 = v15;
             }
 
@@ -1094,10 +1094,10 @@ bool alCollisionUtil::getFirstPolyOnArrow(al::IUseCollision const* a1, al::Arrow
         do {
             v20 = (al::CollisionDirector*)a1->getCollisionDirector();
             v21 = v20->getStrikeArrowInfo(i);
-            v22 = v21->hitInfo->_70;
+            v22 = v21->_70;
             v23 = v22 < v19;
             if (v22 < v19)
-                v19 = v21->hitInfo->_70;
+                v19 = v21->_70;
 
             if (v23)
                 v16 = i;
@@ -1718,11 +1718,11 @@ s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
         while (1) {
             v58 = (al::CollisionDirector*)x0_0->getCollisionDirector();
             StrikeSphereInfo = v58->getStrikeSphereInfo(v20 - 1);
-            unk = StrikeSphereInfo->hitInfo->_70;
-            FaceNormal = &StrikeSphereInfo->hitInfo->triangle.getFaceNormal();
+            unk = StrikeSphereInfo->_70;
+            FaceNormal = &StrikeSphereInfo->triangle.getFaceNormal();
             if ((float)((float)((float)(FaceNormal->x * a5.x) + (float)(FaceNormal->y * a5.y)) +
                         (float)(FaceNormal->z * a5.z)) < 0.0) {
-                if (StrikeSphereInfo->hitInfo->isCollisionAtFace()) {
+                if (StrikeSphereInfo->isCollisionAtFace()) {
                     y = a5.y;
                     v63 = a5.z;
                     v64 = (float)((float)(FaceNormal->x * a5.x) + (float)(FaceNormal->y * y)) +
@@ -1737,29 +1737,29 @@ s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
                     a3.y = y * v65;
                     a3.z = v63 * v65;
                     al::verticalizeVec(&a1, *FaceNormal, a3);
-                    v66 = StrikeSphereInfo->hitInfo->collisionHitPos.x + a1.x;
-                    v67 = StrikeSphereInfo->hitInfo->collisionHitPos.y + a1.y;
-                    v44 = StrikeSphereInfo->hitInfo->collisionHitPos.z + a1.z;
-                    Pos = &StrikeSphereInfo->hitInfo->triangle.getPos(0);
+                    v66 = StrikeSphereInfo->collisionHitPos.x + a1.x;
+                    v67 = StrikeSphereInfo->collisionHitPos.y + a1.y;
+                    v44 = StrikeSphereInfo->collisionHitPos.z + a1.z;
+                    Pos = &StrikeSphereInfo->triangle.getPos(0);
                     v69 = v67 - Pos->y;
                     v70 = v66 - Pos->x;
                     v71 = v44 - Pos->z;
-                    v72 = &StrikeSphereInfo->hitInfo->triangle.getPos(1);
+                    v72 = &StrikeSphereInfo->triangle.getPos(1);
                     x = v72->x;
                     v109 = v72->y;
                     v108 = v72->z;
-                    v74 = &StrikeSphereInfo->hitInfo->triangle.getPos(2);
+                    v74 = &StrikeSphereInfo->triangle.getPos(2);
                     v107 = v74->x;
                     v106 = v74->y;
                     v105 = v74->z;
-                    EdgeNormal = &StrikeSphereInfo->hitInfo->triangle.getEdgeNormal(0);
+                    EdgeNormal = &StrikeSphereInfo->triangle.getEdgeNormal(0);
                     v76 = (float)((float)(v70 * EdgeNormal->x) + (float)(v69 * EdgeNormal->y)) +
                           (float)(v71 * EdgeNormal->z);
-                    v77 = &StrikeSphereInfo->hitInfo->triangle.getEdgeNormal(1);
+                    v77 = &StrikeSphereInfo->triangle.getEdgeNormal(1);
                     v79 = v77->x;
                     v78 = v77->y;
                     v80 = v77->z;
-                    v81 = &StrikeSphereInfo->hitInfo->triangle.getEdgeNormal(2);
+                    v81 = &StrikeSphereInfo->triangle.getEdgeNormal(2);
                     if (v76 > 0.0 ||
                         (float)((float)((float)((float)(v66 - x) * v79) +
                                         (float)((float)(v67 - v109) * v78)) +
@@ -1770,15 +1770,15 @@ s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
                         if (al::isNearZero(a1, 0.001))
                             goto LABEL_46;
 
-                        v21 = v67 - StrikeSphereInfo->hitInfo->collisionHitPos.y;
-                        v22 = v66 - StrikeSphereInfo->hitInfo->collisionHitPos.x;
-                        v23 = v44 - StrikeSphereInfo->hitInfo->collisionHitPos.z;
-                        v24 = &StrikeSphereInfo->hitInfo->triangle.getEdgeNormal(0);
+                        v21 = v67 - StrikeSphereInfo->collisionHitPos.y;
+                        v22 = v66 - StrikeSphereInfo->collisionHitPos.x;
+                        v23 = v44 - StrikeSphereInfo->collisionHitPos.z;
+                        v24 = &StrikeSphereInfo->triangle.getEdgeNormal(0);
                         if ((float)((float)((float)(v22 * v24->x) + (float)(v21 * v24->y)) +
                                     (float)(v23 * v24->z)) <= 0.0) {
                             v28 = 4;
                         } else {
-                            v25 = &StrikeSphereInfo->hitInfo->triangle.getEdgeNormal(1);
+                            v25 = &StrikeSphereInfo->triangle.getEdgeNormal(1);
                             v26 = (float)(v22 * v25->x) + (float)(v21 * v25->y);
                             v27 = v25->z;
                             v28 = 5;
@@ -1787,10 +1787,10 @@ s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
                         }
 
                         v29 = al::modi(v28, 3);
-                        v30 = &StrikeSphereInfo->hitInfo->triangle.getPos(v29);
-                        v31 = v30->y - StrikeSphereInfo->hitInfo->collisionHitPos.y;
-                        v32 = v30->x - StrikeSphereInfo->hitInfo->collisionHitPos.x;
-                        v33 = v30->z - StrikeSphereInfo->hitInfo->collisionHitPos.z;
+                        v30 = &StrikeSphereInfo->triangle.getPos(v29);
+                        v31 = v30->y - StrikeSphereInfo->collisionHitPos.y;
+                        v32 = v30->x - StrikeSphereInfo->collisionHitPos.x;
+                        v33 = v30->z - StrikeSphereInfo->collisionHitPos.z;
                         v34 = (float)((float)((float)((float)(v21 * v32) - (float)(v22 * v31)) *
                                               FaceNormal->z) +
                                       (float)((float)(FaceNormal->x * (float)((float)(v23 * v31) -
@@ -1801,7 +1801,7 @@ s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
                                   v29 + 3 :
                                   v29 + 4;
                         v35 = al::modi(v34, 3);
-                        v36 = &StrikeSphereInfo->hitInfo->triangle.getEdgeNormal(v35);
+                        v36 = &StrikeSphereInfo->triangle.getEdgeNormal(v35);
                         v37 = (float)((float)(v22 * v36->x) + (float)(v21 * v36->y)) +
                               (float)(v23 * v36->z);
                         if (al::isNearZero(v37, 0.001))
@@ -1813,9 +1813,9 @@ s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
                         v39 = v22 * v38;
                         v40 = v21 * v38;
                         v41 = v23 * v38;
-                        v42 = StrikeSphereInfo->hitInfo->collisionHitPos.x + v39;
-                        v43 = StrikeSphereInfo->hitInfo->collisionHitPos.y + v40;
-                        v44 = StrikeSphereInfo->hitInfo->collisionHitPos.z + v41;
+                        v42 = StrikeSphereInfo->collisionHitPos.x + v39;
+                        v43 = StrikeSphereInfo->collisionHitPos.y + v40;
+                        v44 = StrikeSphereInfo->collisionHitPos.z + v41;
                         v45 = a5.y;
                         v46 = a5.z;
                         v47 = (float)((float)(a5.x * a5.x) + (float)(v45 * v45)) +
@@ -1855,22 +1855,22 @@ s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
 
                     v57->_0 = v56;
                     v57->_8.z = v44;
-                    v57->triangle.mKCPrismHeader = StrikeSphereInfo->hitInfo->triangle.mKCPrismHeader;
-                    v57->triangle.mKCPrismData = StrikeSphereInfo->hitInfo->triangle.mKCPrismData;
-                    v57->triangle.mCollisionParts = StrikeSphereInfo->hitInfo->triangle.mCollisionParts;
-                    v57->triangle.mNormals[0] = StrikeSphereInfo->hitInfo->triangle.mNormals[0];
-                    v57->triangle.mNormals[1] = StrikeSphereInfo->hitInfo->triangle.mNormals[1];
-                    v57->triangle.mNormals[2] = StrikeSphereInfo->hitInfo->triangle.mNormals[2];
-                    v57->triangle.mNormals[3] = StrikeSphereInfo->hitInfo->triangle.mNormals[3];
-                    v57->triangle.mPositions[0] = StrikeSphereInfo->hitInfo->triangle.mPositions[0];
-                    v57->triangle.mPositions[1] = StrikeSphereInfo->hitInfo->triangle.mPositions[1];
-                    v57->triangle.mPositions[2] = StrikeSphereInfo->hitInfo->triangle.mPositions[2];
+                    v57->triangle.mKCPrismHeader = StrikeSphereInfo->triangle.mKCPrismHeader;
+                    v57->triangle.mKCPrismData = StrikeSphereInfo->triangle.mKCPrismData;
+                    v57->triangle.mCollisionParts = StrikeSphereInfo->triangle.mCollisionParts;
+                    v57->triangle.mNormals[0] = StrikeSphereInfo->triangle.mNormals[0];
+                    v57->triangle.mNormals[1] = StrikeSphereInfo->triangle.mNormals[1];
+                    v57->triangle.mNormals[2] = StrikeSphereInfo->triangle.mNormals[2];
+                    v57->triangle.mNormals[3] = StrikeSphereInfo->triangle.mNormals[3];
+                    v57->triangle.mPositions[0] = StrikeSphereInfo->triangle.mPositions[0];
+                    v57->triangle.mPositions[1] = StrikeSphereInfo->triangle.mPositions[1];
+                    v57->triangle.mPositions[2] = StrikeSphereInfo->triangle.mPositions[2];
                     v57->_4 = v103;
                 } else {
-                    v82 = StrikeSphereInfo->hitInfo->collisionHitPos.y - a2.y;
-                    v83 = StrikeSphereInfo->hitInfo->collisionHitPos.x - a2.x;
+                    v82 = StrikeSphereInfo->collisionHitPos.y - a2.y;
+                    v83 = StrikeSphereInfo->collisionHitPos.x - a2.x;
                     v84 = a5.y;
-                    v85 = StrikeSphereInfo->hitInfo->collisionHitPos.z - a2.z;
+                    v85 = StrikeSphereInfo->collisionHitPos.z - a2.z;
                     v86 = a5.z;
                     v87 = (float)((float)(a5.x * a5.x) + (float)(v84 * v84)) + (float)(v86 * v86);
                     v88 = (float)((float)((float)(v83 * v83) + (float)(v82 * v82)) +
@@ -1896,31 +1896,31 @@ s32 alCollisionUtil::checkStrikeSphereMove(const al::IUseCollision* x0_0,
 
                     v95 = &x1_0[v14];
                     v95->_0 = v114.mCurrentStep - v91;
-                    v95->_8.z = StrikeSphereInfo->hitInfo->collisionHitPos.z;
-                    v96 = StrikeSphereInfo->hitInfo->collisionHitPos.y;
-                    v95->_8.x = StrikeSphereInfo->hitInfo->collisionHitPos.x;
+                    v95->_8.z = StrikeSphereInfo->collisionHitPos.z;
+                    v96 = StrikeSphereInfo->collisionHitPos.y;
+                    v95->_8.x = StrikeSphereInfo->collisionHitPos.x;
                     v95->_8.y = v96;
-                    v95->triangle.mKCPrismHeader = StrikeSphereInfo->hitInfo->triangle.mKCPrismHeader;
-                    v95->triangle.mKCPrismData = StrikeSphereInfo->hitInfo->triangle.mKCPrismData;
-                    v95->triangle.mCollisionParts = StrikeSphereInfo->hitInfo->triangle.mCollisionParts;
-                    v95->triangle.mNormals[0] = StrikeSphereInfo->hitInfo->triangle.mNormals[0];
-                    v95->triangle.mNormals[1].x = StrikeSphereInfo->hitInfo->triangle.mNormals[1].x;
-                    v95->triangle.mNormals[1].y = StrikeSphereInfo->hitInfo->triangle.mNormals[1].y;
-                    v95->triangle.mNormals[1].z = StrikeSphereInfo->hitInfo->triangle.mNormals[1].z;
-                    v95->triangle.mNormals[2] = StrikeSphereInfo->hitInfo->triangle.mNormals[2];
-                    v95->triangle.mNormals[3] = StrikeSphereInfo->hitInfo->triangle.mNormals[3];
-                    v95->triangle.mPositions[0].x = StrikeSphereInfo->hitInfo->triangle.mPositions[0].x;
-                    v95->triangle.mPositions[0].y = StrikeSphereInfo->hitInfo->triangle.mPositions[0].y;
-                    v95->triangle.mPositions[0].z = StrikeSphereInfo->hitInfo->triangle.mPositions[0].z;
-                    v95->triangle.mPositions[1] = StrikeSphereInfo->hitInfo->triangle.mPositions[1];
-                    v95->triangle.mPositions[2] = StrikeSphereInfo->hitInfo->triangle.mPositions[2];
+                    v95->triangle.mKCPrismHeader = StrikeSphereInfo->triangle.mKCPrismHeader;
+                    v95->triangle.mKCPrismData = StrikeSphereInfo->triangle.mKCPrismData;
+                    v95->triangle.mCollisionParts = StrikeSphereInfo->triangle.mCollisionParts;
+                    v95->triangle.mNormals[0] = StrikeSphereInfo->triangle.mNormals[0];
+                    v95->triangle.mNormals[1].x = StrikeSphereInfo->triangle.mNormals[1].x;
+                    v95->triangle.mNormals[1].y = StrikeSphereInfo->triangle.mNormals[1].y;
+                    v95->triangle.mNormals[1].z = StrikeSphereInfo->triangle.mNormals[1].z;
+                    v95->triangle.mNormals[2] = StrikeSphereInfo->triangle.mNormals[2];
+                    v95->triangle.mNormals[3] = StrikeSphereInfo->triangle.mNormals[3];
+                    v95->triangle.mPositions[0].x = StrikeSphereInfo->triangle.mPositions[0].x;
+                    v95->triangle.mPositions[0].y = StrikeSphereInfo->triangle.mPositions[0].y;
+                    v95->triangle.mPositions[0].z = StrikeSphereInfo->triangle.mPositions[0].z;
+                    v95->triangle.mPositions[1] = StrikeSphereInfo->triangle.mPositions[1];
+                    v95->triangle.mPositions[2] = StrikeSphereInfo->triangle.mPositions[2];
                     v95->_4 = unk;
                 }
 
                 ++v14;
             }
 
-            sphereHitBuffer.pushBack(StrikeSphereInfo->hitInfo->triangle.mKCPrismData);
+            sphereHitBuffer.pushBack(StrikeSphereInfo->triangle.mKCPrismData);
 
         LABEL_46:
             if (v20 < v18) {
