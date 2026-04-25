@@ -168,6 +168,10 @@ void returnPrevStage(GameDataHolderWriter writer) {
 }
 
 bool isTimeBalloonSequence(GameDataHolderAccessor accessor) {
+    // PATCH:
+    return false;
+    // END PATCH
+
     return accessor->getGameDataFile()->getChangeStageInfo()->getSubScenarioType() ==
            ChangeStageInfo::RESET_MINI_GAME1;
 }
