@@ -1037,10 +1037,12 @@ const char* GameDataHolder::getCoinCollectEmptyArchiveName(s32 worldId) const {
 }
 
 const char* GameDataHolder::getCoinCollect2DArchiveName(s32 worldId) const {
-    if (worldId < 0)
-        return "CoinCollect2D";
-
-    return mWorldItemTypeInfo[worldId]->coinCollect2D.cstr();
+    if (worldId > -1)
+        return mWorldItemTypeInfo[worldId]->coinCollect2D.cstr();
+    // PATCH:
+    return "CoinCollect2D_N";
+    // END PATCH
+    return "CoinCollect2D";
 }
 
 const char* GameDataHolder::getCoinCollect2DEmptyArchiveName(s32 worldId) const {

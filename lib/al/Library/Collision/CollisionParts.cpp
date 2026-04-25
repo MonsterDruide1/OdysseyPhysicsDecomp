@@ -57,6 +57,29 @@ void CollisionParts::resetAllMtx(const sead::Matrix34f& mtx_param) {
     mBoundingSphereRange = mBaseMtxScale * mKCollisionServer->mFarthestVertexDistance;
 }
 
+void CollisionParts::resetAllMtx() {
+    if (!bVar4 && !bVar5)
+        return;
+
+    sead::Matrix34f mtx = *mSyncCollisionMtx;
+    makeEqualScale(&mtx);
+
+    mPrevBaseMtx = mtx;
+    mBaseMtx = mtx;
+    mSyncMtx = mtx;
+    mPrevBaseInvMtx.setInverse(mPrevBaseMtx);
+    mBaseInvMtx = mPrevBaseInvMtx;
+
+    calcMtxScale(&mMtxScaleVec, mBaseInvMtx);
+    mMtxScale = (mMtxScaleVec.x + mMtxScaleVec.y + mMtxScaleVec.z) / 3.0f;
+    mInvMtxScale = 1.0f / mMtxScale;
+
+    sead::Matrix34f mtx2 = *mSyncCollisionMtx;
+    f32 scale = makeEqualScale(&mtx2);
+    mBaseMtxScale = scale;
+    mBoundingSphereRange = scale * mKCollisionServer->mFarthestVertexDistance;
+}
+
 f32 CollisionParts::makeEqualScale(sead::Matrix34f* mtx) {
     sead::Vector3f scale;
     calcMtxScale(&scale, *mtx);

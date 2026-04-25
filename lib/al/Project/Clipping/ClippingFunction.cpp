@@ -7,10 +7,16 @@
 
 namespace alClippingFunction {
 void addToClippingTarget(al::LiveActor* actor) {
+    // PATCH:
+    return;
+    // END PATCH
     actor->getSceneInfo()->clippingDirector->getClippingActorHolder()->addToClippingTarget(actor);
 }
 
 void removeFromClippingTarget(al::LiveActor* actor) {
+    // PATCH:
+    return;
+    // END PATCH
     actor->getSceneInfo()->clippingDirector->getClippingActorHolder()->removeFromClippingTarget(
         actor);
 }

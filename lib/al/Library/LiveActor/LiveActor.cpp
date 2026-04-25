@@ -352,8 +352,10 @@ void LiveActor::initStageSwitchKeeper() {
 }
 
 void LiveActor::initItemKeeper(s32 itemAmount) {
-    CRASH
+    // PATCH:
+    WARN_UNIMPL;
     //mItemKeeper = new ActorItemKeeper(this, itemAmount);
+    // END PATCH
 }
 
 void LiveActor::initActionKeeper(ActorActionKeeper* actionKeeper) {
