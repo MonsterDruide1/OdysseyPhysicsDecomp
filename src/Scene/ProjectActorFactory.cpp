@@ -177,7 +177,7 @@ const al::NameToCreator<al::ActorCreatorFunction> sProjectActorFactoryEntries[] 
     {"BlockBrickBig2D", al::createActorFunction<BlockBrickBig2D>},
     {"BlockEmpty", nullptr},
     {"BlockEmpty2D", al::createActorFunction<BlockEmpty2D>},
-    {"BlockHard", nullptr},
+    {"BlockHard", al::createActorFunction<ChurchDoor>},  // anything to get `AllDeadWatcher` working
     {"ClashWorldBlockHard", nullptr},
     {"BlockQuestion", nullptr},
     {"CityBlockQuestion", nullptr},
