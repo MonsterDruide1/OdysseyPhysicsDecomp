@@ -1,9 +1,13 @@
 #include "Library/Collision/CollisionParts.h"
+#include "CUSTOM/CollisionMultiShape.h"
+#include "Library/Collision/CollisionPartsKeeperUtil.h"
 #include "Library/Collision/KCollisionServer.h"
 #include "Library/Collision/KTriangle.h"
 #include "Library/Collision/TriangleFilter.h"
+#include "Library/LiveActor/ActorSensorUtil.h"
 #include "Library/Math/MathUtil.h"
 #include "Library/Matrix/MatrixUtil.h"
+#include "Player/PlayerJudgeWallCatchInputDir.h"
 #include "container/seadRingBuffer.h"
 #include "math/seadMatrix.h"
 #include "math/seadVectorFwd.h"
@@ -305,6 +309,20 @@ s32 CollisionParts::checkStrikeSphereCore(al::SphereHitResultBuffer* results,
         results->pushBack(info);
     }
     return v14;
+}
+void al::CollisionParts::invalidateByUser() {
+    if (!isValidatedByUser)
+        return;
+
+    bool prevIsValid = isValidatedByUser;
+    bool prevBVar3 = bVar3;
+    isValidatedByUser = false;
+    bVar3 = false;
+    if (prevIsValid && prevBVar3 && (!bVar3 || !isValidatedByUser)) {
+        if (mPartsList) {
+            alCollisionUtil::getCollisionPartsKeeper(al::getSensorHost(mConnectedSensor))->disconnectToCollisionPartsList(this);
+        }
+    }
 }
 
 }  // namespace al
