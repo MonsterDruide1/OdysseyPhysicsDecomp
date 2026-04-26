@@ -11,13 +11,6 @@
 namespace al {
 class FootPrintServer;
 
-void registerExecutorFunctor(char const*, al::ExecuteDirector*, al::FunctorBase const&);
-
-sead::Vector3f* getTransPtr(al::LiveActor*);
-AreaObjGroup* tryFindAreaObjGroup(al::IUseAreaObj const*, char const*);
-AreaObj* tryFindAreaObj(al::IUseAreaObj const*, char const*, sead::Vector3<float> const&);
-bool isPlayingEntranceCamera(al::IUseCamera const*, int);
-
 class FootPrintHolder {
 public:
     FootPrintHolder(al::LiveActor*, char const*, al::HitSensor*, al::FootPrintServer*);

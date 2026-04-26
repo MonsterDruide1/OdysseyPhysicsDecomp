@@ -1,5 +1,6 @@
 #include "Player/PlayerStateWait.h"
 
+#include "Library/Area/AreaObjUtil.h"
 #include "Library/LiveActor/ActorActionFunction.h"
 #include "Library/LiveActor/ActorMovementFunction.h"
 #include "Library/LiveActor/ActorPoseKeeper.h"
@@ -10,7 +11,6 @@
 #include "Stuff.h"
 #include "Util/JudgeUtil.h"
 #include "basis/seadTypes.h"
-#include "playerUtil.h"
 
 namespace {
 NERVE_IMPL(PlayerStateWait, WaitRelax);

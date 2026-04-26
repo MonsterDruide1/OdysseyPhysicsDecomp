@@ -1,7 +1,10 @@
 #include "Player/PlayerActorHakoniwa.h"
 #include "Library/Area/AreaObjDirector.h"
+#include "Library/Area/AreaObjUtil.h"
 #include "Library/Audio/System/AudioKeeper.h"
 #include "Library/Base/StringUtil.h"
+#include "Library/Camera/CameraUtil.h"
+#include "Library/Execute/ExecuteUtil.h"
 #include "Library/LiveActor/ActorActionFunction.h"
 #include "Library/LiveActor/ActorFlagFunction.h"
 #include "Library/LiveActor/ActorInitInfo.h"
@@ -47,7 +50,7 @@
 #include "Util/ActorDimensionUtil.h"
 #include "Util/JudgeUtil.h"
 #include "math/seadQuat.h"
-#include "playerUtil.h"
+#include "FootPrintHolder.h"
 
 namespace {
 
