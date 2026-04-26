@@ -60,4 +60,6 @@ add_subdirectory(lib/agl)
 add_subdirectory(lib/eui)
 target_link_libraries(odyssey PUBLIC NintendoSDK-NEX NintendoSDK sead agl eui)
 
-target_link_libraries(odyssey_lib PUBLIC NintendoSDK-NEX NintendoSDK sead agl eui)
+#target_link_libraries(odyssey_lib PUBLIC NintendoSDK-NEX NintendoSDK sead agl eui)
+# remove NintendoSDK-NEX due to compilation issues with MacOS
+target_link_libraries(odyssey_lib PUBLIC NintendoSDK sead agl eui)
