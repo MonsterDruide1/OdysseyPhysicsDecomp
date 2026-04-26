@@ -7,7 +7,6 @@
 #include "Player/PlayerStateGroundSpin.h"
 #include "PlayerUtil.h"
 #include "Util/IUseDimension.h"
-#include "playerUtil.h"
 
 class PlayerStateRunHakoniwa;
 class PlayerStateGroundSpin;
