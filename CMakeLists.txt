@@ -53,13 +53,16 @@ add_compile_definitions(SEAD_VERSION=SEAD_VERSION_SMO)
 include_directories(lib)
 include_directories(lib/aarch64)
 
-add_subdirectory(lib/NintendoSDK-NEX)
+# remove NintendoSDK-NEX due to compilation issues with MacOS
+#add_subdirectory(lib/NintendoSDK-NEX)
 add_subdirectory(lib/NintendoSDK)
 add_subdirectory(lib/sead)
 add_subdirectory(lib/agl)
 add_subdirectory(lib/eui)
-target_link_libraries(odyssey PUBLIC NintendoSDK-NEX NintendoSDK sead agl eui)
 
+#target_link_libraries(odyssey PUBLIC NintendoSDK-NEX NintendoSDK sead agl eui)
 #target_link_libraries(odyssey_lib PUBLIC NintendoSDK-NEX NintendoSDK sead agl eui)
+
 # remove NintendoSDK-NEX due to compilation issues with MacOS
+target_link_libraries(odyssey PUBLIC NintendoSDK sead agl eui)
 target_link_libraries(odyssey_lib PUBLIC NintendoSDK sead agl eui)
