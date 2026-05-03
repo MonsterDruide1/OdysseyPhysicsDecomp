@@ -36,7 +36,7 @@ void LinkTargetPoint::initAfterPlacement() {
 
     al::attachMtxConnectorToCollision(mMtxConnector, this, 50.0f, 100.0f);
     if (alCollisionUtil::getStrikeArrowInfoNum(this) >= 1)
-        mNormal = (*alCollisionUtil::getStrikeArrowInfo(this, 0))->triangle.getFaceNormal();
+        mNormal = (alCollisionUtil::getStrikeArrowInfo(this, 0)).triangle.getFaceNormal();
 }
 
 void LinkTargetPoint::control() {
