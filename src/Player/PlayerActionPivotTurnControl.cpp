@@ -5,7 +5,7 @@
 #include "Library/Math/MathUtil.h"
 #include "Library/stuff.h"
 #include "Stuff.h"
-#include "Util/Hack.h"
+#include "Util/PlayerHackInputFunction.h"
 
 PlayerActionPivotTurnControl::PlayerActionPivotTurnControl(al::LiveActor* player,
                                                            PlayerConst const* pConst,
