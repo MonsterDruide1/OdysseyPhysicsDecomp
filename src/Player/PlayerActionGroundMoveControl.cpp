@@ -12,7 +12,7 @@
 #include "Player/PlayerInput.h"
 #include "PlayerUtil.h"
 #include "Stuff.h"
-#include "Util/Hack.h"
+#include "Util/PlayerHackInputFunction.h"
 #include "Util/JudgeUtil.h"
 #include "math/seadVectorFwd.h"
 
