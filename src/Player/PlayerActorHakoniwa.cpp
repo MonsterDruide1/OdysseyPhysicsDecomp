@@ -455,7 +455,7 @@ void PlayerActorHakoniwa::updateCollider() {
     }
 
     mPushReceiver->calcPushedVelocityWithCollide(
-        &velocity, velocity + mExternalVelocity->someVec2, mColliderHakoniwa,
+        &velocity, velocity + mExternalVelocity->mTotalVelocity, mColliderHakoniwa,
         mConst->getCollisionRadius());
     mWorldEndBorderKeeper->update(al::getTrans(this), velocity,
                                   al::isNerve(this, &Swim) ||
