@@ -28,7 +28,7 @@ public:
     bool isExistForce() const;
     bool isExistSnapForce() const;
 
-private:
+public:
     struct FloatParam {
         f32 onGround;
         f32 offGround;
