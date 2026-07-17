@@ -1118,6 +1118,5 @@ public:
 
 class PlayerAnimator : public game::PlayerAnimator {
 public:
-    PlayerAnimator(PlayerModelHolder const* a, al::ActorDitherAnimator* b)
-        : game::PlayerAnimator(a, b) {}
+    PlayerAnimator(PlayerModelHolder const* a, al::ActorDitherAnimator* b);
 };
