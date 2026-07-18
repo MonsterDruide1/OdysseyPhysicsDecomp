@@ -120,27 +120,32 @@ Resource* tryGetStageResourceSound(const Scene* scene, s32 index) {
 }
 
 agl::RenderBuffer* getSceneFrameBufferMain(const Scene* scene) {
-    DrawSystemInfo* drawSystemInfo = scene->getDrawSystemInfo();
+    /*DrawSystemInfo* drawSystemInfo = scene->getDrawSystemInfo();
     return drawSystemInfo->isDocked ? drawSystemInfo->dockedRenderBuffer :
-                                      drawSystemInfo->handheldRenderBuffer;
+                                      drawSystemInfo->handheldRenderBuffer;*/
+    return nullptr;
 }
 
 agl::DrawContext* getSceneDrawContext(const Scene* scene) {
-    return scene->getDrawSystemInfo()->drawContext;
+    return nullptr;
+    //return scene->getDrawSystemInfo()->drawContext;
 }
 
 agl::RenderBuffer* getSceneFrameBufferConsole(const Scene* scene) {
-    return scene->getDrawSystemInfo()->dockedRenderBuffer;
+    return nullptr;
+    //return scene->getDrawSystemInfo()->dockedRenderBuffer;
 }
 
 agl::RenderBuffer* getSceneFrameBufferHandheld(const Scene* scene) {
-    return scene->getDrawSystemInfo()->handheldRenderBuffer;
+    return nullptr;
+    //return scene->getDrawSystemInfo()->handheldRenderBuffer;
 }
 
 f32 getSceneFrameBufferMainAspect(const Scene* scene) {
-    const sead::Vector2f& virtualSize = getSceneFrameBufferMain(scene)->getVirtualSize();
+    /*const sead::Vector2f& virtualSize = getSceneFrameBufferMain(scene)->getVirtualSize();
 
-    return virtualSize.x / virtualSize.y;
+    return virtualSize.x / virtualSize.y;*/
+    return 1920.0f / 1080.0f;
 }
 
 bool isChangedGraphicsQualityMode(const Scene* scene) {
@@ -191,6 +196,9 @@ void initActorInitInfo(ActorInitInfo* actorInitInfo, const Scene* scene,
 
 void initLayoutInitInfo(LayoutInitInfo* layoutInfo, const Scene* scene,
                         const SceneInitInfo& sceneInfo) {
+    // PATCH:
+    return;
+    // END PATCH
     LiveActorKit* actorKit = scene->getLiveActorKit();
     LayoutKit* layoutKit = scene->getLayoutKit();
 

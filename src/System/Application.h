@@ -31,7 +31,7 @@ public:
 protected:
     friend class ApplicationFunction;
 
-private:
+public:
     al::SystemKit* mSystemKit;
     al::GameFrameworkNx* mGameFramework;
     al::DrawSystemInfo* mDrawSystemInfo;

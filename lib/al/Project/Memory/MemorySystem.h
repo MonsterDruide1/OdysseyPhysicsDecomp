@@ -57,8 +57,8 @@ private:
 
     sead::ExpHeap* mStationedHeap = nullptr;
     sead::ExpHeap* mSequenceHeap = nullptr;
-    sead::FrameHeap* mSceneResourceHeap = nullptr;
-    sead::FrameHeap* mSceneHeap = nullptr;
+    sead::ExpHeap* mSceneResourceHeap = nullptr;
+    sead::ExpHeap* mSceneHeap = nullptr;
     sead::ExpHeap* mPlayerResourceHeap = nullptr;
     sead::FrameHeap* mCourseSelectResourceHeap = nullptr;
     sead::FrameHeap* mCourseSelectHeap = nullptr;

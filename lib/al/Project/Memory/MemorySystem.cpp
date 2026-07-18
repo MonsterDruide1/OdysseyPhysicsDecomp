@@ -18,7 +18,7 @@ MemorySystem::MemorySystem(sead::Heap* heap)
     : mDelegate(this, &MemorySystem::allocFailedCallbackFunc) {
     sead::HeapMgr::instance()->setAllocFailedCallback(&mDelegate);
     mStationedHeap =
-        sead::ExpHeap::create((u32)heap->getMaxAllocatableSize(8) - 0x1900000, "StationedHeap",
+        sead::ExpHeap::create(heap->getMaxAllocatableSize(8) - 0x1900000, "StationedHeap",
                               heap, 8, sead::Heap::cHeapDirection_Forward, false);
 
     {
@@ -41,7 +41,8 @@ void MemorySystem::allocFailedCallbackFunc(const sead::HeapMgr::AllocFailedCallb
 }
 
 void MemorySystem::createSequenceHeap() {
-    mSequenceHeap = sead::ExpHeap::create(0, "SequenceHeap", nullptr, 8,
+    sead::Heap* heap = sead::HeapMgr::instance()->getCurrentHeap();
+    mSequenceHeap = sead::ExpHeap::create(heap->getMaxAllocatableSize(8) - 0x1900000, "SequenceHeap", nullptr, 8,
                                           sead::Heap::cHeapDirection_Forward, false);
 }
 
@@ -68,7 +69,7 @@ bool MemorySystem::createSceneHeap(const char* stageName, bool backwards) {
     if (currentHeap && currentHeap->getMaxAllocatableSize(8) < size)
         size = currentHeap->getMaxAllocatableSize(8);
 
-    mSceneHeap = sead::FrameHeap::create(size, "SceneHeap", nullptr, 8, direction, false);
+    mSceneHeap = sead::ExpHeap::create(size, "SceneHeap", nullptr, 8, direction, false);
     mSceneHeap->mFlag.reset(sead::Heap::Flag::cEnableDebugFillUser);
 
     return currentSceneResourceHeap == nullptr;
@@ -119,7 +120,7 @@ void MemorySystem::createSceneResourceHeap(const char* stageName, bool backwards
     }
 
     mSceneResourceHeap =
-        sead::FrameHeap::tryCreate(size, "SceneHeapResource", nullptr, 8, direction, true);
+        sead::ExpHeap::tryCreate(size, "SceneHeapResource", nullptr, 8, direction, true);
     mSceneResourceHeap->mFlag.reset(sead::Heap::Flag::cEnableDebugFillUser);
 }
 

@@ -9,12 +9,19 @@
 #include "Item/CoinCollectHolder.h"
 #include "Item/CoinCollectWatcher.h"
 #include "Layout/KidsModeLayoutAccessor.h"
+#include "MapObj/CapMessageMoonNotifier.h"
 #include "MapObj/RhyhtmInfoWatcher.h"
 #include "MapObj/RouteGuideDirector.h"
 #include "Scene/HintPhotoLayoutHolder.h"
 
 #include "Item/CoinCollectHolder.h"
 #include "Item/CoinCollectWatcher.h"
+#include "Scene/QuestInfoHolder.h"
+
+class DummySceneObj : public al::ISceneObj {
+public:
+    DummySceneObj() = default;
+};
 
 static al::ISceneObj* sceneObjCreator(s32 id) {
     switch (id) {
@@ -22,16 +29,16 @@ static al::ISceneObj* sceneObjCreator(s32 id) {
         return new AmiiboNpcDirector();
 
     case SceneObjID_BgmAnimeSyncDirector:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_CapManHeroDemoDirector:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_CapMessageDirector:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_CapMessageMoonNotifier:
-        return nullptr;
+        return new CapMessageMoonNotifier();
 
     case SceneObjID_CoinCollectHolder:
         return new CoinCollectHolder();
@@ -40,91 +47,91 @@ static al::ISceneObj* sceneObjCreator(s32 id) {
         return new CoinCollectWatcher();
 
     case SceneObjID_CollectBgmPlayer:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_EchoEmitterHolder:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_ElectricWireCameraTicketHolder:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_FukankunZoomObjHolder:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_GrowPlantDirector:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_GuidePosInfoHolder:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_HintPhotoLayoutHolder:
         return new HintPhotoLayoutHolder();
 
     case SceneObjID_HtmlViewerRequester:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_KidsModeLayoutAccessor:
         return new KidsModeLayoutAccessor();
 
     case SceneObjID_LoginLotteryDirector:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_MoviePlayer:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_PaintObjHolder:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_PlayerStartInfoHolder:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_QuestInfoHolder:
-        return nullptr;
+        return new QuestInfoHolder(64);
 
     case SceneObjID_RandomItemSelector:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_ReactionObjectActionIndexHolder:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_RhyhtmInfoWatcher:
         return new RhyhtmInfoWatcher("");
 
     case SceneObjID_RouteGuideDirector:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_SceneEventNotifier:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_alStageSyncCounter:
         return new al::StageSyncCounter();
 
     case SceneObjID_TalkNpcParamHolder:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_TalkNpcSceneEventSwitcher:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_TestStageTimeDirector:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_TimeBalloonDirector:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_TsukkunTraceHolder:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_WipeHolderRequester:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_YoshiFruitWatcher:
-        return nullptr;
+        return new DummySceneObj();
 
     case SceneObjID_HelpAmiiboDirector:
-        return nullptr;
+        return new HelpAmiiboDirector();
 
     default:
-        return nullptr;
+        return new DummySceneObj();
     }
 }
 

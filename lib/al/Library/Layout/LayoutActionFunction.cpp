@@ -15,7 +15,9 @@ inline LayoutPaneGroup* getLayoutPaneGroup(const IUseLayoutAction* layout, const
 }
 
 void startAction(IUseLayoutAction* layout, const char* actionName, const char* paneName) {
-    layout->getLayoutActionKeeper()->startAction(actionName, paneName);
+    // PATCH:
+    //layout->getLayoutActionKeeper()->startAction(actionName, paneName);
+    // END PATCH
 }
 
 s32 startActionAtRandomFrame(IUseLayoutAction* layout, const char* actionName,

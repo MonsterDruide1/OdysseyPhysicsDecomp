@@ -14,7 +14,16 @@ namespace al {
 class EffectSystem;
 class ExecuteDirector;
 class FontHolder;
-class LayoutSystem;
+
+class LayoutSystem {
+public:
+    LayoutSystem();
+
+    void init();
+private:
+    char filler[0x30];
+};
+static_assert(sizeof(LayoutSystem) == 0x30);
 
 class LayoutKit {
 public:

@@ -2,10 +2,23 @@
 
 #include <math/seadMatrix.h>
 #include <math/seadVector.h>
+#include "Library/Layout/LayoutActor.h"
+#include "Library/Scene/ISceneObj.h"
 
 namespace al {
 class IUseSceneObjHolder;
+class LayoutInitInfo;
+class PlayerHolder;
 }
+
+class MapLayout : al::LayoutActor, al::ISceneObj {
+public:
+    MapLayout(al::LayoutInitInfo const&,al::PlayerHolder const*,int);
+private:
+    char filler[0x160];
+};
+
+static_assert(sizeof(MapLayout) == 0x298);
 
 namespace rs {
 void calcTransOnMap(sead::Vector2f*, const sead::Vector3f&, const sead::Matrix44f&,
