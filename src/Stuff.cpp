@@ -21,6 +21,7 @@
 #include "PlayerUtil.h"
 #include "System/SaveObjInfo.h"
 #include "Util/CollisionShapeFunction.h"
+#include "Util/PlayerCollisionUtil.h"
 #include "math/seadMatrix.h"
 #include "math/seadQuat.h"
 
@@ -1528,10 +1529,6 @@ bool isCollisionCodeGrabCeilAny(IUsePlayerCollision const* a1) {
            isCollisionCodeGrabCeilCeiling(a1);
 }
 
-bool isCollisionCodeGrabCeil(al::HitInfo const& a1) {
-    return isFloorCode(a1.triangle, "GrabCeil");
-}
-
 bool isCollisionCodePoisonTouch(IUsePlayerCollision const* a1) {
     return (a1->getPlayerCollider()->val1 >= 0.0f &&
             al::isFloorCode(a1->getPlayerCollider()->info1, "Poison")) ||
@@ -1871,10 +1868,6 @@ bool findWallCatchPos(al::CollisionParts const** parts, sead::Vector3<float>* a2
                               0);
     }
     return false;
-}
-
-bool isAboveGround(const IUsePlayerHeightCheck* a1) {
-    return a1->isAboveGround();
 }
 
 void resetCollisionExpandCheck(IUsePlayerCollision* collision) {

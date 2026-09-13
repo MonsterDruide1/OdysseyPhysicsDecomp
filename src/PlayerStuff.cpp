@@ -23,10 +23,6 @@ void rs::resetCollisionPose(const IUsePlayerCollision* collider, const sead::Qua
     collider->getPlayerCollider()->resetPose(quat);
 }
 
-f32 rs::getGroundHeight(const IUsePlayerHeightCheck* heightCheck) {
-    return heightCheck->getGroundHeight();
-}
-
 void rs::calcGroundNormalExceptJustLandOrGravityDir(sead::Vector3<float>* vec,
                                                     al::LiveActor const* actor,
                                                     IUsePlayerCollision const* collider) {

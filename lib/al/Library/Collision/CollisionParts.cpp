@@ -6,7 +6,7 @@
 #include "Library/Collision/TriangleFilter.h"
 #include "Library/LiveActor/ActorSensorUtil.h"
 #include "Library/Math/MathUtil.h"
-#include "Library/Matrix/MatrixUtil.h"
+#include "Library/Math/MatrixUtil.h"
 #include "Player/PlayerJudgeWallCatchInputDir.h"
 #include "container/seadRingBuffer.h"
 #include "math/seadMatrix.h"

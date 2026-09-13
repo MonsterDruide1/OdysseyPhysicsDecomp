@@ -3,7 +3,7 @@
 #include "Library/LiveActor/ActorPoseKeeper.h"
 #include "Library/Math/MathUtil.h"
 #include "Library/Math/MathUtil.h"
-#include "Library/Matrix/MatrixUtil.h"
+#include "Library/Math/MatrixUtil.h"
 #include "Library/Nerve/NerveSetupUtil.h"
 #include "Library/Nerve/NerveStateBase.h"
 #include "Library/Nerve/NerveUtil.h"

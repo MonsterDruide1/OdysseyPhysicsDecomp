@@ -22,7 +22,7 @@
 #include "Library/LiveActor/LiveActorInfo.h"
 #include "Library/Math/MathUtil.h"
 #include "Library/Math/MathUtil.h"
-#include "Library/Matrix/MatrixUtil.h"
+#include "Library/Math/MatrixUtil.h"
 #include "Library/Nerve/NerveKeeper.h"
 #include "Library/Nerve/NerveUtil.h"
 #include "Library/Placement/PlacementFunction.h"
